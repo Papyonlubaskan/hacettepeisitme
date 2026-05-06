@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
+import { triggerContactFallback } from '@/lib/formFallback';
 
 export default function Appointment() {
   const [formData, setFormData] = useState({
@@ -31,7 +32,10 @@ export default function Appointment() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data as never).toString(),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('APPOINTMENT_FORM_FAILED');
+        }
         setSubmitted(true);
         setLoading(false);
         trackFormSubmit('appointment', 'success', 'appointment-form', {
@@ -46,6 +50,7 @@ export default function Appointment() {
           service: formData.service,
           date: formData.date,
         });
+        triggerContactFallback('randevu');
       });
   };
 

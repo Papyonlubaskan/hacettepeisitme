@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackLead } from '@/lib/tracking';
+import { triggerContactFallback } from '@/lib/formFallback';
 
 export default function HeroFormSection() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,10 @@ export default function HeroFormSection() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data as never).toString(),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('LANDING_FORM_FAILED');
+        }
         setSubmitted(true);
         setLoading(false);
         trackLead('free_hearing_test', 1, 'TRY');
@@ -41,6 +45,7 @@ export default function HeroFormSection() {
         trackFormSubmit('landing_free_test', 'error', 'landing-hero-form', {
           age: formData.age,
         });
+        triggerContactFallback('ücretsiz test');
       });
   };
 

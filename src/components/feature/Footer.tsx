@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking';
+import { triggerContactFallback } from '@/lib/formFallback';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -37,13 +38,17 @@ export default function Footer() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(formData as never).toString(),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('NEWSLETTER_FORM_FAILED');
+        }
         setSubmitted(true);
         setEmail('');
         trackFormSubmit('newsletter', 'success', 'footer-newsletter', { email: email.trim() });
       })
       .catch(() => {
         trackFormSubmit('newsletter', 'error', 'footer-newsletter', { email: email.trim() });
+        triggerContactFallback('abone ol');
       });
   };
 

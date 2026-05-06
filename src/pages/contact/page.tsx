@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
+import { triggerContactFallback } from '@/lib/formFallback';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -22,7 +23,10 @@ export default function Contact() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data as never).toString(),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('CONTACT_FORM_FAILED');
+        }
         setSubmitted(true);
         setLoading(false);
         trackFormSubmit('contact', 'success', 'contact-form', {
@@ -35,6 +39,7 @@ export default function Contact() {
         trackFormSubmit('contact', 'error', 'contact-form', {
           subject: formData.subject,
         });
+        triggerContactFallback('iletişim');
       });
   };
 
