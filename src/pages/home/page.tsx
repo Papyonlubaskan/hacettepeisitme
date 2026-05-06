@@ -117,6 +117,19 @@ function HeroSection() {
 }
 
 function ServicesSection() {
+  const serviceCards = [
+    ...services,
+    {
+      id: 'online-test',
+      icon: 'ri-headphone-line',
+      title: 'Online İşitme Testi',
+      description:
+        'Mobil ve masaüstünden hızlı ön değerlendirme yaparak işitme seviyeniz hakkında ilk sonucu hemen öğrenin.',
+      cta: 'Hemen Test Ol',
+      link: '/online-isitme-testi',
+    },
+  ];
+
   return (
     <section className="py-20 md:py-28 bg-brand-cream">
       <div className="w-full px-6 lg:px-12">
@@ -130,19 +143,8 @@ function ServicesSection() {
           </h2>
         </div>
 
-        <div className="max-w-6xl mx-auto mb-6">
-          <Link
-            to="/online-isitme-testi"
-            className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all"
-            onClick={() => trackCTAClick('Online İşitme Testi', 'home_services_quick_access', '/online-isitme-testi')}
-          >
-            <i className="ri-headphone-line" />
-            <span>Online İşitme Testi</span>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {services.map((service) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          {serviceCards.map((service) => (
             <div
               key={service.id}
               className="group bg-white rounded-2xl p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
