@@ -8,6 +8,7 @@
     "dev:api": "node --watch server/index.js",
     "dev:full": "concurrently \"npm:dev\" \"npm:dev:api\"",
     "build": "vite build",
+    "start": "node server/index.js",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit --project tsconfig.app.json"

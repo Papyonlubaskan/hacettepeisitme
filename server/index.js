@@ -4,12 +4,13 @@ import nodemailer from 'nodemailer';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 const app = express();
-const PORT = Number(process.env.API_PORT || 8787);
+const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
 const MAIL_TO = process.env.MAIL_TO || 'hacettepeisitme55@gmail.com';
 const NEWSLETTER_API_KEY = process.env.NEWSLETTER_API_KEY || '';
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://hacettepeisitme.com,https://www.hacettepeisitme.com';
@@ -21,6 +22,7 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'newsletter-subscribers.json');
 const FORM_REQUESTS_LOG_FILE = path.join(DATA_DIR, 'form-requests.log');
+const FRONTEND_DIST_DIR = path.resolve(__dirname, '..', 'out');
 const ipHitMap = new Map();
 const ipAlertCooldownMap = new Map();
 const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
@@ -389,6 +391,13 @@ app.post('/api/form/landing', formRequestAudit, formLimiter, formRoute('landing'
 app.post('/api/form/appointment', formRequestAudit, formLimiter, formRoute('appointment'));
 app.post('/api/form/newsletter', formRequestAudit, formLimiter, formRoute('newsletter'));
 
+if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
+  app.use(express.static(FRONTEND_DIST_DIR));
+  app.get(/^\/(?!api).*/, (_req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST_DIR, 'index.html'));
+  });
+}
+
 app.listen(PORT, () => {
-  console.log(`Local form API running on http://127.0.0.1:${PORT}`);
+  console.log(`Web app running on port ${PORT}`);
 });
