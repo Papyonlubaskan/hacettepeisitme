@@ -130,6 +130,17 @@ function ServicesSection() {
           </h2>
         </div>
 
+        <div className="max-w-6xl mx-auto mb-6">
+          <Link
+            to="/online-isitme-testi"
+            className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all"
+            onClick={() => trackCTAClick('Online İşitme Testi', 'home_services_quick_access', '/online-isitme-testi')}
+          >
+            <i className="ri-headphone-line" />
+            <span>Online İşitme Testi</span>
+          </Link>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
             <div
