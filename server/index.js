@@ -8,6 +8,7 @@ import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
+import { scraper as scrapeGoogleMapsReviews } from 'google-maps-review-scraper';
 
 const app = express();
 const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
@@ -29,10 +30,11 @@ const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
   process.env.GOOGLE_PLACES_TEXT_QUERY ||
   'Hacettepe İşitme Cihazları Tepecik İlkadım Samsun';
-const GOOGLE_MAPS_REVIEWS_URL =
-  process.env.GOOGLE_MAPS_REVIEWS_URL ||
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(GOOGLE_PLACES_TEXT_QUERY)}`;
+const DEFAULT_GOOGLE_MAPS_PLACE_URL =
+  'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x4088778ce7e06485:0xe66522cc0e3bc661!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_';
+const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_PLACE_URL;
 const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 30 * 60 * 1000);
+const GOOGLE_REVIEWS_FEED_LIMIT = 5;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
@@ -166,6 +168,56 @@ function mapLegacyGoogleReview(review, index) {
   };
 }
 
+function formatGoogleReviewRelativeTime(publishedMicros) {
+  const ms = Number(publishedMicros) / 1000;
+  if (!Number.isFinite(ms) || ms <= 0) return '';
+  const diffMs = Date.now() - ms;
+  const rtf = new Intl.RelativeTimeFormat('tr', { numeric: 'auto' });
+  const minutes = Math.round(diffMs / 60000);
+  if (Math.abs(minutes) < 60) return rtf.format(-minutes, 'minute');
+  const hours = Math.round(diffMs / 3600000);
+  if (Math.abs(hours) < 24) return rtf.format(-hours, 'hour');
+  const days = Math.round(diffMs / 86400000);
+  if (Math.abs(days) < 30) return rtf.format(-days, 'day');
+  const months = Math.round(days / 30);
+  if (Math.abs(months) < 12) return rtf.format(-months, 'month');
+  const years = Math.round(months / 12);
+  return rtf.format(-years, 'year');
+}
+
+function mapScrapedGoogleReview(review, index) {
+  const rating = Number(review.review?.rating) || 0;
+  const text = String(review.review?.text || '').trim();
+  if (!text && rating <= 0) return null;
+  return {
+    id: String(review.review_id || `scraped-review-${index}`),
+    authorName: review.author?.name || 'Google kullanıcısı',
+    authorPhotoUrl: review.author?.profile_url || '',
+    rating,
+    text: text || 'Yorum metni paylaşılmadı.',
+    relativeTime: formatGoogleReviewRelativeTime(review.time?.published),
+    profileUrl: review.author?.url || '',
+  };
+}
+
+function summarizeGoogleReviews(reviews, mapsUrl, ratingOverride, reviewCountOverride) {
+  const limited = reviews.slice(0, GOOGLE_REVIEWS_FEED_LIMIT);
+  if (!limited.length) return null;
+  const ratings = limited.map((review) => review.rating).filter((value) => value > 0);
+  return {
+    rating:
+      typeof ratingOverride === 'number'
+        ? ratingOverride
+        : ratings.length
+          ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
+          : undefined,
+    reviewCount:
+      typeof reviewCountOverride === 'number' ? reviewCountOverride : limited.length,
+    mapsUrl: mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
+    reviews: limited,
+  };
+}
+
 async function resolveGooglePlaceId() {
   if (GOOGLE_PLACE_ID) return GOOGLE_PLACE_ID;
   if (!GOOGLE_PLACES_API_KEY) return null;
@@ -225,12 +277,12 @@ async function fetchGoogleReviewsFromPlacesNew(placeId) {
     .map((review, index) => mapGoogleReview(review, index))
     .filter(Boolean);
   if (!reviews.length) return null;
-  return {
-    rating: typeof data.rating === 'number' ? data.rating : undefined,
-    reviewCount: typeof data.userRatingCount === 'number' ? data.userRatingCount : undefined,
-    mapsUrl: data.googleMapsUri || GOOGLE_MAPS_REVIEWS_URL,
+  return summarizeGoogleReviews(
     reviews,
-  };
+    data.googleMapsUri || GOOGLE_MAPS_REVIEWS_URL,
+    data.rating,
+    data.userRatingCount
+  );
 }
 
 async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
@@ -261,13 +313,27 @@ async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
     .map((review, index) => mapLegacyGoogleReview(review, index))
     .filter(Boolean);
   if (!reviews.length) return null;
-  return {
-    rating: typeof data.result.rating === 'number' ? data.result.rating : undefined,
-    reviewCount:
-      typeof data.result.user_ratings_total === 'number' ? data.result.user_ratings_total : undefined,
-    mapsUrl: data.result.url || GOOGLE_MAPS_REVIEWS_URL,
+  return summarizeGoogleReviews(
     reviews,
-  };
+    data.result.url || GOOGLE_MAPS_REVIEWS_URL,
+    typeof data.result.rating === 'number' ? data.result.rating : undefined,
+    typeof data.result.user_ratings_total === 'number' ? data.result.user_ratings_total : undefined
+  );
+}
+
+async function fetchGoogleReviewsFromScraper() {
+  const url = GOOGLE_MAPS_REVIEWS_URL;
+  if (!url.includes('google.com/maps')) return null;
+  const raw = await scrapeGoogleMapsReviews(url, {
+    sort_type: 'newest',
+    pages: 1,
+    clean: true,
+  });
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const reviews = raw
+    .map((review, index) => mapScrapedGoogleReview(review, index))
+    .filter(Boolean);
+  return summarizeGoogleReviews(reviews, url);
 }
 
 async function fetchGoogleReviewsFromPlaces() {
@@ -278,6 +344,12 @@ async function fetchGoogleReviewsFromPlaces() {
   const fromNewApi = await fetchGoogleReviewsFromPlacesNew(placeId);
   if (fromNewApi) return fromNewApi;
   return fetchGoogleReviewsFromPlacesLegacy(placeId);
+}
+
+async function fetchGoogleReviews() {
+  const fromPlaces = await fetchGoogleReviewsFromPlaces();
+  if (fromPlaces?.reviews?.length) return fromPlaces;
+  return fetchGoogleReviewsFromScraper();
 }
 
 async function fetchInstagramMediaFromGraph() {
@@ -625,7 +697,7 @@ app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
       return;
     }
 
-    const live = await fetchGoogleReviewsFromPlaces();
+    const live = await fetchGoogleReviews();
     if (live && live.reviews.length > 0) {
       const payload = {
         ok: true,

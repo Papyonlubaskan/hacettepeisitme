@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import type { GoogleReview, GoogleReviewsResponse } from '@/types/googleReviews';
 
+const FEED_CARD_COUNT = 5;
+
 type Props = {
   subtitle?: string;
 };
 
 function ReviewSkeleton() {
   return (
-    <div className="bg-white rounded-2xl p-6 animate-pulse">
+    <div className="min-w-[280px] sm:min-w-[320px] snap-start bg-white rounded-2xl p-6 animate-pulse">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 rounded-full bg-gray-200" />
         <div className="space-y-2 flex-1">
@@ -45,7 +47,7 @@ function ReviewCard({ review }: { review: GoogleReview }) {
   const initial = review.authorName.trim().charAt(0).toUpperCase() || 'G';
 
   return (
-    <article className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+    <article className="min-w-[280px] sm:min-w-[320px] snap-start bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-4">
         {review.authorPhotoUrl ? (
           <img
@@ -127,26 +129,29 @@ export default function GoogleReviewsSection({
           )}
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {Array.from({ length: 6 }, (_, i) => (
-              <ReviewSkeleton key={`review-skel-${i}`} />
-            ))}
+        <div className="-mx-6 lg:-mx-12">
+          <div
+            className="flex gap-4 overflow-x-auto px-6 lg:px-12 pb-2 snap-x snap-mandatory scroll-smooth"
+            aria-label="Google yorum akışı"
+          >
+            {loading
+              ? Array.from({ length: FEED_CARD_COUNT }, (_, i) => (
+                  <ReviewSkeleton key={`review-skel-${i}`} />
+                ))
+              : reviews.length > 0
+                ? reviews.map((review) => <ReviewCard key={review.id} review={review} />)
+                : (
+                    <div className="min-w-full px-2">
+                      <div className="max-w-xl mx-auto text-center bg-white rounded-2xl p-8 border border-gray-100">
+                        <p className="text-sm text-gray-500">
+                          Google yorumları şu an yüklenemedi. Güncel değerlendirmeleri Google
+                          Haritalar üzerinden görüntüleyebilirsiniz.
+                        </p>
+                      </div>
+                    </div>
+                  )}
           </div>
-        ) : reviews.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
-        ) : (
-          <div className="max-w-xl mx-auto text-center bg-white rounded-2xl p-8 border border-gray-100">
-            <p className="text-sm text-gray-500">
-              Google yorumları şu an yüklenemedi. Güncel değerlendirmeleri Google Haritalar üzerinden
-              görüntüleyebilirsiniz.
-            </p>
-          </div>
-        )}
+        </div>
 
         {mapsUrl && (
           <div className="text-center mt-8">
@@ -154,7 +159,7 @@ export default function GoogleReviewsSection({
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-brand-accent font-semibold hover:text-[#008f7f] transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-accent transition-colors"
             >
               <i className="ri-google-fill" />
               <span>Google&apos;daki tüm yorumları görüntüle</span>
