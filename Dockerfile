@@ -15,5 +15,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/out ./out
 COPY --from=build /app/server ./server
+# Railway PORT ortam değişkeni ile atanır; EXPOSE yalnızca belgelendirme amaçlı
 EXPOSE 8080
+ENV HOST=0.0.0.0
 CMD ["npm", "run", "start"]

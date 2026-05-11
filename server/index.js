@@ -11,6 +11,8 @@ import { z } from 'zod';
 
 const app = express();
 const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
+/** Railway ve Docker için dışarıdan erişilebilir dinleme */
+const HOST = process.env.HOST || '0.0.0.0';
 const MAIL_TO = process.env.MAIL_TO || 'hacettepeisitme55@gmail.com';
 const NEWSLETTER_API_KEY = process.env.NEWSLETTER_API_KEY || '';
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://hacettepeisitme.com,https://www.hacettepeisitme.com';
@@ -545,6 +547,6 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`Web app running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Web app running on http://${HOST}:${PORT}`);
 });
