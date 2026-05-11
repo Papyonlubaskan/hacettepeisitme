@@ -46,10 +46,14 @@ function buildGoogleMapsScrapeUrl(ludocid) {
 const DEFAULT_GOOGLE_MAPS_REVIEWS_URL =
   'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar' +
   `&rflfq=1&num=20&rldimm=${GOOGLE_LOCAL_POI_LUDOCID}&tbm=lcl&hl=tr#lkt=LocalPoiReviews`;
+const DEFAULT_GOOGLE_MAPS_SECONDARY_SCRAPE_URL =
+  'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/' +
+  '@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x4088778ce7e06485:0xe66522cc0e3bc661' +
+  '!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_?hl=tr';
 const GOOGLE_MAPS_SCRAPE_URL =
   process.env.GOOGLE_MAPS_SCRAPE_URL || buildGoogleMapsScrapeUrl(GOOGLE_LOCAL_POI_LUDOCID);
 const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_REVIEWS_URL;
-const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 30 * 60 * 1000);
+const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 15 * 60 * 1000);
 const GOOGLE_REVIEWS_FEED_LIMIT = 5;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -201,25 +205,71 @@ function formatGoogleReviewRelativeTime(publishedMicros) {
   return rtf.format(-years, 'year');
 }
 
-function mapScrapedGoogleReview(review, index) {
+function mapScrapedGoogleReview(review, index, { requireText = true } = {}) {
   const rating = Number(review.review?.rating) || 0;
   const text = String(review.review?.text || '').trim();
-  if (!text || rating <= 0) return null;
+  const publishedMs = Number(review.time?.published) / 1000;
+  if (requireText && !text) return null;
+  if (!text && rating <= 0) return null;
   return {
     id: String(review.review_id || `scraped-review-${index}`),
     authorName: review.author?.name || 'Google kullanıcısı',
     authorPhotoUrl: review.author?.profile_url || '',
     rating,
-    text,
+    text: text || 'Yorum metni paylaşılmadı.',
     relativeTime: formatGoogleReviewRelativeTime(review.time?.published),
     profileUrl: review.author?.url || '',
+    publishedMs: Number.isFinite(publishedMs) ? publishedMs : 0,
   };
 }
 
+function getGoogleReviewDedupeKey(review) {
+  const text = String(review.text || '')
+    .replace(/^Yorum metni paylaşılmadı\.$/i, '')
+    .trim()
+    .slice(0, 140)
+    .toLowerCase();
+  return `${String(review.authorName || '').toLowerCase()}::${review.rating}::${text}::${String(
+    review.relativeTime || ''
+  ).toLowerCase()}`;
+}
+
+function mergeGoogleReviews(reviewLists) {
+  const merged = new Map();
+  for (const list of reviewLists) {
+    for (const review of list) {
+      const key = getGoogleReviewDedupeKey(review);
+      if (!merged.has(key)) merged.set(key, review);
+    }
+  }
+  return [...merged.values()].sort((left, right) => (right.publishedMs || 0) - (left.publishedMs || 0));
+}
+
+function stripPublishedMs(review) {
+  const { publishedMs: _publishedMs, ...publicReview } = review;
+  return publicReview;
+}
+
+function resolveGoogleReviewScrapeUrls() {
+  const configured = (process.env.GOOGLE_MAPS_SCRAPE_URLS || '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (configured.length) return configured;
+  return [GOOGLE_MAPS_SCRAPE_URL, DEFAULT_GOOGLE_MAPS_SECONDARY_SCRAPE_URL];
+}
+
 function summarizeGoogleReviews(reviews, mapsUrl, ratingOverride, reviewCountOverride) {
-  const limited = reviews.slice(0, GOOGLE_REVIEWS_FEED_LIMIT);
+  const feedable = reviews
+    .filter((review) => String(review.text || '').trim())
+    .sort((left, right) => {
+      const leftScore = /^Yorum metni paylaşılmadı\.$/i.test(left.text || '') ? 0 : 1;
+      const rightScore = /^Yorum metni paylaşılmadı\.$/i.test(right.text || '') ? 0 : 1;
+      return rightScore - leftScore || (right.publishedMs || 0) - (left.publishedMs || 0);
+    });
+  const limited = feedable.slice(0, GOOGLE_REVIEWS_FEED_LIMIT).map(stripPublishedMs);
   if (!limited.length) return null;
-  const ratings = limited.map((review) => review.rating).filter((value) => value > 0);
+  const ratings = reviews.map((review) => review.rating).filter((value) => value > 0);
   return {
     rating:
       typeof ratingOverride === 'number'
@@ -228,7 +278,7 @@ function summarizeGoogleReviews(reviews, mapsUrl, ratingOverride, reviewCountOve
           ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
           : undefined,
     reviewCount:
-      typeof reviewCountOverride === 'number' ? reviewCountOverride : limited.length,
+      typeof reviewCountOverride === 'number' ? reviewCountOverride : reviews.length,
     mapsUrl: mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
     reviews: limited,
   };
@@ -293,12 +343,12 @@ async function fetchGoogleReviewsFromPlacesNew(placeId) {
     .map((review, index) => mapGoogleReview(review, index))
     .filter(Boolean);
   if (!reviews.length) return null;
-  return summarizeGoogleReviews(
+  return {
+    rating: typeof data.rating === 'number' ? data.rating : undefined,
+    reviewCount: typeof data.userRatingCount === 'number' ? data.userRatingCount : reviews.length,
+    mapsUrl: data.googleMapsUri || GOOGLE_MAPS_REVIEWS_URL,
     reviews,
-    data.googleMapsUri || GOOGLE_MAPS_REVIEWS_URL,
-    data.rating,
-    data.userRatingCount
-  );
+  };
 }
 
 async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
@@ -329,32 +379,45 @@ async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
     .map((review, index) => mapLegacyGoogleReview(review, index))
     .filter(Boolean);
   if (!reviews.length) return null;
-  return summarizeGoogleReviews(
+  return {
+    rating: typeof data.result.rating === 'number' ? data.result.rating : undefined,
+    reviewCount:
+      typeof data.result.user_ratings_total === 'number'
+        ? data.result.user_ratings_total
+        : reviews.length,
+    mapsUrl: data.result.url || GOOGLE_MAPS_REVIEWS_URL,
     reviews,
-    data.result.url || GOOGLE_MAPS_REVIEWS_URL,
-    typeof data.result.rating === 'number' ? data.result.rating : undefined,
-    typeof data.result.user_ratings_total === 'number' ? data.result.user_ratings_total : undefined
-  );
+  };
 }
 
-async function fetchGoogleReviewsFromScraper() {
-  const url = GOOGLE_MAPS_SCRAPE_URL;
-  if (!url.includes('google.com/maps')) return null;
+async function scrapeGoogleReviewsFromMapsUrl(url) {
+  if (!url.includes('google.com/maps')) return [];
   const raw = await scrapeGoogleMapsReviews(url, {
     sort_type: 'newest',
     pages: GOOGLE_MAPS_SCRAPE_PAGES,
     clean: true,
   });
-  if (!Array.isArray(raw) || raw.length === 0) return null;
-  const reviews = raw
-    .map((review, index) => mapScrapedGoogleReview(review, index))
+  if (!Array.isArray(raw) || raw.length === 0) return [];
+  return raw
+    .map((review, index) => mapScrapedGoogleReview(review, index, { requireText: false }))
     .filter(Boolean);
-  if (!reviews.length) return null;
-  const ratings = reviews.map((review) => review.rating).filter((value) => value > 0);
+}
+
+async function fetchGoogleReviewsFromScraper() {
+  const urls = resolveGoogleReviewScrapeUrls();
+  const batches = await Promise.all(urls.map((url) => scrapeGoogleReviewsFromMapsUrl(url)));
+  const merged = mergeGoogleReviews(batches);
+  if (!merged.length) return null;
+  const ratings = merged.map((review) => review.rating).filter((value) => value > 0);
   const rating = ratings.length
     ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
     : undefined;
-  return summarizeGoogleReviews(reviews, GOOGLE_MAPS_REVIEWS_URL, rating, raw.length);
+  return {
+    rating,
+    reviewCount: merged.length,
+    mapsUrl: GOOGLE_MAPS_REVIEWS_URL,
+    reviews: merged,
+  };
 }
 
 async function fetchGoogleReviewsFromPlaces() {
@@ -372,13 +435,23 @@ async function fetchGoogleReviews() {
     fetchGoogleReviewsFromPlaces(),
     fetchGoogleReviewsFromScraper(),
   ]);
-  const candidates = [fromPlaces, fromScraper].filter((entry) => entry?.reviews?.length);
-  if (!candidates.length) return null;
-  return candidates.sort((left, right) => {
-    const leftCount = left.reviewCount || left.reviews.length;
-    const rightCount = right.reviewCount || right.reviews.length;
-    return rightCount - leftCount;
-  })[0];
+  const merged = mergeGoogleReviews([fromPlaces?.reviews || [], fromScraper?.reviews || []]);
+  if (!merged.length) return null;
+  const ratings = merged.map((review) => review.rating).filter((value) => value > 0);
+  const rating = ratings.length
+    ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
+    : fromScraper?.rating ?? fromPlaces?.rating;
+  const reviewCount = Math.max(
+    fromScraper?.reviewCount || 0,
+    fromPlaces?.reviewCount || 0,
+    merged.length
+  );
+  return summarizeGoogleReviews(
+    merged,
+    fromScraper?.mapsUrl || fromPlaces?.mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
+    rating,
+    reviewCount
+  );
 }
 
 async function fetchInstagramMediaFromGraph() {
