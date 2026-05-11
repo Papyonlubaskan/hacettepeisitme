@@ -3,7 +3,7 @@ import { useMemo, useEffect, useState } from 'react';
 import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
 import { SITE_ADDRESS_SCHEMA, SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { services } from '../../mocks/services';
-import { testimonials } from '../../mocks/testimonials';
+import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import { blogPosts } from '../../mocks/blog';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
@@ -339,52 +339,6 @@ function ProductsSection() {
   );
 }
 
-function TestimonialsSection() {
-  return (
-    <section className="py-20 md:py-28 bg-brand-cream">
-      <div className="w-full px-6 lg:px-12">
-        <div className="text-center mb-14">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-3">
-            Müşterilerimiz Ne Diyor?
-          </h2>
-          <p className="text-gray-500 max-w-lg mx-auto">
-            5000&apos;den fazla mutlu müşterimizin deneyimleri
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {testimonials.map((t) => (
-            <div
-              key={t.id}
-              className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-brand-accent/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-brand-accent">
-                    {t.name.charAt(0)}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-brand-dark">{t.name}</p>
-                  <p className="text-xs text-gray-400">{t.age} yaşında</p>
-                </div>
-              </div>
-              <div className="flex gap-0.5 mb-3">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <i key={i} className="ri-star-fill text-yellow-400 text-xs" />
-                ))}
-              </div>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                &ldquo;{t.text}&rdquo;
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function BlogSection() {
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -505,7 +459,7 @@ export default function Home() {
       <HeroSection />
       <ServicesSection />
       <ProductsSection />
-      <TestimonialsSection />
+      <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
       <BlogSection />
       <CTASection />
     </div>

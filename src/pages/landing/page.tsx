@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { trackPageView, trackCTAClick } from '@/lib/tracking';
 import HeroFormSection from './components/HeroFormSection';
+import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function LandingPage() {
@@ -72,47 +73,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 md:py-28 bg-brand-cream">
-        <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-3">
-              Müşterilerimiz Ne Diyor?
-            </h2>
-            <p className="text-gray-500 max-w-lg mx-auto">
-              Gerçek müşteri deneyimleri
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: 'Necati Y.', age: 72, text: 'Test süreci çok rahat ve profesyoneldi. Cihazımı 2 haftadır kullanıyorum, hayatım değişti.', rating: 5 },
-              { name: 'Hatice K.', age: 68, text: 'Personel çok ilgili. SGK desteği sayesinde çok uygun fiyata aldım. Teşekkürler Hacettepe İşitme.', rating: 5 },
-              { name: 'Selim B.', age: 55, text: 'İşitmem zayıflamaya başlayınca çekinerek gelmiştim. Güler yüzlü hizmet ve doğru cihaz. Kesinlikle tavsiye ederim.', rating: 5 },
-              { name: 'Mehmet A.', age: 80, text: '15 yıldır buradayım. Bakım ve onarım hizmetleri de çok iyi. Güvenilir bir adres.', rating: 5 },
-              { name: 'Fatma T.', age: 62, text: 'Ücretsiz test yaptırdım, hiç beklemediğim kadar ayrıntılı bir rapor aldım. Çok memnunum.', rating: 5 },
-              { name: 'Hüseyin D.', age: 74, text: 'Odyometrist Hüseyin Bey gerçekten işini iyi bilen bir uzman. Cihaz ayarlaması mükemmel.', rating: 5 },
-            ].map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-brand-accent/10 flex items-center justify-center">
-                    <span className="text-sm font-bold text-brand-accent">{t.name.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-brand-dark">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.age} yaşında</p>
-                  </div>
-                </div>
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <i key={j} className="ri-star-fill text-yellow-400 text-xs" />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-500 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
 
       {/* Trust Badges */}
       <section className="py-16 bg-brand-dark">

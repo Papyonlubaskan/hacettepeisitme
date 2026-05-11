@@ -24,6 +24,15 @@ const INSTAGRAM_BUSINESS_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID 
 const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
 const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
 const SITE_PHONE_WA = '905334745806';
+const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
+const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
+const GOOGLE_PLACES_TEXT_QUERY =
+  process.env.GOOGLE_PLACES_TEXT_QUERY ||
+  'Hacettepe İşitme Cihazları Tepecik İlkadım Samsun';
+const GOOGLE_MAPS_REVIEWS_URL =
+  process.env.GOOGLE_MAPS_REVIEWS_URL ||
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(GOOGLE_PLACES_TEXT_QUERY)}`;
+const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 30 * 60 * 1000);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
@@ -66,8 +75,18 @@ const instagramFeedLimiter = rateLimit({
   message: { ok: false, error: 'TOO_MANY_REQUESTS' },
 });
 
+const googleReviewsLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, error: 'TOO_MANY_REQUESTS' },
+});
+
 /** @type {{ expiresAt: number, payload: object } | null} */
 let instagramFeedCache = null;
+/** @type {{ expiresAt: number, payload: object } | null} */
+let googleReviewsCache = null;
 
 function getFallbackInstagramPosts() {
   const profile = 'https://www.instagram.com/hacettepeisitmecihazlari55';
@@ -115,6 +134,150 @@ function captionToTitle(caption) {
   if (!caption) return 'Instagram paylaşımı';
   const line = String(caption).split('\n')[0].trim();
   return line.slice(0, 120) || 'Instagram paylaşımı';
+}
+
+function mapGoogleReview(review, index) {
+  const text = review.text?.text || review.originalText?.text || '';
+  const rating = Number(review.rating) || 0;
+  if (!text.trim() && rating <= 0) return null;
+  return {
+    id: String(review.name || review.publishTime || `google-review-${index}`),
+    authorName: review.authorAttribution?.displayName || 'Google kullanıcısı',
+    authorPhotoUrl: review.authorAttribution?.photoUri || '',
+    rating,
+    text: text.trim(),
+    relativeTime: review.relativePublishTimeDescription || '',
+    profileUrl: review.authorAttribution?.uri || '',
+  };
+}
+
+function mapLegacyGoogleReview(review, index) {
+  const text = String(review.text || '').trim();
+  const rating = Number(review.rating) || 0;
+  if (!text && rating <= 0) return null;
+  return {
+    id: String(review.time || `legacy-review-${index}`),
+    authorName: review.author_name || 'Google kullanıcısı',
+    authorPhotoUrl: review.profile_photo_url || '',
+    rating,
+    text,
+    relativeTime: review.relative_time_description || '',
+    profileUrl: review.author_url || '',
+  };
+}
+
+async function resolveGooglePlaceId() {
+  if (GOOGLE_PLACE_ID) return GOOGLE_PLACE_ID;
+  if (!GOOGLE_PLACES_API_KEY) return null;
+
+  const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
+      'X-Goog-FieldMask': 'places.id',
+    },
+    body: JSON.stringify({
+      textQuery: GOOGLE_PLACES_TEXT_QUERY,
+      languageCode: 'tr',
+      regionCode: 'TR',
+      maxResultCount: 1,
+    }),
+  });
+  const rawText = await res.text();
+  if (!res.ok) {
+    console.error('[google-reviews] place search HTTP error:', res.status, rawText.slice(0, 500));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[google-reviews] place search invalid JSON');
+    return null;
+  }
+  const placeId = data.places?.[0]?.id;
+  return placeId ? String(placeId) : null;
+}
+
+async function fetchGoogleReviewsFromPlacesNew(placeId) {
+  const resourceId = encodeURIComponent(String(placeId).replace(/^places\//, ''));
+  const url = `https://places.googleapis.com/v1/places/${resourceId}?languageCode=tr`;
+  const res = await fetch(url, {
+    headers: {
+      'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
+      'X-Goog-FieldMask': 'reviews,rating,userRatingCount,googleMapsUri',
+    },
+  });
+  const rawText = await res.text();
+  if (!res.ok) {
+    console.error('[google-reviews] Places API HTTP error:', res.status, rawText.slice(0, 500));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[google-reviews] Places API invalid JSON');
+    return null;
+  }
+  const reviews = (Array.isArray(data.reviews) ? data.reviews : [])
+    .map((review, index) => mapGoogleReview(review, index))
+    .filter(Boolean);
+  if (!reviews.length) return null;
+  return {
+    rating: typeof data.rating === 'number' ? data.rating : undefined,
+    reviewCount: typeof data.userRatingCount === 'number' ? data.userRatingCount : undefined,
+    mapsUrl: data.googleMapsUri || GOOGLE_MAPS_REVIEWS_URL,
+    reviews,
+  };
+}
+
+async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
+  const params = new URLSearchParams({
+    place_id: String(placeId).replace(/^places\//, ''),
+    fields: 'reviews,rating,user_ratings_total,url',
+    language: 'tr',
+    key: GOOGLE_PLACES_API_KEY,
+  });
+  const res = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?${params.toString()}`);
+  const rawText = await res.text();
+  if (!res.ok) {
+    console.error('[google-reviews] legacy details HTTP error:', res.status, rawText.slice(0, 500));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[google-reviews] legacy details invalid JSON');
+    return null;
+  }
+  if (data.status !== 'OK' || !data.result) {
+    console.error('[google-reviews] legacy details status:', data.status);
+    return null;
+  }
+  const reviews = (Array.isArray(data.result.reviews) ? data.result.reviews : [])
+    .map((review, index) => mapLegacyGoogleReview(review, index))
+    .filter(Boolean);
+  if (!reviews.length) return null;
+  return {
+    rating: typeof data.result.rating === 'number' ? data.result.rating : undefined,
+    reviewCount:
+      typeof data.result.user_ratings_total === 'number' ? data.result.user_ratings_total : undefined,
+    mapsUrl: data.result.url || GOOGLE_MAPS_REVIEWS_URL,
+    reviews,
+  };
+}
+
+async function fetchGoogleReviewsFromPlaces() {
+  if (!GOOGLE_PLACES_API_KEY) return null;
+  const placeId = await resolveGooglePlaceId();
+  if (!placeId) return null;
+
+  const fromNewApi = await fetchGoogleReviewsFromPlacesNew(placeId);
+  if (fromNewApi) return fromNewApi;
+  return fetchGoogleReviewsFromPlacesLegacy(placeId);
 }
 
 async function fetchInstagramMediaFromGraph() {
@@ -452,6 +615,51 @@ function requireNewsletterApiKey(req, res, next) {
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'local-form-api' });
+});
+
+app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
+  try {
+    const now = Date.now();
+    if (googleReviewsCache && googleReviewsCache.expiresAt > now) {
+      res.json(googleReviewsCache.payload);
+      return;
+    }
+
+    const live = await fetchGoogleReviewsFromPlaces();
+    if (live && live.reviews.length > 0) {
+      const payload = {
+        ok: true,
+        source: 'google',
+        rating: live.rating,
+        reviewCount: live.reviewCount,
+        mapsUrl: live.mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
+        reviews: live.reviews,
+      };
+      googleReviewsCache = { expiresAt: now + GOOGLE_REVIEWS_CACHE_MS, payload };
+      res.json(payload);
+      return;
+    }
+
+    const unavailable = {
+      ok: false,
+      source: 'unavailable',
+      mapsUrl: GOOGLE_MAPS_REVIEWS_URL,
+      reviews: [],
+    };
+    googleReviewsCache = {
+      expiresAt: now + Math.min(GOOGLE_REVIEWS_CACHE_MS, 5 * 60 * 1000),
+      payload: unavailable,
+    };
+    res.json(unavailable);
+  } catch (error) {
+    console.error('[google-reviews] route error:', error);
+    res.json({
+      ok: false,
+      source: 'unavailable',
+      mapsUrl: GOOGLE_MAPS_REVIEWS_URL,
+      reviews: [],
+    });
+  }
 });
 
 app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
