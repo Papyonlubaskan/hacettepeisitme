@@ -25,6 +25,11 @@ const INSTAGRAM_BUSINESS_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID 
 const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME || 'hacettepeisitmecihazlari55';
 const INSTAGRAM_WEB_APP_ID = process.env.INSTAGRAM_WEB_APP_ID || '936619743392459';
 const INSTAGRAM_SESSION_ID = process.env.INSTAGRAM_SESSION_ID || '';
+const INSTAGRAM_USER_ID = process.env.INSTAGRAM_USER_ID || '46111897442';
+const INSTAGRAM_POST_PERMALINKS = (process.env.INSTAGRAM_POST_PERMALINKS || '')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
 const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_USERNAME}/`;
 const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
 const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
@@ -533,8 +538,29 @@ async function fetchGoogleReviews() {
   );
 }
 
+async function resolveInstagramBusinessAccountId() {
+  if (INSTAGRAM_BUSINESS_ACCOUNT_ID) return INSTAGRAM_BUSINESS_ACCOUNT_ID;
+  if (!INSTAGRAM_ACCESS_TOKEN) return '';
+  const url =
+    `https://graph.facebook.com/${GRAPH_API_VERSION}/me/accounts` +
+    `?fields=instagram_business_account{id}&access_token=${encodeURIComponent(INSTAGRAM_ACCESS_TOKEN)}`;
+  const res = await fetch(url);
+  if (!res.ok) return '';
+  const data = await res.json();
+  const pages = Array.isArray(data.data) ? data.data : [];
+  for (const page of pages) {
+    const id = page?.instagram_business_account?.id;
+    if (id) return String(id);
+  }
+  return '';
+}
+
 async function fetchInstagramMediaFromGraph() {
-  if (!INSTAGRAM_ACCESS_TOKEN || !INSTAGRAM_BUSINESS_ACCOUNT_ID) {
+  if (!INSTAGRAM_ACCESS_TOKEN) {
+    return null;
+  }
+  const businessAccountId = await resolveInstagramBusinessAccountId();
+  if (!businessAccountId) {
     return null;
   }
   const fields = [
@@ -548,7 +574,7 @@ async function fetchInstagramMediaFromGraph() {
     'children{media_url,media_type,thumbnail_url}',
   ].join(',');
   const url =
-    `https://graph.facebook.com/${GRAPH_API_VERSION}/${encodeURIComponent(INSTAGRAM_BUSINESS_ACCOUNT_ID)}` +
+    `https://graph.facebook.com/${GRAPH_API_VERSION}/${encodeURIComponent(businessAccountId)}` +
     `/media?fields=${encodeURIComponent(fields)}&limit=${INSTAGRAM_FEED_LIMIT}&access_token=${encodeURIComponent(INSTAGRAM_ACCESS_TOKEN)}`;
 
   const res = await fetch(url);
@@ -569,8 +595,16 @@ async function fetchInstagramMediaFromGraph() {
   return posts.length ? posts : null;
 }
 
+function buildInstagramCookieHeader(setCookieHeader, sessionId) {
+  const parts = [];
+  if (sessionId) parts.push(`sessionid=${sessionId}`);
+  const csrf = setCookieHeader?.match(/csrftoken=([^;]+)/)?.[1];
+  if (csrf) parts.push(`csrftoken=${csrf}`);
+  return parts.join('; ');
+}
+
 async function fetchInstagramMediaFromPublicProfile() {
-  const cookieHeader = INSTAGRAM_SESSION_ID ? `sessionid=${INSTAGRAM_SESSION_ID}` : '';
+  const cookieHeader = buildInstagramCookieHeader('', INSTAGRAM_SESSION_ID);
   const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
     headers: {
       'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
@@ -585,6 +619,7 @@ async function fetchInstagramMediaFromPublicProfile() {
   }
   const html = await pageRes.text();
   const lsd = html.match(/"LSD",\[\],\{"token":"([^"]+)"/)?.[1];
+  const requestCookie = buildInstagramCookieHeader(pageRes.headers.get('set-cookie') || '', INSTAGRAM_SESSION_ID);
   const apiUrl = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${encodeURIComponent(INSTAGRAM_USERNAME)}`;
   const apiRes = await fetch(apiUrl, {
     headers: {
@@ -592,7 +627,7 @@ async function fetchInstagramMediaFromPublicProfile() {
       'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
       'X-IG-App-ID': INSTAGRAM_WEB_APP_ID,
       ...(lsd ? { 'X-FB-LSD': lsd, 'X-ASBD-ID': '129477' } : {}),
-      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+      ...(requestCookie ? { Cookie: requestCookie } : {}),
       'X-Requested-With': 'XMLHttpRequest',
       Referer: INSTAGRAM_PROFILE_URL,
       'Sec-Fetch-Site': 'same-origin',
@@ -621,6 +656,36 @@ async function fetchInstagramMediaFromPublicProfile() {
   return posts.length ? posts : null;
 }
 
+async function fetchInstagramMediaFromScraper() {
+  try {
+    const { InstagramScraper } = await import('@aduptive/instagram-scraper');
+    const scraper = new InstagramScraper();
+    const result = await scraper.getPosts(INSTAGRAM_USERNAME, INSTAGRAM_FEED_LIMIT);
+    if (!result?.success || !Array.isArray(result.posts) || result.posts.length === 0) {
+      return null;
+    }
+    const posts = result.posts
+      .map((post, index) =>
+        mapInstagramFeedPost({
+          id: post.id || post.shortcode || `scrape-${index}`,
+          imageUrl: post.imageUrl || post.thumbnailUrl || post.displayUrl || '',
+          permalink:
+            post.permalink ||
+            (post.shortcode ? `https://www.instagram.com/p/${post.shortcode}/` : INSTAGRAM_PROFILE_URL),
+          title: post.caption || post.title || '',
+          mediaType: post.isVideo ? 'VIDEO' : 'IMAGE',
+          timestamp: post.timestamp || null,
+        })
+      )
+      .filter(Boolean)
+      .slice(0, INSTAGRAM_FEED_LIMIT);
+    return posts.length ? posts : null;
+  } catch (error) {
+    console.error('[instagram] scraper error:', error);
+    return null;
+  }
+}
+
 async function fetchInstagramFeed() {
   const fromGraph = await fetchInstagramMediaFromGraph();
   if (fromGraph?.length) {
@@ -629,6 +694,10 @@ async function fetchInstagramFeed() {
   const fromPublic = await fetchInstagramMediaFromPublicProfile();
   if (fromPublic?.length) {
     return { posts: fromPublic, source: 'instagram', postCount: fromPublic.length };
+  }
+  const fromScraper = await fetchInstagramMediaFromScraper();
+  if (fromScraper?.length) {
+    return { posts: fromScraper, source: 'instagram', postCount: fromScraper.length };
   }
   return null;
 }
@@ -1008,25 +1077,23 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
       return;
     }
 
-    const fallbackPosts = getFallbackInstagramPosts();
-    const fallback = {
-      ok: true,
-      source: 'fallback',
-      postCount: fallbackPosts.length,
+    const unavailable = {
+      ok: false,
+      source: 'unavailable',
+      postCount: 0,
       profileUrl: INSTAGRAM_PROFILE_URL,
-      posts: fallbackPosts,
+      posts: [],
     };
-    instagramFeedCache = { expiresAt: now + Math.min(INSTAGRAM_FEED_CACHE_MS, 5 * 60 * 1000), payload: fallback };
-    res.json(fallback);
+    instagramFeedCache = { expiresAt: now + 60 * 1000, payload: unavailable };
+    res.json(unavailable);
   } catch (error) {
     console.error('[instagram] feed route error:', error);
-    const fallbackPosts = getFallbackInstagramPosts();
     res.json({
-      ok: true,
-      source: 'fallback',
-      postCount: fallbackPosts.length,
+      ok: false,
+      source: 'unavailable',
+      postCount: 0,
       profileUrl: INSTAGRAM_PROFILE_URL,
-      posts: fallbackPosts,
+      posts: [],
     });
   }
 });

@@ -58,9 +58,9 @@ function PostSkeleton() {
 }
 
 export default function InstagramFeedSection() {
-  const [posts, setPosts] = useState<InstagramFeedPost[]>(FALLBACK_POSTS);
+  const [posts, setPosts] = useState<InstagramFeedPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [source, setSource] = useState<InstagramFeedResponse['source']>('fallback');
+  const [source, setSource] = useState<InstagramFeedResponse['source']>('unavailable');
   const [postCount, setPostCount] = useState<number | null>(null);
 
   const loadFeed = useCallback(async () => {
@@ -72,7 +72,7 @@ export default function InstagramFeedSection() {
     let cancelled = false;
 
     const applyFeed = (data: InstagramFeedResponse) => {
-      if (!data.ok || !Array.isArray(data.posts) || data.posts.length === 0) return;
+      if (data.source !== 'instagram' || !Array.isArray(data.posts) || data.posts.length === 0) return;
       setPosts(data.posts);
       setSource(data.source);
       setPostCount(data.postCount ?? data.posts.length);

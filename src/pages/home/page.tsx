@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useMemo, useEffect, useState } from 'react';
 import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
 import { SITE_ADDRESS_SCHEMA, SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
@@ -178,65 +178,43 @@ function ServicesSection() {
 
 const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55';
 
-const INSTAGRAM_FALLBACK_POSTS: InstagramFeedPost[] = [
-  {
-    id: 'local-1',
-    imageUrl: '/local-images/pro-instagram-1.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'İşitme testi bilgilendirmesi',
-  },
-  {
-    id: 'local-2',
-    imageUrl: '/local-images/pro-instagram-2.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Yeni teknoloji cihazlar',
-  },
-  {
-    id: 'local-3',
-    imageUrl: '/local-images/pro-instagram-3.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Bakım ve temizlik önerileri',
-  },
-  {
-    id: 'local-4',
-    imageUrl: '/local-images/pro-instagram-4.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Cihaz karşılaştırmaları',
-  },
-  {
-    id: 'local-5',
-    imageUrl: '/local-images/pro-instagram-5.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Hasta deneyimleri',
-  },
-  {
-    id: 'local-6',
-    imageUrl: '/local-images/pro-instagram-6.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Merkezden güncel paylaşımlar',
-  },
-];
-
 function ProductsSection() {
-  const [posts, setPosts] = useState<InstagramFeedPost[]>(INSTAGRAM_FALLBACK_POSTS);
+  const [posts, setPosts] = useState<InstagramFeedPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+    const loadFeed = async () => {
+      const res = await fetch('/api/instagram/feed', { cache: 'no-store' });
+      return (await res.json()) as InstagramFeedResponse;
+    };
+
     (async () => {
       try {
-        const res = await fetch('/api/instagram/feed');
-        const data = (await res.json()) as InstagramFeedResponse;
-        if (cancelled || !data.ok || !Array.isArray(data.posts) || data.posts.length === 0) return;
-        setPosts(data.posts);
+        const data = await loadFeed();
+        if (!cancelled && data.source === 'instagram' && Array.isArray(data.posts) && data.posts.length > 0) {
+          setPosts(data.posts);
+        }
       } catch {
-        /* yerel mock kalır */
+        /* canlı akış yoksa boş kalır */
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
+
+    const refreshId = window.setInterval(() => {
+      loadFeed()
+        .then((data) => {
+          if (!cancelled && data.source === 'instagram' && Array.isArray(data.posts) && data.posts.length > 0) {
+            setPosts(data.posts);
+          }
+        })
+        .catch(() => {});
+    }, 15 * 60 * 1000);
+
     return () => {
       cancelled = true;
+      window.clearInterval(refreshId);
     };
   }, []);
 
@@ -284,7 +262,8 @@ function ProductsSection() {
                     </div>
                   </div>
                 ))
-              : posts.map((post) => (
+              : posts.length > 0
+                ? posts.map((post) => (
                   <a
                     key={post.id}
                     href={post.permalink || INSTAGRAM_PROFILE_URL}
@@ -317,7 +296,14 @@ function ProductsSection() {
                       <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
                     </div>
                   </a>
-                ))}
+                ))
+                : (
+                  <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center">
+                    <p className="text-white/70">
+                      Instagram paylaşımları şu an yüklenemedi. Güncel gönderileri profilden görüntüleyebilirsiniz.
+                    </p>
+                  </div>
+                )}
           </div>
           <div className="text-center mt-8">
             <a

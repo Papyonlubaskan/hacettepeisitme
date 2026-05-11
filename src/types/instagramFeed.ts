@@ -9,7 +9,7 @@ export type InstagramFeedPost = {
 
 export type InstagramFeedResponse = {
   ok: boolean;
-  source: 'instagram' | 'fallback';
+  source: 'instagram' | 'fallback' | 'unavailable';
   postCount?: number;
   profileUrl?: string;
   posts: InstagramFeedPost[];
