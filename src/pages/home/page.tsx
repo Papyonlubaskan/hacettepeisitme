@@ -19,8 +19,8 @@ function HeroSection() {
 
   const heroCta =
     ctaVariant === 'A'
-      ? { title: 'Ãœcretsiz Test Randevusu', subtitle: '30 GÃ¼n Deneme Garantisi' }
-      : { title: 'AynÄ± GÃ¼n Randevu Al', subtitle: 'Uzman Odyometrist DeÄŸerlendirmesi' };
+      ? { title: 'Ücretsiz Test Randevusu', subtitle: '30 Gün Deneme Garantisi' }
+      : { title: 'Aynı Gün Randevu Al', subtitle: 'Uzman Odyometrist Değerlendirmesi' };
 
   return (
     <section className="relative min-h-[600px] md:min-h-[720px] flex items-center overflow-hidden">
@@ -28,7 +28,7 @@ function HeroSection() {
       <div className="absolute inset-0">
         <img
           src="/local-images/pro-hero-main.webp"
-          alt="Uzman tarafÄ±ndan iÅŸitme cihazÄ± uygulamasÄ±"
+          alt="Uzman tarafından işitme cihazı uygulaması"
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/85 via-brand-dark/60 to-transparent" />
@@ -38,18 +38,18 @@ function HeroSection() {
         <div className="max-w-2xl">
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
             <i className="ri-shield-check-line text-brand-accent" />
-            <span className="text-sm text-white font-medium">Samsun&apos;un En GÃ¼venilir Ä°ÅŸitme Merkezi</span>
+            <span className="text-sm text-white font-medium">Samsun&apos;un En Güvenilir İşitme Merkezi</span>
           </div>
 
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            HayatÄ±nÄ±zÄ±
+            Hayatınızı
             <br />
             <em className="text-brand-accent">Yeniden Duyun</em>
           </h1>
 
           <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-lg">
-            Almanya teknolojisi iÅŸitme cihazlarÄ± ile yaÅŸam kalitenizi artÄ±rÄ±n.
-            Ãœcretsiz iÅŸitme testi ve 30 gÃ¼n deneme garantisi.
+            Almanya teknolojisi işitme cihazları ile yaşam kalitenizi artırın.
+            Ücretsiz işitme testi ve 30 gün deneme garantisi.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -87,7 +87,7 @@ function HeroSection() {
                 <i className="ri-award-line text-brand-accent" />
               </span>
               <div>
-                <p className="text-sm font-bold text-white">15+ YÄ±l</p>
+                <p className="text-sm font-bold text-white">15+ Yıl</p>
                 <p className="text-xs text-white/60">Deneyim</p>
               </div>
             </div>
@@ -98,7 +98,7 @@ function HeroSection() {
               </span>
               <div>
                 <p className="text-sm font-bold text-white">5000+</p>
-                <p className="text-xs text-white/60">Mutlu MÃ¼ÅŸteri</p>
+                <p className="text-xs text-white/60">Mutlu Müşteri</p>
               </div>
             </div>
             <div className="w-px h-8 bg-white/20" />
@@ -107,8 +107,8 @@ function HeroSection() {
                 <i className="ri-customer-service-2-line text-brand-accent" />
               </span>
               <div>
-                <p className="text-sm font-bold text-white">Ãœcretsiz</p>
-                <p className="text-xs text-white/60">DanÄ±ÅŸmanlÄ±k</p>
+                <p className="text-sm font-bold text-white">Ücretsiz</p>
+                <p className="text-xs text-white/60">Danışmanlık</p>
               </div>
             </div>
           </div>
@@ -124,9 +124,9 @@ function ServicesSection() {
     {
       id: 'online-test',
       icon: 'ri-headphone-line',
-      title: 'Online Ä°ÅŸitme Testi',
+      title: 'Online İşitme Testi',
       description:
-        'Mobil ve masaÃ¼stÃ¼nden hÄ±zlÄ± Ã¶n deÄŸerlendirme yaparak iÅŸitme seviyeniz hakkÄ±nda ilk sonucu hemen Ã¶ÄŸrenin.',
+        'Mobil ve masaüstünden hızlı ön değerlendirme yaparak işitme seviyeniz hakkında ilk sonucu hemen öğrenin.',
       cta: 'Hemen Test Ol',
       link: '/online-isitme-testi',
     },
@@ -141,7 +141,7 @@ function ServicesSection() {
             <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">Hizmetlerimiz</span>
           </div>
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark">
-            KapsamlÄ± Ä°ÅŸitme Ã‡Ã¶zÃ¼mleri
+            Kapsamlı İşitme Çözümleri
           </h2>
         </div>
 
@@ -176,7 +176,6 @@ function ServicesSection() {
   );
 }
 
-
 function BlogSection() {
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -184,11 +183,11 @@ function BlogSection() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-14">
           <div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-2">
-              Ä°ÅŸitme SaÄŸlÄ±ÄŸÄ± Blog
+              İşitme Sağlığı Blog
             </h2>
-            <p className="text-gray-500">Uzman gÃ¶rÃ¼ÅŸleri ve faydalÄ± bilgiler</p>
+            <p className="text-gray-500">Uzman görüşleri ve faydalı bilgiler</p>
           </div>
-          <span className="text-sm text-gray-400">TÃ¼m YazÄ±lar â†’</span>
+          <span className="text-sm text-gray-400">Tüm Yazılar →</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -244,18 +243,18 @@ function CTASection() {
 
       <div className="relative z-10 w-full px-6 lg:px-12 text-center">
         <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-          BugÃ¼n Ãœcretsiz Ä°ÅŸitme Testinizi YaptÄ±rÄ±n
+          Bugün Ücretsiz İşitme Testinizi Yaptırın
         </h2>
         <p className="text-white/80 text-base md:text-lg mb-2">
-          Randevu iÃ§in bizi arayÄ±n: {SITE_PHONE_DISPLAY}
+          Randevu için bizi arayın: {SITE_PHONE_DISPLAY}
         </p>
-        <p className="text-white/60 text-sm mb-8">AynÄ± gÃ¼n randevu imkanÄ±</p>
+        <p className="text-white/60 text-sm mb-8">Aynı gün randevu imkanı</p>
         <Link
           to="/randevu"
           className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
-          onClick={() => trackCTAClick('Randevu OluÅŸtur', 'home_cta', '/randevu')}
+          onClick={() => trackCTAClick('Randevu Oluştur', 'home_cta', '/randevu')}
         >
-          <span>Randevu OluÅŸtur</span>
+          <span>Randevu Oluştur</span>
           <i className="ri-arrow-right-line" />
         </Link>
       </div>
@@ -297,9 +296,10 @@ export default function Home() {
       <HeroSection />
       <ServicesSection />
       <InstagramFeedSection />
-      <GoogleReviewsSection subtitle="Google Haritalar Ã¼zerindeki gÃ¼ncel iÅŸletme yorumlarÄ±" />
+      <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
       <BlogSection />
       <CTASection />
     </div>
   );
 }
+
