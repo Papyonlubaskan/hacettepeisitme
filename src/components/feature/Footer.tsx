@@ -172,19 +172,6 @@ export default function Footer() {
                       {SITE_PHONE_DISPLAY}
                     </span>
                   </a>
-                  <a
-                    href="tel:+905442368336"
-                    className="flex items-start gap-3 text-sm text-gray-300 hover:text-white transition-colors group"
-                    onClick={() => trackPhoneClick('+905442368336')}
-                  >
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-brand-accent/20 transition-colors shrink-0 mt-0.5">
-                      <i className="ri-phone-line text-brand-accent text-sm" />
-                    </span>
-                    <span>
-                      <span className="block text-xs text-gray-400 mb-0.5">Telefon</span>
-                      0 (544) 236 83 36
-                    </span>
-                  </a>
                   <div className="flex items-start gap-3 text-sm text-gray-300">
                     <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 shrink-0 mt-0.5">
                       <i className="ri-map-pin-line text-brand-accent text-sm" />

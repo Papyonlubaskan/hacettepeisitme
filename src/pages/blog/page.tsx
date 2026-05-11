@@ -129,7 +129,7 @@ function BlogDetail() {
               <div className="flex items-center gap-3">
                 <span className="text-sm font-semibold text-brand-dark">Paylaş:</span>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`${post.title} - https://hacettepeisitme.com/blog/${post.slug}`)}`}
+                  href={`https://wa.me/${SITE_PHONE_WA}?text=${encodeURIComponent(`${post.title} - https://hacettepeisitme.com/blog/${post.slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-green-500/10 text-green-600 hover:bg-green-500 hover:text-white transition-colors"

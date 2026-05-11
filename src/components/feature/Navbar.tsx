@@ -155,13 +155,6 @@ export default function Navbar() {
               <i className="ri-phone-line text-brand-accent" />
               {SITE_PHONE_DISPLAY}
             </a>
-            <a
-              href="tel:+905442368336"
-              className="flex items-center gap-3 py-3 px-4 text-sm text-gray-700"
-            >
-              <i className="ri-phone-line text-brand-accent" />
-              0 (544) 236 83 36
-            </a>
             <Link
               to="/randevu"
               className="flex items-center justify-center gap-2 bg-brand-accent text-white text-sm font-semibold py-3 rounded-full mt-2"

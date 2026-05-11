@@ -83,10 +83,6 @@ export default function Contact() {
               <a href={`tel:${SITE_PHONE_E164}`} className="text-sm text-gray-500 hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick(SITE_PHONE_E164)}>
                 {SITE_PHONE_DISPLAY}
               </a>
-              <br />
-              <a href="tel:+905442368336" className="text-sm text-gray-500 hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick('+905442368336')}>
-                0 (544) 236 83 36
-              </a>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center hover:shadow-md transition-all">
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-brand-accent/10 mx-auto mb-4">

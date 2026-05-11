@@ -23,6 +23,7 @@ const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN || '';
 const INSTAGRAM_BUSINESS_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID || '';
 const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
 const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
+const SITE_PHONE_WA = '905334745806';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
@@ -508,7 +509,7 @@ app.post('/api/newsletter/instagram-broadcast', requireNewsletterApiKey, async (
     const textBody =
       `${summary}\n\n` +
       `Instagram paylaşımları:\n\n${postLines}\n\n` +
-      `Sorularınız için: https://wa.me/905334745806`;
+      `Sorularınız için: https://wa.me/${SITE_PHONE_WA}`;
 
     let sent = 0;
     for (const subscriber of activeSubscribers) {

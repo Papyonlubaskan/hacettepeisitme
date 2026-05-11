@@ -293,7 +293,7 @@ export const blogPosts = [
 
 <h3>1. Randevu Alma veya Randevusuz Ziyaret</h3>
 
-<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (0 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi 09:00-18:00, cumartesi 10:00-16:00 saatleri arasında hizmet vermektedir.</p>
+<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (+90 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi 09:00-18:00, cumartesi 10:00-16:00 saatleri arasında hizmet vermektedir.</p>
 
 <h3>2. Karşılama ve Ön Görüşme</h3>
 
@@ -351,7 +351,7 @@ export const blogPosts = [
 
 <h3>Samsun'da İşitme Testi Yaptırmak İçin Bizi Arayın</h3>
 
-<p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>0 (533) 474 58 06</strong> numarasından bize ulaşabilirsiniz.</p>`,
+<p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>+90 533 474 58 06</strong> numarasından bize ulaşabilirsiniz.</p>`,
     category: 'Hizmetler',
     readTime: '3 dk',
     date: '2024-03-01',

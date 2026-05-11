@@ -104,13 +104,6 @@ export default function Appointment() {
                 >
                   {SITE_PHONE_DISPLAY}
                 </a>
-                <a
-                  href="tel:+905442368336"
-                  className="text-sm font-semibold text-gray-400 hover:text-brand-accent transition-colors"
-                  onClick={() => trackPhoneClick('+905442368336')}
-                >
-                  0 (544) 236 83 36
-                </a>
               </div>
             </div>
             <div className="hidden sm:block w-px h-10 bg-gray-200" />

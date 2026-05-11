@@ -2,7 +2,7 @@
 export const SITE_PHONE_E164 = '+905334745806';
 /** WhatsApp wa.me için ülke kodu + numara, + işareti olmadan */
 export const SITE_PHONE_WA = '905334745806';
-export const SITE_PHONE_DISPLAY = '0 (533) 474 58 06';
+export const SITE_PHONE_DISPLAY = '+90 533 474 58 06';
 
 export const SITE_ADDRESS_LINE1 = 'Eğitim Araştırma Karşısı Şok Market Üstü';
 export const SITE_ADDRESS_LINE2 = 'Tepecik, 1537. Sokak 1B/b';
