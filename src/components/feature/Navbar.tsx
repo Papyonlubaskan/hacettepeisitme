@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -94,7 +95,7 @@ export default function Navbar() {
           {/* CTA Button + Phone */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+905380260564"
+              href={`tel:${SITE_PHONE_E164}`}
               className={`flex items-center gap-2 text-sm font-medium whitespace-nowrap transition-colors ${
                 scrolled ? 'text-gray-700' : 'text-white'
               }`}
@@ -102,7 +103,7 @@ export default function Navbar() {
               <span className="w-8 h-8 flex items-center justify-center rounded-full bg-brand-accent/10">
                 <i className="ri-phone-line text-brand-accent" />
               </span>
-              <span className="hidden lg:inline">0 (538) 026 05 64</span>
+              <span className="hidden lg:inline">{SITE_PHONE_DISPLAY}</span>
             </a>
             <Link
               to="/randevu"
@@ -148,11 +149,11 @@ export default function Navbar() {
           ))}
           <div className="pt-2 border-t border-gray-100">
             <a
-              href="tel:+905380260564"
+              href={`tel:${SITE_PHONE_E164}`}
               className="flex items-center gap-3 py-3 px-4 text-sm text-gray-700"
             >
               <i className="ri-phone-line text-brand-accent" />
-              0 (538) 026 05 64
+              {SITE_PHONE_DISPLAY}
             </a>
             <a
               href="tel:+905442368336"

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { trackPageView, trackCTAClick } from '@/lib/tracking';
 import HeroFormSection from './components/HeroFormSection';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function LandingPage() {
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { step: '01', title: 'Randevu Oluşturun', desc: 'Formu doldurun veya 0538 026 05 64 numarasını arayın.' },
+              { step: '01', title: 'Randevu Oluşturun', desc: `Formu doldurun veya ${SITE_PHONE_DISPLAY} numarasını arayın.` },
               { step: '02', title: 'Test ve Analiz', desc: 'Odyometri uzmanımız kapsamlı testi yapar.' },
               { step: '03', title: 'Cihaz Seçimi', desc: 'Bütçenize ve ihtiyacınıza en uygun cihaz belirlenir.' },
               { step: '04', title: 'Uyarlama & Teslim', desc: 'Cihazınız kişiselleştirilir ve aynı gün teslim edilir.' },
@@ -144,8 +145,8 @@ export default function LandingPage() {
             Formu doldurun veya doğrudan arayın:
           </p>
           <p className="text-2xl font-bold text-brand-dark mb-8">
-            <a href="tel:+905380260564" className="hover:text-brand-accent transition-colors" onClick={() => trackCTAClick('Telefon Arama', 'landing_final_cta')}>
-              0 (538) 026 05 64
+            <a href={`tel:${SITE_PHONE_E164}`} className="hover:text-brand-accent transition-colors" onClick={() => trackCTAClick('Telefon Arama', 'landing_final_cta')}>
+              {SITE_PHONE_DISPLAY}
             </a>
           </p>
           <a

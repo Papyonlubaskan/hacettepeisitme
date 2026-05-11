@@ -17,6 +17,10 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://hacettepeisitme.com,http
 const FORM_ALERT_THRESHOLD = Number(process.env.FORM_ALERT_THRESHOLD || 30);
 const FORM_ALERT_WINDOW_MS = Number(process.env.FORM_ALERT_WINDOW_MS || 10 * 60 * 1000);
 const FORM_ALERT_COOLDOWN_MS = Number(process.env.FORM_ALERT_COOLDOWN_MS || 60 * 60 * 1000);
+const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN || '';
+const INSTAGRAM_BUSINESS_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID || '';
+const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
+const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
@@ -50,6 +54,124 @@ const formLimiter = rateLimit({
   legacyHeaders: false,
   message: { ok: false, error: 'TOO_MANY_REQUESTS' },
 });
+
+const instagramFeedLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, error: 'TOO_MANY_REQUESTS' },
+});
+
+/** @type {{ expiresAt: number, payload: object } | null} */
+let instagramFeedCache = null;
+
+function getFallbackInstagramPosts() {
+  const profile = 'https://www.instagram.com/hacettepeisitmecihazlari55';
+  return [
+    {
+      id: 'local-1',
+      imageUrl: '/local-images/pro-instagram-1.webp',
+      permalink: profile,
+      title: 'İşitme testi bilgilendirmesi',
+    },
+    {
+      id: 'local-2',
+      imageUrl: '/local-images/pro-instagram-2.webp',
+      permalink: profile,
+      title: 'Yeni teknoloji cihazlar',
+    },
+    {
+      id: 'local-3',
+      imageUrl: '/local-images/pro-instagram-3.webp',
+      permalink: profile,
+      title: 'Bakım ve temizlik önerileri',
+    },
+    {
+      id: 'local-4',
+      imageUrl: '/local-images/pro-instagram-4.webp',
+      permalink: profile,
+      title: 'Cihaz karşılaştırmaları',
+    },
+    {
+      id: 'local-5',
+      imageUrl: '/local-images/pro-instagram-5.webp',
+      permalink: profile,
+      title: 'Hasta deneyimleri',
+    },
+    {
+      id: 'local-6',
+      imageUrl: '/local-images/pro-instagram-6.webp',
+      permalink: profile,
+      title: 'Merkezden güncel paylaşımlar',
+    },
+  ];
+}
+
+function captionToTitle(caption) {
+  if (!caption) return 'Instagram paylaşımı';
+  const line = String(caption).split('\n')[0].trim();
+  return line.slice(0, 120) || 'Instagram paylaşımı';
+}
+
+async function fetchInstagramMediaFromGraph() {
+  if (!INSTAGRAM_ACCESS_TOKEN || !INSTAGRAM_BUSINESS_ACCOUNT_ID) {
+    return null;
+  }
+  const fields = [
+    'id',
+    'caption',
+    'media_type',
+    'media_url',
+    'thumbnail_url',
+    'permalink',
+    'timestamp',
+    'children{media_url,media_type,thumbnail_url}',
+  ].join(',');
+  const url =
+    `https://graph.facebook.com/${GRAPH_API_VERSION}/${encodeURIComponent(INSTAGRAM_BUSINESS_ACCOUNT_ID)}` +
+    `/media?fields=${encodeURIComponent(fields)}&limit=12&access_token=${encodeURIComponent(INSTAGRAM_ACCESS_TOKEN)}`;
+
+  const res = await fetch(url);
+  const rawText = await res.text();
+  if (!res.ok) {
+    console.error('[instagram] Graph API HTTP error:', res.status, rawText.slice(0, 500));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[instagram] Graph API invalid JSON');
+    return null;
+  }
+  const items = Array.isArray(data.data) ? data.data : [];
+  const posts = items
+    .map((item) => {
+      const permalink = item.permalink || '';
+      const caption = captionToTitle(item.caption);
+      let imageUrl = '';
+      const firstChild =
+        item.media_type === 'CAROUSEL_ALBUM' && Array.isArray(item.children?.data)
+          ? item.children.data[0]
+          : null;
+      const imgSource = firstChild || item;
+      if (imgSource.media_type === 'VIDEO') {
+        imageUrl = imgSource.thumbnail_url || imgSource.media_url || '';
+      } else {
+        imageUrl = imgSource.media_url || imgSource.thumbnail_url || '';
+      }
+      if (!imageUrl || !permalink) return null;
+      return {
+        id: String(item.id),
+        imageUrl,
+        permalink,
+        title: caption,
+      };
+    })
+    .filter(Boolean);
+  return posts.length ? posts : null;
+}
 
 const transporter = nodemailer.createTransport({
   service: process.env.SMTP_SERVICE || 'gmail',
@@ -329,6 +451,31 @@ app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'local-form-api' });
 });
 
+app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
+  try {
+    const now = Date.now();
+    if (instagramFeedCache && instagramFeedCache.expiresAt > now) {
+      res.json(instagramFeedCache.payload);
+      return;
+    }
+
+    const live = await fetchInstagramMediaFromGraph();
+    if (live && live.length > 0) {
+      const payload = { ok: true, source: 'instagram', posts: live };
+      instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
+      res.json(payload);
+      return;
+    }
+
+    const fallback = { ok: true, source: 'fallback', posts: getFallbackInstagramPosts() };
+    instagramFeedCache = { expiresAt: now + Math.min(INSTAGRAM_FEED_CACHE_MS, 5 * 60 * 1000), payload: fallback };
+    res.json(fallback);
+  } catch (error) {
+    console.error('[instagram] feed route error:', error);
+    res.json({ ok: true, source: 'fallback', posts: getFallbackInstagramPosts() });
+  }
+});
+
 app.get('/api/newsletter/subscribers-count', requireNewsletterApiKey, async (_req, res) => {
   const subscribers = await readSubscribers();
   const activeCount = subscribers.filter((s) => s.active !== false).length;
@@ -359,7 +506,7 @@ app.post('/api/newsletter/instagram-broadcast', requireNewsletterApiKey, async (
     const textBody =
       `${summary}\n\n` +
       `Instagram paylaşımları:\n\n${postLines}\n\n` +
-      `Sorularınız için: https://wa.me/905380260564`;
+      `Sorularınız için: https://wa.me/905334745806`;
 
     let sent = 0;
     for (const subscriber of activeSubscribers) {

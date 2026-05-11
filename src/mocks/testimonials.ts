@@ -45,7 +45,7 @@ export const testimonials = [
     id: 7,
     name: 'Zeynep Tekin',
     age: 64,
-    text: 'İlkadım\'daki mağazalarından birine uğradım, aziziye caddesi üzerinde ulaşımı kolay. Personel çok sabırlıydı, 3 farklı cihaz denedikten sonra karar verdik. Memnunum.',
+    text: 'İlkadım Tepecik\'teki merkezlerine uğradım, Eğitim Araştırma karşısından kolay buldum. Personel çok sabırlıydı, 3 farklı cihaz denedikten sonra karar verdik. Memnunum.',
     rating: 5,
   },
   {

@@ -2,6 +2,14 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
+import {
+  SITE_ADDRESS_LINE1,
+  SITE_ADDRESS_LINE2,
+  SITE_ADDRESS_LINE3,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+  SITE_PHONE_WA,
+} from '@/lib/siteContact';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -95,12 +103,12 @@ export default function Footer() {
                     <i className="ri-instagram-line text-lg" />
                   </a>
                   <a
-                    href="https://wa.me/905380260564"
+                    href={`https://wa.me/${SITE_PHONE_WA}`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-green-500 transition-colors"
                     aria-label="WhatsApp"
-                    onClick={() => trackCTAClick('WhatsApp', 'footer', 'https://wa.me/905380260564')}
+                    onClick={() => trackCTAClick('WhatsApp', 'footer', `https://wa.me/${SITE_PHONE_WA}`)}
                   >
                     <i className="ri-whatsapp-line text-lg" />
                   </a>
@@ -152,16 +160,16 @@ export default function Footer() {
                 </h4>
                 <div className="space-y-4">
                   <a
-                    href="tel:+905380260564"
+                    href={`tel:${SITE_PHONE_E164}`}
                     className="flex items-start gap-3 text-sm text-gray-300 hover:text-white transition-colors group"
-                    onClick={() => trackPhoneClick('+905380260564')}
+                    onClick={() => trackPhoneClick(SITE_PHONE_E164)}
                   >
                     <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-brand-accent/20 transition-colors shrink-0 mt-0.5">
                       <i className="ri-phone-line text-brand-accent text-sm" />
                     </span>
                     <span>
                       <span className="block text-xs text-gray-400 mb-0.5">Telefon</span>
-                      0 (538) 026 05 64
+                      {SITE_PHONE_DISPLAY}
                     </span>
                   </a>
                   <a
@@ -183,9 +191,11 @@ export default function Footer() {
                     </span>
                     <span>
                       <span className="block text-xs text-gray-400 mb-0.5">Adres</span>
-                      Yenidoğan Mah. Aziziye Cad.
+                      {SITE_ADDRESS_LINE1}
                       <br />
-                      No:70/1 İlkadım/Samsun
+                      {SITE_ADDRESS_LINE2}
+                      <br />
+                      {SITE_ADDRESS_LINE3}
                     </span>
                   </div>
                   <div className="flex items-start gap-3 text-sm text-gray-300">

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { trackCTAClick } from '@/lib/tracking';
+import { SITE_PHONE_WA } from '@/lib/siteContact';
 
 interface TestResult {
   freq: number;
@@ -153,7 +154,7 @@ export default function TestResults({ leftResults, rightResults, onReset }: Prop
             <span>Randevu Oluştur</span>
           </Link>
           <a
-            href="https://wa.me/905380260564"
+            href={`https://wa.me/${SITE_PHONE_WA}`}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className="inline-flex items-center justify-center gap-2 border-2 border-white/30 text-white font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"

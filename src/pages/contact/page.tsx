@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
+import {
+  SITE_MAP_EMBED_URL,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+  SITE_ADDRESS_SINGLE,
+} from '@/lib/siteContact';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -74,8 +80,8 @@ export default function Contact() {
                 <i className="ri-phone-line text-xl text-brand-accent" />
               </div>
               <h3 className="text-sm font-bold text-brand-dark mb-1">Telefon</h3>
-              <a href="tel:+905380260564" className="text-sm text-gray-500 hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick('+905380260564')}>
-                0 (538) 026 05 64
+              <a href={`tel:${SITE_PHONE_E164}`} className="text-sm text-gray-500 hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick(SITE_PHONE_E164)}>
+                {SITE_PHONE_DISPLAY}
               </a>
               <br />
               <a href="tel:+905442368336" className="text-sm text-gray-500 hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick('+905442368336')}>
@@ -96,7 +102,7 @@ export default function Contact() {
                 <i className="ri-map-pin-line text-xl text-brand-accent" />
               </div>
               <h3 className="text-sm font-bold text-brand-dark mb-1">Adres</h3>
-              <p className="text-sm text-gray-500">Yenidoğan Mah. Aziziye Cad. No:70/1 İlkadım/Samsun</p>
+              <p className="text-sm text-gray-500 text-pretty">{SITE_ADDRESS_SINGLE}</p>
             </div>
           </div>
         </div>
@@ -112,12 +118,12 @@ export default function Contact() {
                 Bizi Ziyaret Edin
               </h2>
               <p className="text-gray-500 mb-6">
-                Kliniğimiz Samsun İlkadım ilçesinde, Yenidoğan Mahallesi Aziziye Caddesi üzerinde, ulaşımı kolay bir konumda hizmet vermektedir.
+                Kliniğimiz İlkadım Tepecik&apos;te, Eğitim Araştırma Hastanesi karşısı Şok Market üstündedir; D010 güzergâhına yakındır.
                 Aşağıdaki haritadan konumumuzu görebilir ve yol tarifi alabilirsiniz.
               </p>
               <div className="rounded-2xl overflow-hidden border border-gray-200">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.5644!2d36.3305!3d41.2867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40887c7f8d8d8d8d%3A0x8d8d8d8d8d8d8d8d!2sHacettepe%20%C4%B0%C5%9Fitme%20Cihazlar%C4%B1!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str"
+                  src={SITE_MAP_EMBED_URL}
                   width="100%"
                   height="400"
                   style={{ border: 0 }}
@@ -136,7 +142,7 @@ export default function Contact() {
                 </div>
                 <div className="bg-brand-cream rounded-xl p-4">
                   <p className="text-xs text-gray-400 mb-1">WhatsApp Destek</p>
-                  <p className="text-sm font-semibold text-brand-dark">0 (538) 026 05 64</p>
+                  <p className="text-sm font-semibold text-brand-dark">{SITE_PHONE_DISPLAY}</p>
                   <p className="text-sm text-gray-500">7/24 Mesaj</p>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { blogPosts } from '../../mocks/blog';
 import NotFound from '../NotFound';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
+import { SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 
 function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -183,11 +184,11 @@ function BlogDetail() {
                     <i className="ri-arrow-right-line" />
                   </Link>
                   <a
-                    href="https://wa.me/905380260564"
+                    href={`https://wa.me/${SITE_PHONE_WA}`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     className="inline-flex items-center justify-center gap-2 border border-brand-dark/20 text-brand-dark font-semibold px-6 py-3 rounded-full hover:bg-brand-dark hover:text-white transition-all whitespace-nowrap"
-                    onClick={() => trackWhatsAppClick('+905380260564')}
+                    onClick={() => trackWhatsAppClick(SITE_PHONE_E164)}
                   >
                     <i className="ri-whatsapp-line" />
                     <span>WhatsApp</span>

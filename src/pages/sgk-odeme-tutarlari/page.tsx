@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { trackCTAClick, trackPageView } from '@/lib/tracking';
+import { SITE_PHONE_WA } from '@/lib/siteContact';
 
 const sgkRows = [
   {
@@ -175,11 +176,11 @@ export default function SgkOdemeTutarlariPage() {
                     <i className="ri-arrow-right-line" />
                   </Link>
                   <a
-                    href="https://wa.me/905380260564"
+                    href={`https://wa.me/${SITE_PHONE_WA}`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     className="inline-flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-5 py-3 rounded-full"
-                    onClick={() => trackCTAClick('SGK WhatsApp', 'sgk_page', 'https://wa.me/905380260564')}
+                    onClick={() => trackCTAClick('SGK WhatsApp', 'sgk_page', `https://wa.me/${SITE_PHONE_WA}`)}
                   >
                     <i className="ri-whatsapp-line" />
                     <span>WhatsApp Sor</span>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { trackPageView } from '@/lib/tracking';
+import { SITE_ADDRESS_SINGLE, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -161,12 +162,12 @@ export default function PrivacyPolicy() {
                 </p>
                 <p>
                   <strong className="text-brand-dark">Telefon:</strong>{' '}
-                  <a href="tel:+905380260564" className="text-brand-accent hover:underline">
-                    0 (538) 026 05 64
+                  <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">
+                    {SITE_PHONE_DISPLAY}
                   </a>
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Adres:</strong> Yenidoğan Mah. Aziziye Cad. No:70/1 İlkadım/Samsun
+                  <strong className="text-brand-dark">Adres:</strong> {SITE_ADDRESS_SINGLE}
                 </p>
               </div>
             </div>

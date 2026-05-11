@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { trackPageView } from '@/lib/tracking';
+import { SITE_ADDRESS_SINGLE, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function KvkkNotice() {
   useEffect(() => {
@@ -192,7 +193,7 @@ export default function KvkkNotice() {
                   </span>
                   <div>
                     <h3 className="text-sm font-bold text-brand-dark mb-1">Posta</h3>
-                    <p className="text-sm text-gray-500">Yenidoğan Mah. Aziziye Cad. No:70/1 İlkadım/Samsun</p>
+                    <p className="text-sm text-gray-500 text-pretty">{SITE_ADDRESS_SINGLE}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4 bg-brand-cream rounded-xl p-5">
@@ -202,8 +203,8 @@ export default function KvkkNotice() {
                   <div>
                     <h3 className="text-sm font-bold text-brand-dark mb-1">Telefon</h3>
                     <p className="text-sm text-gray-500">
-                      <a href="tel:+905380260564" className="text-brand-accent hover:underline">
-                        0 (538) 026 05 64
+                      <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">
+                        {SITE_PHONE_DISPLAY}
                       </a>
                     </p>
                   </div>

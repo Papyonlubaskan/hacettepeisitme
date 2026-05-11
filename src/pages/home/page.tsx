@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
+import { SITE_ADDRESS_SCHEMA, SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { services } from '../../mocks/services';
 import { testimonials } from '../../mocks/testimonials';
 import { blogPosts } from '../../mocks/blog';
@@ -66,11 +68,11 @@ function HeroSection() {
               <i className="ri-arrow-right-line" />
             </Link>
             <a
-              href="https://wa.me/905380260564"
+              href={`https://wa.me/${SITE_PHONE_WA}`}
               target="_blank"
               rel="noopener noreferrer nofollow"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"
-              onClick={() => trackWhatsAppClick('+905380260564')}
+              onClick={() => trackWhatsAppClick(SITE_PHONE_E164)}
             >
               <i className="ri-whatsapp-line text-lg" />
               <span>WhatsApp Destek</span>
@@ -174,15 +176,69 @@ function ServicesSection() {
   );
 }
 
+const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55';
+
+const INSTAGRAM_FALLBACK_POSTS: InstagramFeedPost[] = [
+  {
+    id: 'local-1',
+    imageUrl: '/local-images/pro-instagram-1.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'İşitme testi bilgilendirmesi',
+  },
+  {
+    id: 'local-2',
+    imageUrl: '/local-images/pro-instagram-2.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'Yeni teknoloji cihazlar',
+  },
+  {
+    id: 'local-3',
+    imageUrl: '/local-images/pro-instagram-3.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'Bakım ve temizlik önerileri',
+  },
+  {
+    id: 'local-4',
+    imageUrl: '/local-images/pro-instagram-4.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'Cihaz karşılaştırmaları',
+  },
+  {
+    id: 'local-5',
+    imageUrl: '/local-images/pro-instagram-5.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'Hasta deneyimleri',
+  },
+  {
+    id: 'local-6',
+    imageUrl: '/local-images/pro-instagram-6.webp',
+    permalink: INSTAGRAM_PROFILE_URL,
+    title: 'Merkezden güncel paylaşımlar',
+  },
+];
+
 function ProductsSection() {
-  const instagramPosts = [
-    { id: 1, image: '/local-images/pro-instagram-1.webp', title: 'İşitme testi bilgilendirmesi' },
-    { id: 2, image: '/local-images/pro-instagram-2.webp', title: 'Yeni teknoloji cihazlar' },
-    { id: 3, image: '/local-images/pro-instagram-3.webp', title: 'Bakım ve temizlik önerileri' },
-    { id: 4, image: '/local-images/pro-instagram-4.webp', title: 'Cihaz karşılaştırmaları' },
-    { id: 5, image: '/local-images/pro-instagram-5.webp', title: 'Hasta deneyimleri' },
-    { id: 6, image: '/local-images/pro-instagram-6.webp', title: 'Merkezden güncel paylaşımlar' },
-  ];
+  const [posts, setPosts] = useState<InstagramFeedPost[]>(INSTAGRAM_FALLBACK_POSTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/instagram/feed');
+        const data = (await res.json()) as InstagramFeedResponse;
+        if (cancelled || !data.ok || !Array.isArray(data.posts) || data.posts.length === 0) return;
+        setPosts(data.posts);
+      } catch {
+        /* yerel mock kalır */
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="py-20 md:py-28 bg-brand-dark">
@@ -199,16 +255,12 @@ function ProductsSection() {
               </p>
             </div>
             <a
-              href="https://www.instagram.com/hacettepeisitmecihazlari55"
+              href={INSTAGRAM_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
               className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
               onClick={() =>
-                trackCTAClick(
-                  'Instagram Profili',
-                  'home_instagram',
-                  'https://www.instagram.com/hacettepeisitmecihazlari55'
-                )
+                trackCTAClick('Instagram Profili', 'home_instagram', INSTAGRAM_PROFILE_URL)
               }
             >
               <i className="ri-instagram-line text-lg" />
@@ -219,51 +271,62 @@ function ProductsSection() {
 
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {instagramPosts.map((post) => (
-              <a
-                key={post.id}
-                href="https://www.instagram.com/hacettepeisitmecihazlari55"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                onClick={() =>
-                  trackCTAClick(
-                    `Instagram Gönderi ${post.id}`,
-                    'home_instagram_feed',
-                    'https://www.instagram.com/hacettepeisitmecihazlari55'
-                  )
-                }
-              >
-                <div className="h-64 overflow-hidden bg-gray-50">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                    <i className="ri-instagram-line" />
-                    <span>@hacettepeisitmecihazlari55</span>
+            {loading
+              ? Array.from({ length: 6 }, (_, i) => (
+                  <div
+                    key={`ig-skel-${i}`}
+                    className="bg-white rounded-2xl overflow-hidden animate-pulse"
+                  >
+                    <div className="h-64 bg-gray-200" />
+                    <div className="p-4 space-y-2">
+                      <div className="h-3 bg-gray-100 rounded w-1/3" />
+                      <div className="h-4 bg-gray-100 rounded w-full" />
+                    </div>
                   </div>
-                  <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
-                </div>
-              </a>
-            ))}
+                ))
+              : posts.map((post) => (
+                  <a
+                    key={post.id}
+                    href={post.permalink || INSTAGRAM_PROFILE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    onClick={() =>
+                      trackCTAClick(
+                        post.title.slice(0, 80) || `Instagram ${post.id}`,
+                        'home_instagram_feed',
+                        post.permalink || INSTAGRAM_PROFILE_URL
+                      )
+                    }
+                  >
+                    <div className="h-64 overflow-hidden bg-gray-50">
+                      <img
+                        src={post.imageUrl}
+                        alt={post.title}
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                        <i className="ri-instagram-line" />
+                        <span>@hacettepeisitmecihazlari55</span>
+                      </div>
+                      <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
+                    </div>
+                  </a>
+                ))}
           </div>
           <div className="text-center mt-8">
             <a
-              href="https://www.instagram.com/hacettepeisitmecihazlari55"
+              href={INSTAGRAM_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
               className="inline-flex items-center gap-2 text-brand-accent font-semibold hover:text-[#008f7f] transition-colors"
               onClick={() =>
-                trackCTAClick(
-                  'Instagramda Daha Fazla',
-                  'home_instagram_more',
-                  'https://www.instagram.com/hacettepeisitmecihazlari55'
-                )
+                trackCTAClick('Instagramda Daha Fazla', 'home_instagram_more', INSTAGRAM_PROFILE_URL)
               }
             >
               <span>Instagram&apos;da daha fazla paylaşım görüntüle</span>
@@ -392,7 +455,7 @@ function CTASection() {
           Bugün Ücretsiz İşitme Testinizi Yaptırın
         </h2>
         <p className="text-white/80 text-base md:text-lg mb-2">
-          Randevu için bizi arayın: 0 (538) 026 05 64
+          Randevu için bizi arayın: {SITE_PHONE_DISPLAY}
         </p>
         <p className="text-white/60 text-sm mb-8">Aynı gün randevu imkanı</p>
         <Link
@@ -414,13 +477,14 @@ export default function Home() {
     '@type': 'HearingAidStore',
     name: 'Hacettepe Isitme Cihazlari',
     image: '/local-images/readdy-home-hero-hero2024v2a.webp',
-    telephone: '+905380260564',
+    telephone: SITE_PHONE_E164,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Yenidogan Mah. Aziziye Cad. No:70/1',
-      addressLocality: 'Ilkadim',
-      addressRegion: 'Samsun',
-      addressCountry: 'TR',
+      streetAddress: SITE_ADDRESS_SCHEMA.streetAddress,
+      postalCode: SITE_ADDRESS_SCHEMA.postalCode,
+      addressLocality: SITE_ADDRESS_SCHEMA.addressLocality,
+      addressRegion: SITE_ADDRESS_SCHEMA.addressRegion,
+      addressCountry: SITE_ADDRESS_SCHEMA.addressCountry,
     },
     openingHoursSpecification: [
       {

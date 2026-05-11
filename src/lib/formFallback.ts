@@ -1,5 +1,7 @@
+import { SITE_PHONE_E164 } from '@/lib/siteContact';
+
 export function triggerContactFallback(source: string) {
-  const phone = '+905380260564';
+  const phone = SITE_PHONE_E164;
   const whatsappMessage = encodeURIComponent(
     `Merhaba, ${source} formunu doldurdum ancak teknik bir hata nedeniyle iletilemedi. Randevu için destek rica ederim.`
   );

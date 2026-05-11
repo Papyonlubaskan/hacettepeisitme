@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
+import {
+  SITE_ADDRESS_LINE1,
+  SITE_ADDRESS_LINE3,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+} from '@/lib/siteContact';
 
 export default function Appointment() {
   const [formData, setFormData] = useState({
@@ -85,16 +91,28 @@ export default function Appointment() {
       <section className="bg-brand-cream py-6">
         <div className="w-full px-6 lg:px-12">
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-            <a href="tel:+905380260564" className="flex items-center gap-3 text-brand-dark hover:text-brand-accent transition-colors" onClick={() => trackPhoneClick('+905380260564')}>
+            <div className="flex items-center gap-3 text-brand-dark">
               <span className="w-10 h-10 flex items-center justify-center rounded-full bg-brand-accent/10">
                 <i className="ri-phone-line text-brand-accent" />
               </span>
               <div>
                 <p className="text-xs text-gray-500">Telefon</p>
-                <p className="text-sm font-semibold">0 (538) 026 05 64</p>
-                <p className="text-sm font-semibold text-gray-400">0 (544) 236 83 36</p>
+                <a
+                  href={`tel:${SITE_PHONE_E164}`}
+                  className="text-sm font-semibold block hover:text-brand-accent transition-colors"
+                  onClick={() => trackPhoneClick(SITE_PHONE_E164)}
+                >
+                  {SITE_PHONE_DISPLAY}
+                </a>
+                <a
+                  href="tel:+905442368336"
+                  className="text-sm font-semibold text-gray-400 hover:text-brand-accent transition-colors"
+                  onClick={() => trackPhoneClick('+905442368336')}
+                >
+                  0 (544) 236 83 36
+                </a>
               </div>
-            </a>
+            </div>
             <div className="hidden sm:block w-px h-10 bg-gray-200" />
             <div className="flex items-center gap-3 text-brand-dark">
               <span className="w-10 h-10 flex items-center justify-center rounded-full bg-brand-accent/10">
@@ -112,7 +130,8 @@ export default function Appointment() {
               </span>
               <div>
                 <p className="text-xs text-gray-500">Adres</p>
-                <p className="text-sm font-semibold">İlkadım/Samsun</p>
+                <p className="text-sm font-semibold leading-snug">{SITE_ADDRESS_LINE1}</p>
+                <p className="text-xs text-gray-600">{SITE_ADDRESS_LINE3}</p>
               </div>
             </div>
           </div>

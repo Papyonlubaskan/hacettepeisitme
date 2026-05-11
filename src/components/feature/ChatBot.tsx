@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { SITE_ADDRESS_SINGLE, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 
 interface Message {
   role: 'user' | 'bot';
@@ -40,8 +41,7 @@ const INTENTS: Intent[] = [
   },
   {
     keys: ['adres', 'konum', 'neredesiniz'],
-    answer:
-      'Merkezimiz Samsun İlkadım bölgesindedir. Detaylı yol tarifi için /iletisim sayfasındaki haritayı açabilirsiniz.',
+    answer: `Merkezimiz ${SITE_ADDRESS_SINGLE}. Detaylı yol tarifi için /iletisim sayfasındaki haritayı açabilirsiniz.`,
     suggestions: ['İletişim sayfasını aç', 'Telefonla aramak istiyorum'],
   },
   {
@@ -75,11 +75,11 @@ function runQuickAction(action: string) {
     return true;
   }
   if (lower.includes('whatsapp')) {
-    window.open('https://wa.me/905380260564', '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${SITE_PHONE_WA}`, '_blank', 'noopener,noreferrer');
     return true;
   }
   if (lower.includes('telefonla aramak')) {
-    window.location.href = 'tel:+905380260564';
+    window.location.href = `tel:${SITE_PHONE_E164}`;
     return true;
   }
   return false;

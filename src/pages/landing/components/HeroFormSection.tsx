@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackLead } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
+import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
 export default function HeroFormSection() {
   const [formData, setFormData] = useState({
@@ -124,7 +125,7 @@ export default function HeroFormSection() {
                   Randevu Talebiniz Alındı!
                 </h3>
                 <p className="text-sm text-gray-500 mb-1">
-                  En kısa sürede 0 (538) 026 05 64 numaradan size dönüş yapacağız.
+                  En kısa sürede {SITE_PHONE_DISPLAY} numaradan size dönüş yapacağız.
                 </p>
                 <p className="text-xs text-gray-400">
                   İlkadım/Samsun şubemizden randevunuz onaylanacaktır.

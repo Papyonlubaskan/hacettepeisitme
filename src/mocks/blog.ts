@@ -288,12 +288,12 @@ export const blogPosts = [
     slug: 'samsun-ucretsiz-isitme-testi',
     title: 'Samsun\'da Ücretsiz İşitme Testi Nasıl Yaptırılır?',
     excerpt:
-      'Hacettepe İşitme Cihazları İlkadım şubemizde randevusuz da gelebileceğiniz ücretsiz işitme testi hizmetimiz bulunmaktadır. Test yaklaşık 20 dakika sürmekte ve sonuçlar anında değerlendirilmektedir. Size özel çözüm önerileri için uzmanlarımızla görüşebilirsiniz.',
-    content: `<p>İşitme sağlığınız hakkında merak ettiğiniz sorulara yanıt bulmak ve işitme yeteneğinizi objektif olarak ölçmek hiç bu kadar kolay olmamıştı. Hacettepe İşitme Cihazları İlkadım şubemizde, Samsun'un her yerinden gelen ziyaretçilerimize ücretsiz ve kapsamlı işitme testi hizmeti sunuyoruz. Bu yazıda, ücretsiz işitme testi sürecimizi adım adım anlatacağız.</p>
+      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezimizde (Eğitim Araştırma karşısı) randevusuz da gelebileceğiniz ücretsiz işitme testi hizmetimiz bulunmaktadır. Test yaklaşık 20 dakika sürmekte ve sonuçlar anında değerlendirilmektedir. Size özel çözüm önerileri için uzmanlarımızla görüşebilirsiniz.',
+    content: `<p>İşitme sağlığınız hakkında merak ettiğiniz sorulara yanıt bulmak ve işitme yeteneğinizi objektif olarak ölçmek hiç bu kadar kolay olmamıştı. Hacettepe İşitme Cihazları İlkadım Tepecik merkezimizde, Samsun'un her yerinden gelen ziyaretçilerimize ücretsiz ve kapsamlı işitme testi hizmeti sunuyoruz. Bu yazıda, ücretsiz işitme testi sürecimizi adım adım anlatacağız.</p>
 
 <h3>1. Randevu Alma veya Randevusuz Ziyaret</h3>
 
-<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (0 538 026 05 64), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. İlkadım şubemiz hafta içi 09:00-18:00, cumartesi 10:00-16:00 saatleri arasında hizmet vermektedir.</p>
+<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (0 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi 09:00-18:00, cumartesi 10:00-16:00 saatleri arasında hizmet vermektedir.</p>
 
 <h3>2. Karşılama ve Ön Görüşme</h3>
 
@@ -351,7 +351,7 @@ export const blogPosts = [
 
 <h3>Samsun'da İşitme Testi Yaptırmak İçin Bizi Arayın</h3>
 
-<p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>0 (538) 026 05 64</strong> numarasından bize ulaşabilirsiniz.</p>`,
+<p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>0 (533) 474 58 06</strong> numarasından bize ulaşabilirsiniz.</p>`,
     category: 'Hizmetler',
     readTime: '3 dk',
     date: '2024-03-01',
@@ -361,7 +361,7 @@ export const blogPosts = [
       '/local-images/readdy-blog-blog6new.webp',
     ogImage:
       '/local-images/readdy-blog-blog6og.webp',
-    metaDescription: 'Samsun Hacettepe İşitme Cihazları ücretsiz işitme testi. Randevu oluşturarak 20 dakikada sonuç alabilirsiniz. İlkadım şube adres ve iletişim bilgileri.',
+    metaDescription: 'Samsun Hacettepe İşitme Cihazları ücretsiz işitme testi. Randevu oluşturarak 20 dakikada sonuç alabilirsiniz. İlkadım Tepecik merkez adres ve iletişim bilgileri.',
     keywords: 'ücretsiz işitme testi Samsun, işitme testi İlkadım, odyometri testi, Samsun işitme merkezi',
   },
 ];
