@@ -28,11 +28,27 @@ const SITE_PHONE_WA = '905334745806';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
-  process.env.GOOGLE_PLACES_TEXT_QUERY ||
-  'Hacettepe İşitme Cihazları Tepecik İlkadım Samsun';
-const DEFAULT_GOOGLE_MAPS_PLACE_URL =
-  'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x4088778ce7e06485:0xe66522cc0e3bc661!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_';
-const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_PLACE_URL;
+  process.env.GOOGLE_PLACES_TEXT_QUERY || 'Samsun Hacettepe İşitme Merkezi';
+const GOOGLE_LOCAL_POI_LUDOCID = process.env.GOOGLE_LOCAL_POI_LUDOCID || '1920926731407487161';
+const GOOGLE_BUSINESS_STORE_CODE = process.env.GOOGLE_BUSINESS_STORE_CODE || '09459172262012022668';
+const GOOGLE_MAPS_SCRAPE_PAGES = Math.min(Math.max(Number(process.env.GOOGLE_MAPS_SCRAPE_PAGES || 4), 1), 5);
+
+function buildGoogleMapsScrapeUrl(ludocid) {
+  const ludHex = BigInt(String(ludocid).replace(/\D/g, '') || '0').toString(16);
+  return (
+    'https://www.google.com/maps/place/Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi/' +
+    '@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x0:0x' +
+    ludHex +
+    '!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_?hl=tr'
+  );
+}
+
+const DEFAULT_GOOGLE_MAPS_REVIEWS_URL =
+  'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar' +
+  `&rflfq=1&num=20&rldimm=${GOOGLE_LOCAL_POI_LUDOCID}&tbm=lcl&hl=tr#lkt=LocalPoiReviews`;
+const GOOGLE_MAPS_SCRAPE_URL =
+  process.env.GOOGLE_MAPS_SCRAPE_URL || buildGoogleMapsScrapeUrl(GOOGLE_LOCAL_POI_LUDOCID);
+const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_REVIEWS_URL;
 const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 30 * 60 * 1000);
 const GOOGLE_REVIEWS_FEED_LIMIT = 5;
 const __filename = fileURLToPath(import.meta.url);
@@ -188,13 +204,13 @@ function formatGoogleReviewRelativeTime(publishedMicros) {
 function mapScrapedGoogleReview(review, index) {
   const rating = Number(review.review?.rating) || 0;
   const text = String(review.review?.text || '').trim();
-  if (!text && rating <= 0) return null;
+  if (!text || rating <= 0) return null;
   return {
     id: String(review.review_id || `scraped-review-${index}`),
     authorName: review.author?.name || 'Google kullanıcısı',
     authorPhotoUrl: review.author?.profile_url || '',
     rating,
-    text: text || 'Yorum metni paylaşılmadı.',
+    text,
     relativeTime: formatGoogleReviewRelativeTime(review.time?.published),
     profileUrl: review.author?.url || '',
   };
@@ -322,18 +338,23 @@ async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
 }
 
 async function fetchGoogleReviewsFromScraper() {
-  const url = GOOGLE_MAPS_REVIEWS_URL;
+  const url = GOOGLE_MAPS_SCRAPE_URL;
   if (!url.includes('google.com/maps')) return null;
   const raw = await scrapeGoogleMapsReviews(url, {
     sort_type: 'newest',
-    pages: 1,
+    pages: GOOGLE_MAPS_SCRAPE_PAGES,
     clean: true,
   });
   if (!Array.isArray(raw) || raw.length === 0) return null;
   const reviews = raw
     .map((review, index) => mapScrapedGoogleReview(review, index))
     .filter(Boolean);
-  return summarizeGoogleReviews(reviews, url);
+  if (!reviews.length) return null;
+  const ratings = reviews.map((review) => review.rating).filter((value) => value > 0);
+  const rating = ratings.length
+    ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
+    : undefined;
+  return summarizeGoogleReviews(reviews, GOOGLE_MAPS_REVIEWS_URL, rating, raw.length);
 }
 
 async function fetchGoogleReviewsFromPlaces() {
@@ -347,9 +368,17 @@ async function fetchGoogleReviewsFromPlaces() {
 }
 
 async function fetchGoogleReviews() {
-  const fromPlaces = await fetchGoogleReviewsFromPlaces();
-  if (fromPlaces?.reviews?.length) return fromPlaces;
-  return fetchGoogleReviewsFromScraper();
+  const [fromPlaces, fromScraper] = await Promise.all([
+    fetchGoogleReviewsFromPlaces(),
+    fetchGoogleReviewsFromScraper(),
+  ]);
+  const candidates = [fromPlaces, fromScraper].filter((entry) => entry?.reviews?.length);
+  if (!candidates.length) return null;
+  return candidates.sort((left, right) => {
+    const leftCount = left.reviewCount || left.reviews.length;
+    const rightCount = right.reviewCount || right.reviews.length;
+    return rightCount - leftCount;
+  })[0];
 }
 
 async function fetchInstagramMediaFromGraph() {
