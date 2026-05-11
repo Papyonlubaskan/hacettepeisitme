@@ -22,8 +22,15 @@ const FORM_ALERT_WINDOW_MS = Number(process.env.FORM_ALERT_WINDOW_MS || 10 * 60 
 const FORM_ALERT_COOLDOWN_MS = Number(process.env.FORM_ALERT_COOLDOWN_MS || 60 * 60 * 1000);
 const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN || '';
 const INSTAGRAM_BUSINESS_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID || '';
+const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME || 'hacettepeisitmecihazlari55';
+const INSTAGRAM_WEB_APP_ID = process.env.INSTAGRAM_WEB_APP_ID || '936619743392459';
+const INSTAGRAM_SESSION_ID = process.env.INSTAGRAM_SESSION_ID || '';
+const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_USERNAME}/`;
 const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
 const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
+const INSTAGRAM_FEED_LIMIT = Math.min(Math.max(Number(process.env.INSTAGRAM_FEED_LIMIT || 12), 3), 24);
+const INSTAGRAM_BROWSER_USER_AGENT =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 const SITE_PHONE_WA = '905334745806';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
@@ -111,7 +118,7 @@ let instagramFeedCache = null;
 let googleReviewsCache = null;
 
 function getFallbackInstagramPosts() {
-  const profile = 'https://www.instagram.com/hacettepeisitmecihazlari55';
+  const profile = INSTAGRAM_PROFILE_URL;
   return [
     {
       id: 'local-1',
@@ -156,6 +163,78 @@ function captionToTitle(caption) {
   if (!caption) return 'Instagram paylaşımı';
   const line = String(caption).split('\n')[0].trim();
   return line.slice(0, 120) || 'Instagram paylaşımı';
+}
+
+function isAllowedInstagramImageUrl(imageUrl) {
+  try {
+    const parsed = new URL(imageUrl);
+    if (parsed.protocol !== 'https:') return false;
+    return (
+      parsed.hostname.endsWith('cdninstagram.com') ||
+      parsed.hostname.endsWith('fbcdn.net') ||
+      parsed.hostname.endsWith('instagram.com')
+    );
+  } catch {
+    return false;
+  }
+}
+
+function proxifyInstagramImageUrl(imageUrl) {
+  if (!imageUrl || !isAllowedInstagramImageUrl(imageUrl)) return imageUrl;
+  return `/api/instagram/media?src=${encodeURIComponent(imageUrl)}`;
+}
+
+function mapInstagramFeedPost({ id, imageUrl, permalink, title, mediaType, timestamp }) {
+  if (!imageUrl || !permalink) return null;
+  return {
+    id: String(id),
+    imageUrl: proxifyInstagramImageUrl(imageUrl),
+    permalink,
+    title: captionToTitle(title),
+    mediaType: mediaType || 'IMAGE',
+    timestamp: timestamp || null,
+  };
+}
+
+function mapInstagramGraphItem(item) {
+  const permalink = item.permalink || '';
+  const caption = item.caption || '';
+  const firstChild =
+    item.media_type === 'CAROUSEL_ALBUM' && Array.isArray(item.children?.data)
+      ? item.children.data[0]
+      : null;
+  const imgSource = firstChild || item;
+  let imageUrl = '';
+  if (imgSource.media_type === 'VIDEO') {
+    imageUrl = imgSource.thumbnail_url || imgSource.media_url || '';
+  } else {
+    imageUrl = imgSource.media_url || imgSource.thumbnail_url || '';
+  }
+  return mapInstagramFeedPost({
+    id: item.id,
+    imageUrl,
+    permalink,
+    title: caption,
+    mediaType: item.media_type || 'IMAGE',
+    timestamp: item.timestamp || null,
+  });
+}
+
+function mapInstagramPublicNode(node) {
+  const permalink = node.shortcode ? `https://www.instagram.com/p/${node.shortcode}/` : '';
+  const imageUrl = node.thumbnail_src || node.display_url || '';
+  const title = node.edge_media_to_caption?.edges?.[0]?.node?.text || '';
+  const timestamp = node.taken_at_timestamp
+    ? new Date(Number(node.taken_at_timestamp) * 1000).toISOString()
+    : null;
+  return mapInstagramFeedPost({
+    id: node.id || node.shortcode,
+    imageUrl,
+    permalink,
+    title,
+    mediaType: node.is_video ? 'VIDEO' : 'IMAGE',
+    timestamp,
+  });
 }
 
 function mapGoogleReview(review, index) {
@@ -470,7 +549,7 @@ async function fetchInstagramMediaFromGraph() {
   ].join(',');
   const url =
     `https://graph.facebook.com/${GRAPH_API_VERSION}/${encodeURIComponent(INSTAGRAM_BUSINESS_ACCOUNT_ID)}` +
-    `/media?fields=${encodeURIComponent(fields)}&limit=12&access_token=${encodeURIComponent(INSTAGRAM_ACCESS_TOKEN)}`;
+    `/media?fields=${encodeURIComponent(fields)}&limit=${INSTAGRAM_FEED_LIMIT}&access_token=${encodeURIComponent(INSTAGRAM_ACCESS_TOKEN)}`;
 
   const res = await fetch(url);
   const rawText = await res.text();
@@ -486,31 +565,72 @@ async function fetchInstagramMediaFromGraph() {
     return null;
   }
   const items = Array.isArray(data.data) ? data.data : [];
-  const posts = items
-    .map((item) => {
-      const permalink = item.permalink || '';
-      const caption = captionToTitle(item.caption);
-      let imageUrl = '';
-      const firstChild =
-        item.media_type === 'CAROUSEL_ALBUM' && Array.isArray(item.children?.data)
-          ? item.children.data[0]
-          : null;
-      const imgSource = firstChild || item;
-      if (imgSource.media_type === 'VIDEO') {
-        imageUrl = imgSource.thumbnail_url || imgSource.media_url || '';
-      } else {
-        imageUrl = imgSource.media_url || imgSource.thumbnail_url || '';
-      }
-      if (!imageUrl || !permalink) return null;
-      return {
-        id: String(item.id),
-        imageUrl,
-        permalink,
-        title: caption,
-      };
-    })
-    .filter(Boolean);
+  const posts = items.map(mapInstagramGraphItem).filter(Boolean);
   return posts.length ? posts : null;
+}
+
+async function fetchInstagramMediaFromPublicProfile() {
+  const cookieHeader = INSTAGRAM_SESSION_ID ? `sessionid=${INSTAGRAM_SESSION_ID}` : '';
+  const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
+    headers: {
+      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+    },
+    redirect: 'follow',
+  });
+  if (!pageRes.ok) {
+    console.error('[instagram] profile page HTTP error:', pageRes.status);
+    return null;
+  }
+  const html = await pageRes.text();
+  const lsd = html.match(/"LSD",\[\],\{"token":"([^"]+)"/)?.[1];
+  const apiUrl = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${encodeURIComponent(INSTAGRAM_USERNAME)}`;
+  const apiRes = await fetch(apiUrl, {
+    headers: {
+      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+      'X-IG-App-ID': INSTAGRAM_WEB_APP_ID,
+      ...(lsd ? { 'X-FB-LSD': lsd, 'X-ASBD-ID': '129477' } : {}),
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+      'X-Requested-With': 'XMLHttpRequest',
+      Referer: INSTAGRAM_PROFILE_URL,
+      'Sec-Fetch-Site': 'same-origin',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Dest': 'empty',
+    },
+  });
+  const rawText = await apiRes.text();
+  if (!apiRes.ok) {
+    console.error('[instagram] public profile API HTTP error:', apiRes.status, rawText.slice(0, 300));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[instagram] public profile API invalid JSON');
+    return null;
+  }
+  const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges;
+  if (!Array.isArray(edges) || edges.length === 0) return null;
+  const posts = edges
+    .map((edge) => mapInstagramPublicNode(edge?.node || {}))
+    .filter(Boolean)
+    .slice(0, INSTAGRAM_FEED_LIMIT);
+  return posts.length ? posts : null;
+}
+
+async function fetchInstagramFeed() {
+  const fromGraph = await fetchInstagramMediaFromGraph();
+  if (fromGraph?.length) {
+    return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
+  }
+  const fromPublic = await fetchInstagramMediaFromPublicProfile();
+  if (fromPublic?.length) {
+    return { posts: fromPublic, source: 'instagram', postCount: fromPublic.length };
+  }
+  return null;
 }
 
 const transporter = nodemailer.createTransport({
@@ -836,6 +956,36 @@ app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
   }
 });
 
+app.get('/api/instagram/media', instagramFeedLimiter, async (req, res) => {
+  try {
+    const src = clean(req.query?.src, 2000);
+    if (!src || !isAllowedInstagramImageUrl(src)) {
+      res.status(400).json({ ok: false, error: 'INVALID_MEDIA_URL' });
+      return;
+    }
+    const upstream = await fetch(src, {
+      headers: {
+        'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+        Referer: INSTAGRAM_PROFILE_URL,
+        Accept: 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+      },
+      redirect: 'follow',
+    });
+    if (!upstream.ok) {
+      res.status(upstream.status).end();
+      return;
+    }
+    const contentType = upstream.headers.get('content-type') || 'image/jpeg';
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    const buffer = Buffer.from(await upstream.arrayBuffer());
+    res.send(buffer);
+  } catch (error) {
+    console.error('[instagram] media proxy error:', error);
+    res.status(502).json({ ok: false, error: 'MEDIA_PROXY_FAILED' });
+  }
+});
+
 app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
   try {
     const now = Date.now();
@@ -844,20 +994,40 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
       return;
     }
 
-    const live = await fetchInstagramMediaFromGraph();
-    if (live && live.length > 0) {
-      const payload = { ok: true, source: 'instagram', posts: live };
+    const live = await fetchInstagramFeed();
+    if (live?.posts?.length) {
+      const payload = {
+        ok: true,
+        source: live.source,
+        postCount: live.postCount,
+        profileUrl: INSTAGRAM_PROFILE_URL,
+        posts: live.posts,
+      };
       instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
       res.json(payload);
       return;
     }
 
-    const fallback = { ok: true, source: 'fallback', posts: getFallbackInstagramPosts() };
+    const fallbackPosts = getFallbackInstagramPosts();
+    const fallback = {
+      ok: true,
+      source: 'fallback',
+      postCount: fallbackPosts.length,
+      profileUrl: INSTAGRAM_PROFILE_URL,
+      posts: fallbackPosts,
+    };
     instagramFeedCache = { expiresAt: now + Math.min(INSTAGRAM_FEED_CACHE_MS, 5 * 60 * 1000), payload: fallback };
     res.json(fallback);
   } catch (error) {
     console.error('[instagram] feed route error:', error);
-    res.json({ ok: true, source: 'fallback', posts: getFallbackInstagramPosts() });
+    const fallbackPosts = getFallbackInstagramPosts();
+    res.json({
+      ok: true,
+      source: 'fallback',
+      postCount: fallbackPosts.length,
+      profileUrl: INSTAGRAM_PROFILE_URL,
+      posts: fallbackPosts,
+    });
   }
 });
 
