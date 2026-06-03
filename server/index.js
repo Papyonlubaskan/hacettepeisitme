@@ -75,6 +75,9 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'newsletter-subscribers.json');
 const FORM_REQUESTS_LOG_FILE = path.join(DATA_DIR, 'form-requests.log');
+const INSTAGRAM_CACHE_FILE = path.join(DATA_DIR, 'instagram-feed-cache.json');
+const INSTAGRAM_BUNDLED_FILE = path.join(__dirname, 'data', 'instagram-feed-bundled.json');
+const INSTAGRAM_SEED_FILE = path.join(__dirname, 'data', 'instagram-permalink-seed.json');
 const FRONTEND_DIST_DIR = path.resolve(__dirname, '..', 'out');
 const ipHitMap = new Map();
 const ipAlertCooldownMap = new Map();
@@ -147,9 +150,115 @@ function markInstagramRateLimited() {
   instagramRateLimitedUntil = Date.now() + INSTAGRAM_RATE_LIMIT_BACKOFF_MS;
 }
 
+let instagramRefreshInFlight = false;
+
+function applyProxyToInstagramPayload(payload) {
+  if (!payload?.posts?.length) return payload;
+  return {
+    ...payload,
+    posts: payload.posts.map((post) => ({
+      ...post,
+      imageUrl: proxifyInstagramImageUrl(post.imageUrl) || post.imageUrl,
+    })),
+  };
+}
+
+function buildInstagramFeedPayload(posts, extra = {}) {
+  return applyProxyToInstagramPayload({
+    ok: true,
+    source: 'instagram',
+    postCount: posts.length,
+    profileUrl: INSTAGRAM_PROFILE_URL,
+    posts,
+    ...extra,
+  });
+}
+
 function rememberInstagramFeedPayload(payload) {
   if (payload?.ok && Array.isArray(payload.posts) && payload.posts.length > 0) {
-    instagramFeedStalePayload = payload;
+    instagramFeedStalePayload = applyProxyToInstagramPayload(payload);
+    if (instagramFeedCache) {
+      instagramFeedCache.payload = instagramFeedStalePayload;
+    }
+  }
+}
+
+function getInstagramPermalinkList() {
+  let fromSeed = [];
+  try {
+    const seed = JSON.parse(fsSync.readFileSync(INSTAGRAM_SEED_FILE, 'utf8'));
+    fromSeed = Array.isArray(seed.permalinks) ? seed.permalinks : [];
+  } catch {
+    /* seed dosyası yoksa env listesi kullanılır */
+  }
+  return [...new Set([...INSTAGRAM_POST_PERMALINKS, ...fromSeed])].slice(0, INSTAGRAM_FEED_LIMIT);
+}
+
+async function loadPersistedInstagramFeed() {
+  try {
+    const raw = await fs.readFile(INSTAGRAM_CACHE_FILE, 'utf8');
+    const saved = JSON.parse(raw);
+    const payload = applyProxyToInstagramPayload(saved?.payload);
+    if (payload?.posts?.length) {
+      rememberInstagramFeedPayload(payload);
+      instagramFeedCache = {
+        expiresAt: Date.now() + INSTAGRAM_FEED_CACHE_MS,
+        payload,
+      };
+      console.log('[instagram] persisted cache loaded:', payload.postCount, 'posts');
+    }
+  } catch {
+    /* ilk çalıştırma */
+  }
+}
+
+async function loadBundledInstagramFeed() {
+  try {
+    const raw = await fs.readFile(INSTAGRAM_BUNDLED_FILE, 'utf8');
+    const payload = applyProxyToInstagramPayload(JSON.parse(raw));
+    if (payload?.posts?.length) {
+      rememberInstagramFeedPayload(payload);
+      if (!instagramFeedCache) {
+        instagramFeedCache = {
+          expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+          payload: { ...payload, bundled: true },
+        };
+      }
+      console.log('[instagram] bundled feed loaded:', payload.postCount, 'posts');
+    }
+  } catch (error) {
+    console.warn('[instagram] bundled feed missing:', error.message);
+  }
+}
+
+async function persistInstagramFeedCache(payload) {
+  try {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    await fs.writeFile(
+      INSTAGRAM_CACHE_FILE,
+      JSON.stringify({ savedAt: new Date().toISOString(), payload }, null, 0)
+    );
+  } catch (error) {
+    console.warn('[instagram] cache persist failed:', error.message);
+  }
+}
+
+async function refreshInstagramFeedCache() {
+  if (instagramRefreshInFlight || isInstagramRateLimited()) return;
+  instagramRefreshInFlight = true;
+  try {
+    const live = await fetchInstagramFeed();
+    if (!live?.posts?.length) return;
+    const payload = buildInstagramFeedPayload(live.posts);
+    const now = Date.now();
+    instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
+    rememberInstagramFeedPayload(payload);
+    await persistInstagramFeedCache(payload);
+    console.log('[instagram] feed refreshed:', live.postCount, 'posts');
+  } catch (error) {
+    console.warn('[instagram] background refresh failed:', error.message);
+  } finally {
+    instagramRefreshInFlight = false;
   }
 }
 
@@ -243,23 +352,6 @@ function mapInstagramUserFeedItem(item) {
     permalink: instagramPermalinkForCode(code, item.product_type, mediaTypeNum),
     title: item.caption?.text || '',
     mediaType,
-    timestamp,
-  });
-}
-
-function mapInstagramPublicNode(node) {
-  const permalink = node.shortcode ? `https://www.instagram.com/p/${node.shortcode}/` : '';
-  const imageUrl = node.thumbnail_src || node.display_url || '';
-  const title = node.edge_media_to_caption?.edges?.[0]?.node?.text || '';
-  const timestamp = node.taken_at_timestamp
-    ? new Date(Number(node.taken_at_timestamp) * 1000).toISOString()
-    : null;
-  return mapInstagramFeedPost({
-    id: node.id || node.shortcode,
-    imageUrl,
-    permalink,
-    title,
-    mediaType: node.is_video ? 'VIDEO' : 'IMAGE',
     timestamp,
   });
 }
@@ -699,92 +791,56 @@ async function fetchInstagramMediaFromUserFeed() {
   return null;
 }
 
-async function fetchInstagramMediaFromPublicProfile() {
-  const cookieHeader = buildInstagramCookieHeader('', INSTAGRAM_SESSION_ID);
-  const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
-    headers: {
-      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
-      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
-    },
-    redirect: 'follow',
-  });
-  if (!pageRes.ok) {
-    console.error('[instagram] profile page HTTP error:', pageRes.status);
-    return null;
-  }
-  const html = await pageRes.text();
-  const lsd = html.match(/"LSD",\[\],\{"token":"([^"]+)"/)?.[1];
-  const requestCookie = buildInstagramCookieHeader(pageRes.headers.get('set-cookie') || '', INSTAGRAM_SESSION_ID);
-  const apiUrl = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${encodeURIComponent(INSTAGRAM_USERNAME)}`;
-  const apiRes = await fetch(apiUrl, {
-    headers: {
-      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
-      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-      'X-IG-App-ID': INSTAGRAM_WEB_APP_ID,
-      ...(lsd ? { 'X-FB-LSD': lsd, 'X-ASBD-ID': '129477' } : {}),
-      ...(requestCookie ? { Cookie: requestCookie } : {}),
-      'X-Requested-With': 'XMLHttpRequest',
-      Referer: INSTAGRAM_PROFILE_URL,
-      'Sec-Fetch-Site': 'same-origin',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Dest': 'empty',
-    },
-  });
-  const rawText = await apiRes.text();
-  if (!apiRes.ok) {
-    console.error('[instagram] public profile API HTTP error:', apiRes.status, rawText.slice(0, 300));
-    return null;
-  }
-  let data;
-  try {
-    data = JSON.parse(rawText);
-  } catch {
-    console.error('[instagram] public profile API invalid JSON');
-    return null;
-  }
-  const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges;
-  if (!Array.isArray(edges) || edges.length === 0) return null;
-  const posts = edges
-    .map((edge) => mapInstagramPublicNode(edge?.node || {}))
-    .filter(Boolean)
-    .slice(0, INSTAGRAM_FEED_LIMIT);
-  return posts.length ? posts : null;
-}
+async function fetchInstagramMediaFromOembed() {
+  const permalinks = getInstagramPermalinkList();
+  if (permalinks.length === 0) return null;
 
-async function fetchInstagramMediaFromScraper() {
-  try {
-    const { InstagramScraper } = await import('@aduptive/instagram-scraper');
-    const scraper = new InstagramScraper();
-    const result = await scraper.getPosts(INSTAGRAM_USERNAME, INSTAGRAM_FEED_LIMIT);
-    if (!result?.success || !Array.isArray(result.posts) || result.posts.length === 0) {
-      return null;
+  const posts = [];
+  for (let index = 0; index < permalinks.length; index += 1) {
+    const permalink = permalinks[index];
+    const oembedUrl = `https://www.instagram.com/api/v1/oembed/?url=${encodeURIComponent(permalink)}`;
+    const res = await fetch(oembedUrl, {
+      headers: {
+        'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+        Accept: 'application/json',
+      },
+    });
+    if (res.status === 429) {
+      markInstagramRateLimited();
+      break;
     }
-    const posts = result.posts
-      .map((post, index) =>
-        mapInstagramFeedPost({
-          id: post.id || post.shortcode || `scrape-${index}`,
-          imageUrl: post.imageUrl || post.thumbnailUrl || post.displayUrl || '',
-          permalink:
-            post.permalink ||
-            (post.shortcode ? `https://www.instagram.com/p/${post.shortcode}/` : INSTAGRAM_PROFILE_URL),
-          title: post.caption || post.title || '',
-          mediaType: post.isVideo ? 'VIDEO' : 'IMAGE',
-          timestamp: post.timestamp || null,
-        })
-      )
-      .filter(Boolean)
-      .slice(0, INSTAGRAM_FEED_LIMIT);
-    return posts.length ? posts : null;
-  } catch (error) {
-    console.error('[instagram] scraper error:', error);
-    return null;
+    if (!res.ok) continue;
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      continue;
+    }
+    if (!data?.thumbnail_url) continue;
+    const mapped = mapInstagramFeedPost({
+      id: data.media_id || `oembed-${index}`,
+      imageUrl: data.thumbnail_url,
+      permalink: permalink.replace(/\/?$/, '/'),
+      title: data.title || '',
+      mediaType: permalink.includes('/reel/') ? 'VIDEO' : 'IMAGE',
+      timestamp: null,
+    });
+    if (mapped) posts.push(mapped);
+    if (index < permalinks.length - 1) await sleep(400);
   }
+  return posts.length ? posts : null;
 }
 
 async function fetchInstagramFeed() {
   if (isInstagramRateLimited()) {
     return null;
+  }
+
+  if (INSTAGRAM_ACCESS_TOKEN) {
+    const fromGraph = await fetchInstagramMediaFromGraph();
+    if (fromGraph?.length) {
+      return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
+    }
   }
 
   const fromUserFeed = await fetchInstagramMediaFromUserFeed();
@@ -795,16 +851,9 @@ async function fetchInstagramFeed() {
     return null;
   }
 
-  const fromGraph = await fetchInstagramMediaFromGraph();
-  if (fromGraph?.length) {
-    return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
-  }
-
-  if (!isInstagramRateLimited()) {
-    const fromScraper = await fetchInstagramMediaFromScraper();
-    if (fromScraper?.length) {
-      return { posts: fromScraper, source: 'instagram', postCount: fromScraper.length };
-    }
+  const fromOembed = await fetchInstagramMediaFromOembed();
+  if (fromOembed?.length) {
+    return { posts: fromOembed, source: 'instagram', postCount: fromOembed.length };
   }
 
   return null;
@@ -1088,7 +1137,7 @@ app.get('/api/health', (_req, res) => {
   res.json({
     ok: true,
     service: 'local-form-api',
-    instagramFeed: 'user-feed-v3',
+    instagramFeed: 'bundled-oembed-v4',
     instagramRateLimited: isInstagramRateLimited(),
   });
 });
@@ -1173,40 +1222,37 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
     const now = Date.now();
     if (instagramFeedCache && instagramFeedCache.expiresAt > now) {
       res.json(instagramFeedCache.payload);
-      return;
-    }
-
-    const live = await fetchInstagramFeed();
-    if (live?.posts?.length) {
-      const payload = {
-        ok: true,
-        source: live.source,
-        postCount: live.postCount,
-        profileUrl: INSTAGRAM_PROFILE_URL,
-        posts: live.posts,
-      };
-      instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
-      rememberInstagramFeedPayload(payload);
-      res.json(payload);
+      if (instagramFeedCache.expiresAt - now < INSTAGRAM_FEED_CACHE_MS / 3) {
+        void refreshInstagramFeedCache();
+      }
       return;
     }
 
     if (instagramFeedStalePayload) {
       const stalePayload = { ...instagramFeedStalePayload, stale: true };
-      instagramFeedCache = { expiresAt: now + 5 * 60 * 1000, payload: stalePayload };
+      instagramFeedCache = { expiresAt: now + 10 * 60 * 1000, payload: stalePayload };
       res.json(stalePayload);
+      void refreshInstagramFeedCache();
       return;
     }
 
-    const unavailable = {
+    const live = await fetchInstagramFeed();
+    if (live?.posts?.length) {
+      const payload = buildInstagramFeedPayload(live.posts);
+      instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
+      rememberInstagramFeedPayload(payload);
+      await persistInstagramFeedCache(payload);
+      res.json(payload);
+      return;
+    }
+
+    res.json({
       ok: false,
       source: 'unavailable',
       postCount: 0,
       profileUrl: INSTAGRAM_PROFILE_URL,
       posts: [],
-    };
-    instagramFeedCache = { expiresAt: now + 60 * 1000, payload: unavailable };
-    res.json(unavailable);
+    });
   } catch (error) {
     console.error('[instagram] feed route error:', error);
     if (instagramFeedStalePayload) {
@@ -1292,6 +1338,17 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
   });
 }
 
-app.listen(PORT, HOST, () => {
-  console.log(`Web app running on http://${HOST}:${PORT}`);
+async function startServer() {
+  await loadBundledInstagramFeed();
+  await loadPersistedInstagramFeed();
+  app.listen(PORT, HOST, () => {
+    console.log(`Web app running on http://${HOST}:${PORT}`);
+    void refreshInstagramFeedCache();
+    setInterval(() => void refreshInstagramFeedCache(), INSTAGRAM_FEED_CACHE_MS);
+  });
+}
+
+startServer().catch((error) => {
+  console.error('Server start failed:', error);
+  process.exit(1);
 });
