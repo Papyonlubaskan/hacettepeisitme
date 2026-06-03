@@ -128,8 +128,30 @@ const googleReviewsLimiter = rateLimit({
 
 /** @type {{ expiresAt: number, payload: object } | null} */
 let instagramFeedCache = null;
+/** @type {object | null} */
+let instagramFeedStalePayload = null;
+/** @type {number} */
+let instagramRateLimitedUntil = 0;
 /** @type {{ expiresAt: number, payload: object } | null} */
 let googleReviewsCache = null;
+
+const INSTAGRAM_RATE_LIMIT_BACKOFF_MS = Number(
+  process.env.INSTAGRAM_RATE_LIMIT_BACKOFF_MS || 15 * 60 * 1000
+);
+
+function isInstagramRateLimited() {
+  return Date.now() < instagramRateLimitedUntil;
+}
+
+function markInstagramRateLimited() {
+  instagramRateLimitedUntil = Date.now() + INSTAGRAM_RATE_LIMIT_BACKOFF_MS;
+}
+
+function rememberInstagramFeedPayload(payload) {
+  if (payload?.ok && Array.isArray(payload.posts) && payload.posts.length > 0) {
+    instagramFeedStalePayload = payload;
+  }
+}
 
 function captionToTitle(caption) {
   if (!caption) return 'Instagram paylaşımı';
@@ -619,7 +641,7 @@ async function fetchInstagramMediaFromUserFeedOnce() {
   });
   if (!pageRes.ok) {
     console.error('[instagram] user feed bootstrap HTTP error:', pageRes.status);
-    return null;
+    return { posts: null, rateLimited: pageRes.status === 429 };
   }
   const html = await pageRes.text();
   const lsd = html.match(/"LSD",\[\],\{"token":"([^"]+)"/)?.[1];
@@ -644,26 +666,34 @@ async function fetchInstagramMediaFromUserFeedOnce() {
     },
   });
   const rawText = await feedRes.text();
+  if (feedRes.status === 429) {
+    console.warn('[instagram] user feed rate limited (429)');
+    return { posts: null, rateLimited: true };
+  }
   if (!feedRes.ok) {
     console.error('[instagram] user feed API HTTP error:', feedRes.status, rawText.slice(0, 300));
-    return null;
+    return { posts: null, rateLimited: false };
   }
   let data;
   try {
     data = JSON.parse(rawText);
   } catch {
     console.error('[instagram] user feed API invalid JSON');
-    return null;
+    return { posts: null, rateLimited: false };
   }
   const items = Array.isArray(data.items) ? data.items : [];
   const posts = items.map(mapInstagramUserFeedItem).filter(Boolean).slice(0, INSTAGRAM_FEED_LIMIT);
-  return posts.length ? posts : null;
+  return { posts: posts.length ? posts : null, rateLimited: false };
 }
 
 async function fetchInstagramMediaFromUserFeed() {
   for (let attempt = 1; attempt <= 3; attempt += 1) {
-    const posts = await fetchInstagramMediaFromUserFeedOnce();
+    const { posts, rateLimited } = await fetchInstagramMediaFromUserFeedOnce();
     if (posts?.length) return posts;
+    if (rateLimited) {
+      markInstagramRateLimited();
+      return null;
+    }
     if (attempt < 3) await sleep(2000 * attempt);
   }
   return null;
@@ -753,22 +783,30 @@ async function fetchInstagramMediaFromScraper() {
 }
 
 async function fetchInstagramFeed() {
+  if (isInstagramRateLimited()) {
+    return null;
+  }
+
   const fromUserFeed = await fetchInstagramMediaFromUserFeed();
   if (fromUserFeed?.length) {
     return { posts: fromUserFeed, source: 'instagram', postCount: fromUserFeed.length };
   }
+  if (isInstagramRateLimited()) {
+    return null;
+  }
+
   const fromGraph = await fetchInstagramMediaFromGraph();
   if (fromGraph?.length) {
     return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
   }
-  const fromPublic = await fetchInstagramMediaFromPublicProfile();
-  if (fromPublic?.length) {
-    return { posts: fromPublic, source: 'instagram', postCount: fromPublic.length };
+
+  if (!isInstagramRateLimited()) {
+    const fromScraper = await fetchInstagramMediaFromScraper();
+    if (fromScraper?.length) {
+      return { posts: fromScraper, source: 'instagram', postCount: fromScraper.length };
+    }
   }
-  const fromScraper = await fetchInstagramMediaFromScraper();
-  if (fromScraper?.length) {
-    return { posts: fromScraper, source: 'instagram', postCount: fromScraper.length };
-  }
+
   return null;
 }
 
@@ -1047,7 +1085,12 @@ function requireNewsletterApiKey(req, res, next) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'local-form-api', instagramFeed: 'user-feed-v2' });
+  res.json({
+    ok: true,
+    service: 'local-form-api',
+    instagramFeed: 'user-feed-v3',
+    instagramRateLimited: isInstagramRateLimited(),
+  });
 });
 
 app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
@@ -1143,7 +1186,15 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
         posts: live.posts,
       };
       instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
+      rememberInstagramFeedPayload(payload);
       res.json(payload);
+      return;
+    }
+
+    if (instagramFeedStalePayload) {
+      const stalePayload = { ...instagramFeedStalePayload, stale: true };
+      instagramFeedCache = { expiresAt: now + 5 * 60 * 1000, payload: stalePayload };
+      res.json(stalePayload);
       return;
     }
 
@@ -1158,6 +1209,10 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
     res.json(unavailable);
   } catch (error) {
     console.error('[instagram] feed route error:', error);
+    if (instagramFeedStalePayload) {
+      res.json({ ...instagramFeedStalePayload, stale: true });
+      return;
+    }
     res.json({
       ok: false,
       source: 'unavailable',

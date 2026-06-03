@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    if: ${{ secrets.RAILWAY_TOKEN != '' }}
     runs-on: ubuntu-latest
     container: ghcr.io/railwayapp/cli:latest
     env:
