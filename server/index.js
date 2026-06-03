@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
+import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
@@ -16,7 +17,9 @@ const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
 const HOST = process.env.HOST || '0.0.0.0';
 const MAIL_TO = process.env.MAIL_TO || 'hacettepeisitme55@gmail.com';
 const NEWSLETTER_API_KEY = process.env.NEWSLETTER_API_KEY || '';
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://hacettepeisitme.com,https://www.hacettepeisitme.com';
+const CORS_ORIGIN =
+  process.env.CORS_ORIGIN ||
+  'https://hacettepeisitme-web-production.up.railway.app,http://localhost:3000';
 const FORM_ALERT_THRESHOLD = Number(process.env.FORM_ALERT_THRESHOLD || 30);
 const FORM_ALERT_WINDOW_MS = Number(process.env.FORM_ALERT_WINDOW_MS || 10 * 60 * 1000);
 const FORM_ALERT_COOLDOWN_MS = Number(process.env.FORM_ALERT_COOLDOWN_MS || 60 * 60 * 1000);
@@ -79,6 +82,12 @@ const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).fil
 
 app.set('trust proxy', 1);
 app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
+app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
@@ -121,48 +130,6 @@ const googleReviewsLimiter = rateLimit({
 let instagramFeedCache = null;
 /** @type {{ expiresAt: number, payload: object } | null} */
 let googleReviewsCache = null;
-
-function getFallbackInstagramPosts() {
-  const profile = INSTAGRAM_PROFILE_URL;
-  return [
-    {
-      id: 'local-1',
-      imageUrl: '/local-images/pro-instagram-1.webp',
-      permalink: profile,
-      title: 'İşitme testi bilgilendirmesi',
-    },
-    {
-      id: 'local-2',
-      imageUrl: '/local-images/pro-instagram-2.webp',
-      permalink: profile,
-      title: 'Yeni teknoloji cihazlar',
-    },
-    {
-      id: 'local-3',
-      imageUrl: '/local-images/pro-instagram-3.webp',
-      permalink: profile,
-      title: 'Bakım ve temizlik önerileri',
-    },
-    {
-      id: 'local-4',
-      imageUrl: '/local-images/pro-instagram-4.webp',
-      permalink: profile,
-      title: 'Cihaz karşılaştırmaları',
-    },
-    {
-      id: 'local-5',
-      imageUrl: '/local-images/pro-instagram-5.webp',
-      permalink: profile,
-      title: 'Hasta deneyimleri',
-    },
-    {
-      id: 'local-6',
-      imageUrl: '/local-images/pro-instagram-6.webp',
-      permalink: profile,
-      title: 'Merkezden güncel paylaşımlar',
-    },
-  ];
-}
 
 function captionToTitle(caption) {
   if (!caption) return 'Instagram paylaşımı';
@@ -222,6 +189,39 @@ function mapInstagramGraphItem(item) {
     title: caption,
     mediaType: item.media_type || 'IMAGE',
     timestamp: item.timestamp || null,
+  });
+}
+
+function instagramPermalinkForCode(code, productType, mediaType) {
+  if (!code) return '';
+  if (productType === 'clips' || mediaType === 2) {
+    return `https://www.instagram.com/reel/${code}/`;
+  }
+  return `https://www.instagram.com/p/${code}/`;
+}
+
+function mapInstagramUserFeedItem(item) {
+  const code = item?.code || '';
+  if (!code) return null;
+  const candidates = item.image_versions2?.candidates;
+  const imageUrl =
+    (Array.isArray(candidates) && candidates[0]?.url) ||
+    item.display_uri ||
+    item.image_versions2?.additional_candidates?.first_frame?.url ||
+    '';
+  const mediaTypeNum = Number(item.media_type);
+  const mediaType =
+    mediaTypeNum === 2 ? 'VIDEO' : mediaTypeNum === 8 ? 'CAROUSEL_ALBUM' : 'IMAGE';
+  const timestamp = item.taken_at
+    ? new Date(Number(item.taken_at) * 1000).toISOString()
+    : null;
+  return mapInstagramFeedPost({
+    id: item.pk || item.id || code,
+    imageUrl,
+    permalink: instagramPermalinkForCode(code, item.product_type, mediaTypeNum),
+    title: item.caption?.text || '',
+    mediaType,
+    timestamp,
   });
 }
 
@@ -603,6 +603,59 @@ function buildInstagramCookieHeader(setCookieHeader, sessionId) {
   return parts.join('; ');
 }
 
+async function fetchInstagramMediaFromUserFeed() {
+  const cookieHeader = buildInstagramCookieHeader('', INSTAGRAM_SESSION_ID);
+  const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
+    headers: {
+      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+    },
+    redirect: 'follow',
+  });
+  if (!pageRes.ok) {
+    console.error('[instagram] user feed bootstrap HTTP error:', pageRes.status);
+    return null;
+  }
+  const html = await pageRes.text();
+  const lsd = html.match(/"LSD",\[\],\{"token":"([^"]+)"/)?.[1];
+  const requestCookie = buildInstagramCookieHeader(pageRes.headers.get('set-cookie') || '', INSTAGRAM_SESSION_ID);
+  const csrf = requestCookie.match(/csrftoken=([^;]+)/)?.[1];
+  const feedUrl =
+    `https://www.instagram.com/api/v1/feed/user/${encodeURIComponent(INSTAGRAM_USERNAME)}` +
+    `/username/?count=${INSTAGRAM_FEED_LIMIT}`;
+  const feedRes = await fetch(feedUrl, {
+    headers: {
+      'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
+      'Accept-Language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+      'X-IG-App-ID': INSTAGRAM_WEB_APP_ID,
+      'X-Requested-With': 'XMLHttpRequest',
+      ...(lsd ? { 'X-FB-LSD': lsd, 'X-ASBD-ID': '129477' } : {}),
+      ...(requestCookie ? { Cookie: requestCookie } : {}),
+      ...(csrf ? { 'X-CSRFToken': csrf } : {}),
+      Referer: INSTAGRAM_PROFILE_URL,
+      'Sec-Fetch-Site': 'same-origin',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Dest': 'empty',
+    },
+  });
+  const rawText = await feedRes.text();
+  if (!feedRes.ok) {
+    console.error('[instagram] user feed API HTTP error:', feedRes.status, rawText.slice(0, 300));
+    return null;
+  }
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    console.error('[instagram] user feed API invalid JSON');
+    return null;
+  }
+  const items = Array.isArray(data.items) ? data.items : [];
+  const posts = items.map(mapInstagramUserFeedItem).filter(Boolean).slice(0, INSTAGRAM_FEED_LIMIT);
+  return posts.length ? posts : null;
+}
+
 async function fetchInstagramMediaFromPublicProfile() {
   const cookieHeader = buildInstagramCookieHeader('', INSTAGRAM_SESSION_ID);
   const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
@@ -690,6 +743,10 @@ async function fetchInstagramFeed() {
   const fromGraph = await fetchInstagramMediaFromGraph();
   if (fromGraph?.length) {
     return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
+  }
+  const fromUserFeed = await fetchInstagramMediaFromUserFeed();
+  if (fromUserFeed?.length) {
+    return { posts: fromUserFeed, source: 'instagram', postCount: fromUserFeed.length };
   }
   const fromPublic = await fetchInstagramMediaFromPublicProfile();
   if (fromPublic?.length) {

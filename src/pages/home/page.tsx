@@ -1,9 +1,9 @@
 ﻿import { Link } from 'react-router-dom';
-import { useMemo, useEffect, useState } from 'react';
-import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
+import { useMemo } from 'react';
 import { SITE_ADDRESS_SCHEMA, SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { services } from '../../mocks/services';
 import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
+import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
 import { blogPosts } from '../../mocks/blog';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
@@ -176,155 +176,6 @@ function ServicesSection() {
   );
 }
 
-const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55';
-
-function ProductsSection() {
-  const [posts, setPosts] = useState<InstagramFeedPost[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    const loadFeed = async () => {
-      const res = await fetch('/api/instagram/feed', { cache: 'no-store' });
-      return (await res.json()) as InstagramFeedResponse;
-    };
-
-    (async () => {
-      try {
-        const data = await loadFeed();
-        if (!cancelled && data.source === 'instagram' && Array.isArray(data.posts) && data.posts.length > 0) {
-          setPosts(data.posts);
-        }
-      } catch {
-        /* canlı akış yoksa boş kalır */
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    const refreshId = window.setInterval(() => {
-      loadFeed()
-        .then((data) => {
-          if (!cancelled && data.source === 'instagram' && Array.isArray(data.posts) && data.posts.length > 0) {
-            setPosts(data.posts);
-          }
-        })
-        .catch(() => {});
-    }, 15 * 60 * 1000);
-
-    return () => {
-      cancelled = true;
-      window.clearInterval(refreshId);
-    };
-  }, []);
-
-  return (
-    <section className="py-20 md:py-28 bg-brand-dark">
-      <div className="w-full px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto mb-10">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-            <div>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">
-                Instagram Akışı
-              </h2>
-              <p className="text-white/60">
-                <span className="text-brand-accent font-semibold">@hacettepeisitmecihazlari55</span> hesabından
-                paylaşımlar
-              </p>
-            </div>
-            <a
-              href={INSTAGRAM_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
-              onClick={() =>
-                trackCTAClick('Instagram Profili', 'home_instagram', INSTAGRAM_PROFILE_URL)
-              }
-            >
-              <i className="ri-instagram-line text-lg" />
-              <span>Profili Aç</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading
-              ? Array.from({ length: 6 }, (_, i) => (
-                  <div
-                    key={`ig-skel-${i}`}
-                    className="bg-white rounded-2xl overflow-hidden animate-pulse"
-                  >
-                    <div className="h-64 bg-gray-200" />
-                    <div className="p-4 space-y-2">
-                      <div className="h-3 bg-gray-100 rounded w-1/3" />
-                      <div className="h-4 bg-gray-100 rounded w-full" />
-                    </div>
-                  </div>
-                ))
-              : posts.length > 0
-                ? posts.map((post) => (
-                  <a
-                    key={post.id}
-                    href={post.permalink || INSTAGRAM_PROFILE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                    onClick={() =>
-                      trackCTAClick(
-                        post.title.slice(0, 80) || `Instagram ${post.id}`,
-                        'home_instagram_feed',
-                        post.permalink || INSTAGRAM_PROFILE_URL
-                      )
-                    }
-                  >
-                    <div className="h-64 overflow-hidden bg-gray-50">
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                        <i className="ri-instagram-line" />
-                        <span>@hacettepeisitmecihazlari55</span>
-                      </div>
-                      <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
-                    </div>
-                  </a>
-                ))
-                : (
-                  <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center">
-                    <p className="text-white/70">
-                      Instagram paylaşımları şu an yüklenemedi. Güncel gönderileri profilden görüntüleyebilirsiniz.
-                    </p>
-                  </div>
-                )}
-          </div>
-          <div className="text-center mt-8">
-            <a
-              href={INSTAGRAM_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-brand-accent font-semibold hover:text-[#008f7f] transition-colors"
-              onClick={() =>
-                trackCTAClick('Instagramda Daha Fazla', 'home_instagram_more', INSTAGRAM_PROFILE_URL)
-              }
-            >
-              <span>Instagram&apos;da daha fazla paylaşım görüntüle</span>
-              <i className="ri-arrow-right-line" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function BlogSection() {
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -336,7 +187,13 @@ function BlogSection() {
             </h2>
             <p className="text-gray-500">Uzman görüşleri ve faydalı bilgiler</p>
           </div>
-          <span className="text-sm text-gray-400">Tüm Yazılar →</span>
+          <Link
+            to="/blog"
+            className="text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+            onClick={() => trackCTAClick('Tüm Blog Yazıları', 'home_blog_all', '/blog')}
+          >
+            Tüm Yazılar →
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -444,7 +301,7 @@ export default function Home() {
       />
       <HeroSection />
       <ServicesSection />
-      <ProductsSection />
+      <InstagramFeedSection />
       <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
       <BlogSection />
       <CTASection />

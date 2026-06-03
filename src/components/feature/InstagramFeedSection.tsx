@@ -6,44 +6,12 @@ const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/hacettepeisitmecihazlar
 const INSTAGRAM_HANDLE = 'hacettepeisitmecihazlari55';
 const FEED_REFRESH_MS = 15 * 60 * 1000;
 
-const FALLBACK_POSTS: InstagramFeedPost[] = [
-  {
-    id: 'local-1',
-    imageUrl: '/local-images/pro-instagram-1.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'İşitme testi bilgilendirmesi',
-  },
-  {
-    id: 'local-2',
-    imageUrl: '/local-images/pro-instagram-2.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Yeni teknoloji cihazlar',
-  },
-  {
-    id: 'local-3',
-    imageUrl: '/local-images/pro-instagram-3.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Bakım ve temizlik önerileri',
-  },
-  {
-    id: 'local-4',
-    imageUrl: '/local-images/pro-instagram-4.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Cihaz karşılaştırmaları',
-  },
-  {
-    id: 'local-5',
-    imageUrl: '/local-images/pro-instagram-5.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Hasta deneyimleri',
-  },
-  {
-    id: 'local-6',
-    imageUrl: '/local-images/pro-instagram-6.webp',
-    permalink: INSTAGRAM_PROFILE_URL,
-    title: 'Merkezden güncel paylaşımlar',
-  },
-];
+function formatPostDate(timestamp?: string | null) {
+  if (!timestamp) return null;
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 
 function PostSkeleton() {
   return (
@@ -60,7 +28,7 @@ function PostSkeleton() {
 export default function InstagramFeedSection() {
   const [posts, setPosts] = useState<InstagramFeedPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [source, setSource] = useState<InstagramFeedResponse['source']>('unavailable');
+  const [live, setLive] = useState(false);
   const [postCount, setPostCount] = useState<number | null>(null);
 
   const loadFeed = useCallback(async () => {
@@ -74,7 +42,7 @@ export default function InstagramFeedSection() {
     const applyFeed = (data: InstagramFeedResponse) => {
       if (data.source !== 'instagram' || !Array.isArray(data.posts) || data.posts.length === 0) return;
       setPosts(data.posts);
-      setSource(data.source);
+      setLive(true);
       setPostCount(data.postCount ?? data.posts.length);
     };
 
@@ -83,7 +51,7 @@ export default function InstagramFeedSection() {
         const data = await loadFeed();
         if (!cancelled) applyFeed(data);
       } catch {
-        /* yerel mock kalır */
+        /* akış yüklenemezse boş kalır */
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -111,9 +79,10 @@ export default function InstagramFeedSection() {
             <div>
               <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Instagram Akışı</h2>
               <p className="text-white/60">
-                <span className="text-brand-accent font-semibold">@{INSTAGRAM_HANDLE}</span> hesabından paylaşımlar
+                <span className="text-brand-accent font-semibold">@{INSTAGRAM_HANDLE}</span> hesabından canlı
+                paylaşımlar
               </p>
-              {!loading && source === 'instagram' && postCount != null && (
+              {!loading && live && postCount != null && (
                 <p className="mt-2 text-sm text-white/50">{postCount} paylaşım gösteriliyor</p>
               )}
             </div>
@@ -134,46 +103,60 @@ export default function InstagramFeedSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading
               ? Array.from({ length: 6 }, (_, i) => <PostSkeleton key={`ig-skel-${i}`} />)
-              : posts.map((post) => (
-                  <a
-                    key={post.id}
-                    href={post.permalink || INSTAGRAM_PROFILE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                    onClick={() =>
-                      trackCTAClick(
-                        post.title.slice(0, 80) || `Instagram ${post.id}`,
-                        'home_instagram_feed',
-                        post.permalink || INSTAGRAM_PROFILE_URL
-                      )
-                    }
-                  >
-                    <div className="relative h-64 overflow-hidden bg-gray-50">
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {post.mediaType === 'VIDEO' && (
-                        <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white">
-                          <i className="ri-play-fill" />
-                          Video
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                        <i className="ri-instagram-line" />
-                        <span>@{INSTAGRAM_HANDLE}</span>
-                      </div>
-                      <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
-                    </div>
-                  </a>
-                ))}
+              : posts.length > 0
+                ? posts.map((post) => {
+                    const postedAt = formatPostDate(post.timestamp);
+                    return (
+                      <a
+                        key={post.id}
+                        href={post.permalink || INSTAGRAM_PROFILE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                        className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                        onClick={() =>
+                          trackCTAClick(
+                            post.title.slice(0, 80) || `Instagram ${post.id}`,
+                            'home_instagram_feed',
+                            post.permalink || INSTAGRAM_PROFILE_URL
+                          )
+                        }
+                      >
+                        <div className="relative h-64 overflow-hidden bg-gray-50">
+                          <img
+                            src={post.imageUrl}
+                            alt={post.title}
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                          />
+                          {post.mediaType === 'VIDEO' && (
+                            <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white">
+                              <i className="ri-play-fill" />
+                              Video
+                            </span>
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center justify-between gap-2 text-xs text-gray-400 mb-2">
+                            <span className="inline-flex items-center gap-2">
+                              <i className="ri-instagram-line" />
+                              @{INSTAGRAM_HANDLE}
+                            </span>
+                            {postedAt && <time dateTime={post.timestamp || undefined}>{postedAt}</time>}
+                          </div>
+                          <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
+                        </div>
+                      </a>
+                    );
+                  })
+                : (
+                  <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center">
+                    <p className="text-white/70">
+                      Canlı Instagram akışı şu an yüklenemedi. Güncel paylaşımlar için profili ziyaret edebilirsiniz.
+                    </p>
+                  </div>
+                )}
           </div>
           <div className="text-center mt-8">
             <a
