@@ -8,12 +8,16 @@ on:
 
 jobs:
   deploy:
-    if: ${{ secrets.RAILWAY_TOKEN != '' }}
     runs-on: ubuntu-latest
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy
-        run: railway up --detach
+      - name: Deploy to Railway
+        run: |
+          if [ -z "${RAILWAY_TOKEN}" ]; then
+            echo "::warning::RAILWAY_TOKEN GitHub secret yok. Railway panelinde Repo > Deployments > Redeploy yapın."
+            exit 0
+          fi
+          railway up --detach
