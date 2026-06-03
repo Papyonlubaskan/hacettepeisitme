@@ -603,7 +603,11 @@ function buildInstagramCookieHeader(setCookieHeader, sessionId) {
   return parts.join('; ');
 }
 
-async function fetchInstagramMediaFromUserFeed() {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchInstagramMediaFromUserFeedOnce() {
   const cookieHeader = buildInstagramCookieHeader('', INSTAGRAM_SESSION_ID);
   const pageRes = await fetch(INSTAGRAM_PROFILE_URL, {
     headers: {
@@ -654,6 +658,15 @@ async function fetchInstagramMediaFromUserFeed() {
   const items = Array.isArray(data.items) ? data.items : [];
   const posts = items.map(mapInstagramUserFeedItem).filter(Boolean).slice(0, INSTAGRAM_FEED_LIMIT);
   return posts.length ? posts : null;
+}
+
+async function fetchInstagramMediaFromUserFeed() {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const posts = await fetchInstagramMediaFromUserFeedOnce();
+    if (posts?.length) return posts;
+    if (attempt < 3) await sleep(2000 * attempt);
+  }
+  return null;
 }
 
 async function fetchInstagramMediaFromPublicProfile() {
@@ -740,13 +753,13 @@ async function fetchInstagramMediaFromScraper() {
 }
 
 async function fetchInstagramFeed() {
-  const fromGraph = await fetchInstagramMediaFromGraph();
-  if (fromGraph?.length) {
-    return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
-  }
   const fromUserFeed = await fetchInstagramMediaFromUserFeed();
   if (fromUserFeed?.length) {
     return { posts: fromUserFeed, source: 'instagram', postCount: fromUserFeed.length };
+  }
+  const fromGraph = await fetchInstagramMediaFromGraph();
+  if (fromGraph?.length) {
+    return { posts: fromGraph, source: 'instagram', postCount: fromGraph.length };
   }
   const fromPublic = await fetchInstagramMediaFromPublicProfile();
   if (fromPublic?.length) {
@@ -1034,7 +1047,7 @@ function requireNewsletterApiKey(req, res, next) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'local-form-api' });
+  res.json({ ok: true, service: 'local-form-api', instagramFeed: 'user-feed-v2' });
 });
 
 app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
