@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  RAILWAY_PROJECT_ID: 3c251192-1aa8-4d72-99db-796132bc5f3f
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,10 +17,10 @@ jobs:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Railway
+      - name: Deploy to Railway (hacettepeisitme-web-production)
         run: |
           if [ -z "${RAILWAY_TOKEN}" ]; then
-            echo "::warning::RAILWAY_TOKEN GitHub secret yok. Railway panelinde Repo > Deployments > Redeploy yapın."
+            echo "::warning::RAILWAY_TOKEN yok. Railway proje token'ını GitHub Secrets'a ekleyin."
             exit 0
           fi
-          railway up --detach
+          railway up --detach --project "${RAILWAY_PROJECT_ID}"
