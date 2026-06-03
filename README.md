@@ -23,20 +23,35 @@ npm run build
 
 ## Railway dağıtımı
 
-**Proje:** [hacettepeisitme-web-production](https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f)  
+**GitHub:** [hacettepeisitme55-a11y](https://github.com/hacettepeisitme55-a11y) → repo: `hacettepeisitme-web`  
+**Railway:** [hacettepeisitme-web-production](https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f) → branch `main`  
 **Canlı:** `https://hacettepeisitme-web-production.up.railway.app`
 
-### Yerel deploy (doğru Railway hesabıyla)
+### 1) GitHub repo oluştur (hacettepeisitme55-a11y ile giriş)
+
+[Yeni repo](https://github.com/new) → ad: `hacettepeisitme-web` → Public → README ekleme.
+
+Alternatif: [Import](https://github.com/new/import?import_url=https://github.com/Papyonlubaskan/hacettepeisitme) ile mevcut kodu içe aktar.
+
+### 2) Push
+
+```bash
+gh auth login   # hacettepeisitme55-a11y hesabı
+git remote set-url origin https://github.com/hacettepeisitme55-a11y/hacettepeisitme-web.git
+git push -u origin main
+```
+
+### 3) Railway bağla
+
+Railway proje → **Settings** → **Source** → GitHub → `hacettepeisitme55-a11y/hacettepeisitme-web` → branch **main** → Deploy.
+
+### Yerel CLI deploy
 
 ```bash
 railway login
 railway link -p 3c251192-1aa8-4d72-99db-796132bc5f3f
 railway up --detach
 ```
-
-### GitHub Actions
-
-Railway proje → Settings → Tokens → token al → GitHub repo Secrets → `RAILWAY_TOKEN`
 
 Zorunlu değişkenler:
 
