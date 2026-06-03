@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { GoogleReview, GoogleReviewsResponse } from '@/types/googleReviews';
 
 const FEED_CARD_COUNT = 5;
@@ -141,7 +141,7 @@ export default function GoogleReviewsSection({
     };
   }, [loadReviews]);
 
-  const reviews = payload?.reviews ?? [];
+  const reviews = useMemo(() => payload?.reviews ?? [], [payload?.reviews]);
   const mapsUrl = payload?.mapsUrl;
   const rating = payload?.rating;
   const reviewCount = payload?.reviewCount;

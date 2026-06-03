@@ -47,15 +47,24 @@ export default {
               // e.g. condition && <Comp />
               return isJsxLike(node.right)
             case 'CallExpression': {
-              // allow React.createElement(...)
               const callee = node.callee
-              return (
+              if (
                 callee?.type === 'MemberExpression' &&
                 callee.object?.type === 'Identifier' &&
                 callee.object.name === 'React' &&
                 callee.property?.type === 'Identifier' &&
                 callee.property.name === 'createElement'
-              )
+              ) {
+                return true
+              }
+              if (
+                callee?.type === 'Identifier' &&
+                callee.name === 'withSuspense' &&
+                isJsxLike(node.arguments?.[0])
+              ) {
+                return true
+              }
+              return false
             }
             default:
               return false

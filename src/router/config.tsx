@@ -1,4 +1,4 @@
-import { Suspense, lazy, type ReactElement } from "react";
+import { Suspense, lazy } from "react";
 import type { RouteObject } from "react-router-dom";
 
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -11,71 +11,132 @@ const OnlineHearingTest = lazy(() => import("../pages/online-test/page"));
 const PrivacyPolicy = lazy(() => import("../pages/gizlilik/page"));
 const TermsOfService = lazy(() => import("../pages/kullanim-kosullari/page"));
 const KvkkNotice = lazy(() => import("../pages/kvkk/page"));
+const BlogList = lazy(() => import("../pages/blog/list"));
 const BlogDetail = lazy(() => import("../pages/blog/page"));
 const IsitmeCihaziFiyatlariPage = lazy(() => import("../pages/seo/isime-cihazi-fiyatlari"));
 const SamsunIsitmeTestiPage = lazy(() => import("../pages/seo/samsun-isitme-testi"));
 const SgkOdemeTutarlariPage = lazy(() => import("../pages/sgk-odeme-tutarlari/page"));
 
-function withSuspense(element: ReactElement) {
-  return <Suspense fallback={null}>{element}</Suspense>;
-}
-
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: withSuspense(<Home />),
+    element: (
+      <Suspense fallback={null}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: "/hakkimizda",
-    element: withSuspense(<About />),
+    element: (
+      <Suspense fallback={null}>
+        <About />
+      </Suspense>
+    ),
   },
   {
     path: "/randevu",
-    element: withSuspense(<Appointment />),
+    element: (
+      <Suspense fallback={null}>
+        <Appointment />
+      </Suspense>
+    ),
   },
   {
     path: "/iletisim",
-    element: withSuspense(<Contact />),
+    element: (
+      <Suspense fallback={null}>
+        <Contact />
+      </Suspense>
+    ),
   },
   {
     path: "/ucretsiz-isitme-testi",
-    element: withSuspense(<LandingPage />),
+    element: (
+      <Suspense fallback={null}>
+        <LandingPage />
+      </Suspense>
+    ),
   },
   {
     path: "/online-isitme-testi",
-    element: withSuspense(<OnlineHearingTest />),
+    element: (
+      <Suspense fallback={null}>
+        <OnlineHearingTest />
+      </Suspense>
+    ),
   },
   {
     path: "/isitme-cihazi-fiyatlari",
-    element: withSuspense(<IsitmeCihaziFiyatlariPage />),
+    element: (
+      <Suspense fallback={null}>
+        <IsitmeCihaziFiyatlariPage />
+      </Suspense>
+    ),
   },
   {
     path: "/samsun-isitme-testi",
-    element: withSuspense(<SamsunIsitmeTestiPage />),
+    element: (
+      <Suspense fallback={null}>
+        <SamsunIsitmeTestiPage />
+      </Suspense>
+    ),
   },
   {
     path: "/sgk-odeme-tutarlari",
-    element: withSuspense(<SgkOdemeTutarlariPage />),
+    element: (
+      <Suspense fallback={null}>
+        <SgkOdemeTutarlariPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/blog",
+    element: (
+      <Suspense fallback={null}>
+        <BlogList />
+      </Suspense>
+    ),
   },
   {
     path: "/blog/:slug",
-    element: withSuspense(<BlogDetail />),
+    element: (
+      <Suspense fallback={null}>
+        <BlogDetail />
+      </Suspense>
+    ),
   },
   {
     path: "/gizlilik-politikasi",
-    element: withSuspense(<PrivacyPolicy />),
+    element: (
+      <Suspense fallback={null}>
+        <PrivacyPolicy />
+      </Suspense>
+    ),
   },
   {
     path: "/kullanim-kosullari",
-    element: withSuspense(<TermsOfService />),
+    element: (
+      <Suspense fallback={null}>
+        <TermsOfService />
+      </Suspense>
+    ),
   },
   {
     path: "/kvkk-aydinlatma-metni",
-    element: withSuspense(<KvkkNotice />),
+    element: (
+      <Suspense fallback={null}>
+        <KvkkNotice />
+      </Suspense>
+    ),
   },
   {
     path: "*",
-    element: withSuspense(<NotFound />),
+    element: (
+      <Suspense fallback={null}>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ];
 
