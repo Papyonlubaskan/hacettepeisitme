@@ -19,7 +19,7 @@
     <!-- Google Tag Manager -->
     <script>
       (function(w,d,s,l,i){
-        if(!i) return;
+        if(!i || i.indexOf('%VITE_') === 0) return;
         w[l]=w[l]||[];
         w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
         var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
@@ -41,7 +41,7 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       const pixelId = '%VITE_META_PIXEL_ID%';
-      if (pixelId) {
+      if (pixelId && pixelId.indexOf('%VITE_') !== 0) {
         fbq('init', pixelId);
         fbq('track', 'PageView');
       }

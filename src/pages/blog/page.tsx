@@ -3,6 +3,7 @@ import { blogPosts } from '../../mocks/blog';
 import NotFound from '../NotFound';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 import { SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import { absoluteUrl } from '@/lib/siteUrl';
 
 function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,6 +22,7 @@ function BlogDetail() {
     .slice(0, 3 - relatedPosts.length);
 
   const allRelated = [...relatedPosts, ...otherRelated];
+  const postUrl = absoluteUrl(`/blog/${post.slug}`);
 
   return (
     <div className="animate-fadeInUp">
@@ -49,7 +51,7 @@ function BlogDetail() {
           dateModified: post.date,
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://hacettepeisitme.com/blog/${post.slug}`,
+            '@id': absoluteUrl(`/blog/${post.slug}`),
           },
         })}
       </script>
@@ -129,7 +131,7 @@ function BlogDetail() {
               <div className="flex items-center gap-3">
                 <span className="text-sm font-semibold text-brand-dark">Paylaş:</span>
                 <a
-                  href={`https://wa.me/${SITE_PHONE_WA}?text=${encodeURIComponent(`${post.title} - https://hacettepeisitme.com/blog/${post.slug}`)}`}
+                  href={`https://wa.me/${SITE_PHONE_WA}?text=${encodeURIComponent(`${post.title} - ${postUrl}`)}`}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-green-500/10 text-green-600 hover:bg-green-500 hover:text-white transition-colors"
@@ -138,7 +140,7 @@ function BlogDetail() {
                   <i className="ri-whatsapp-line" />
                 </a>
                 <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://hacettepeisitme.com/blog/${post.slug}`)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-600/10 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
@@ -147,7 +149,7 @@ function BlogDetail() {
                   <i className="ri-facebook-fill" />
                 </a>
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://hacettepeisitme.com/blog/${post.slug}`)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(postUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-colors"

@@ -21,31 +21,20 @@ npm run test
 npm run build
 ```
 
-## Railway dağıtımı
+## Railway dağıtımı (aktif)
 
-**GitHub:** [hacettepeisitme55-a11y](https://github.com/hacettepeisitme55-a11y) → repo: `hacettepeisitme-web`  
-**Railway:** [hacettepeisitme-web-production](https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f) → branch `main`  
-**Canlı:** `https://hacettepeisitme-web-production.up.railway.app`
+**Deploy repo:** [Papyonlubaskan/hacettepeisitme](https://github.com/Papyonlubaskan/hacettepeisitme)  
+**Railway:** [hacettepeisitme-web-production](https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f)  
+**Canlı:** https://hacettepeisitme-web-production.up.railway.app
 
-### 1) GitHub repo oluştur (hacettepeisitme55-a11y ile giriş)
-
-[Yeni repo](https://github.com/new) → ad: `hacettepeisitme-web` → Public → README ekleme.
-
-Alternatif: [Import](https://github.com/new/import?import_url=https://github.com/Papyonlubaskan/hacettepeisitme) ile mevcut kodu içe aktar.
-
-### 2) Push
+Push sonrası Railway GitHub bağlantısı otomatik deploy tetikler:
 
 ```bash
-gh auth login   # hacettepeisitme55-a11y hesabı
-git remote set-url origin https://github.com/hacettepeisitme55-a11y/hacettepeisitme-web.git
-git push -u origin main
+npm run deploy:push
+# veya: git push papyon main
 ```
 
-### 3) Railway bağla
-
-Railway proje → **Settings** → **Source** → GitHub → `hacettepeisitme55-a11y/hacettepeisitme-web` → branch **main** → Deploy.
-
-### Yerel CLI deploy
+Yerel CLI deploy:
 
 ```bash
 railway login
@@ -53,15 +42,48 @@ railway link -p 3c251192-1aa8-4d72-99db-796132bc5f3f
 railway up --detach
 ```
 
-Zorunlu değişkenler:
+### Railway ortam değişkenleri
+
+Build sırasında (Docker):
+
+- `VITE_SITE_URL` — canonical URL (şu an Railway adresi)
+- `VITE_GTM_ID`, `VITE_META_PIXEL_ID` — analytics (boş bırakılırsa yüklenmez)
+
+Runtime:
 
 - `SMTP_USER`, `SMTP_PASS`, `MAIL_TO` — form e-postaları
-- `CORS_ORIGIN` — canlı site kök adresi
-- `VITE_SITE_URL`, `VITE_GTM_ID`, `VITE_META_PIXEL_ID` — build sırasında Vite’a geçer
+- `CORS_ORIGIN` — izin verilen kök adresler
+- `INSTAGRAM_ACCESS_TOKEN` — isteğe bağlı; canlı Instagram güncellemesi için
 
-İsteğe bağlı:
+Instagram akışı production'da repo içi bundled feed + oEmbed ile çalışır. Yeni gönderiler için:
 
-- `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` — yorumlar için Places yedeği
-- `NEWSLETTER_API_KEY` — bülten yönetim uçları
+```bash
+npm run instagram:refresh
+git add server/data/instagram-feed-bundled.json
+npm run deploy:push
+```
 
-Canlı adres: `https://hacettepeisitme-web-production.up.railway.app` (Railway proje: `3c251192-1aa8-4d72-99db-796132bc5f3f`)
+---
+
+## Alan adı sonrası (manuel — siz yapacaksınız)
+
+Alan adı alındığında:
+
+1. Railway → **Settings → Domains** → özel domain ekle
+2. DNS kayıtlarını domain sağlayıcıda yapılandır
+3. Railway Variables güncelle:
+   - `CORS_ORIGIN` → yeni domain + Railway URL
+   - `VITE_SITE_URL` → yeni domain (redeploy gerekir)
+4. `public/robots.txt` ve `public/sitemap.xml` içindeki URL'leri yeni domain ile güncelle
+5. GitHub Secrets → `RAILWAY_TOKEN` ekle (Actions deploy için, isteğe bağlı)
+
+### hacettepeisitme55-a11y GitHub hesabı (manuel)
+
+Hedef repo: `hacettepeisitme55-a11y/hacettepeisitme-web`
+
+```bash
+gh auth login   # hacettepeisitme55-a11y hesabı
+git push origin main
+```
+
+Şu an deploy `papyon` remote üzerinden çalışıyor; `origin` hedef hesapla senkron olunca Railway source'u oraya taşınabilir.

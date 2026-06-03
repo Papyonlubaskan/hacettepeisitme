@@ -20,7 +20,8 @@ jobs:
       - name: Deploy to Railway (hacettepeisitme-web-production)
         run: |
           if [ -z "${RAILWAY_TOKEN}" ]; then
-            echo "::warning::RAILWAY_TOKEN yok. Railway proje token'ını GitHub Secrets'a ekleyin."
+            echo "::notice::RAILWAY_TOKEN yok — Railway GitHub bağlantısı varsa push yine de deploy tetikler."
+            echo "::notice::Token: Railway → Settings → Tokens → GitHub repo Secrets → RAILWAY_TOKEN"
             exit 0
           fi
           railway up --detach --project "${RAILWAY_PROJECT_ID}"

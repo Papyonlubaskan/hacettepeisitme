@@ -26,12 +26,14 @@ export default function Navbar() {
     { label: 'Ücretsiz Test', to: '/ucretsiz-isitme-testi' },
     { label: 'Online Test', to: '/online-isitme-testi' },
     { label: 'SGK Ödeme Tutarı', to: '/sgk-odeme-tutarlari' },
+    { label: 'Blog', to: '/blog' },
     { label: 'Hakkımızda', to: '/hakkimizda' },
     { label: 'Randevu', to: '/randevu' },
     { label: 'İletişim', to: '/iletisim' },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) =>
+    path === '/blog' ? location.pathname === path || location.pathname.startsWith('/blog/') : location.pathname === path;
 
   return (
     <header
