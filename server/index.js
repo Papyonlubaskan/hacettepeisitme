@@ -1104,14 +1104,22 @@ async function sendFormMail(formType, body) {
     `Randevu Saati: ${time}`,
     `Yas: ${age}`,
     `Mesaj: ${message}`,
+    '',
+    '---',
+    'Bu mail web sitesi formundan geldi. Müşteriye Gmail\'de Yanıtla ile dönebilirsiniz.',
   ];
 
-  await transporter.sendMail({
+  const mailOptions = {
     from: process.env.MAIL_FROM || process.env.SMTP_USER || MAIL_TO,
     to: MAIL_TO,
     subject: mailSubject,
     text: lines.join('\n'),
-  });
+  };
+  if (isValidEmail(email)) {
+    mailOptions.replyTo = email;
+  }
+
+  await transporter.sendMail(mailOptions);
 }
 
 async function sendNewsletterWelcomeMail(email) {
