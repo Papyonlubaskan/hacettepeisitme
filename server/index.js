@@ -40,6 +40,11 @@ const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15
 const INSTAGRAM_FEED_LIMIT = Math.min(Math.max(Number(process.env.INSTAGRAM_FEED_LIMIT || 12), 3), 24);
 const INSTAGRAM_BROWSER_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const HAS_INSTAGRAM_CREDENTIALS = Boolean(INSTAGRAM_ACCESS_TOKEN || INSTAGRAM_SESSION_ID);
+/** Production'da token yokken canlı Instagram API çağrısı yapma (429 önleme). */
+const INSTAGRAM_LIVE_REFRESH =
+  process.env.INSTAGRAM_LIVE_REFRESH === 'true' ||
+  (process.env.INSTAGRAM_LIVE_REFRESH !== 'false' && HAS_INSTAGRAM_CREDENTIALS);
 const SITE_PHONE_WA = '905334745806';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
@@ -165,6 +170,12 @@ function markInstagramRateLimited() {
 
 let instagramRefreshInFlight = false;
 
+function shouldAttemptLiveInstagram() {
+  if (!INSTAGRAM_LIVE_REFRESH) return false;
+  if (isInstagramRateLimited()) return false;
+  return true;
+}
+
 function applyProxyToInstagramPayload(payload) {
   if (!payload?.posts?.length) return payload;
   return {
@@ -257,6 +268,7 @@ async function persistInstagramFeedCache(payload) {
 }
 
 async function refreshInstagramFeedCache() {
+  if (!shouldAttemptLiveInstagram()) return;
   if (instagramRefreshInFlight || isInstagramRateLimited()) return;
   instagramRefreshInFlight = true;
   try {
@@ -745,7 +757,12 @@ async function fetchInstagramMediaFromUserFeedOnce() {
     redirect: 'follow',
   });
   if (!pageRes.ok) {
-    console.error('[instagram] user feed bootstrap HTTP error:', pageRes.status);
+    if (pageRes.status === 429) {
+      console.warn('[instagram] user feed bootstrap rate limited (429), using bundled feed');
+      markInstagramRateLimited();
+    } else {
+      console.warn('[instagram] user feed bootstrap HTTP error:', pageRes.status);
+    }
     return { posts: null, rateLimited: pageRes.status === 429 };
   }
   const html = await pageRes.text();
@@ -845,6 +862,9 @@ async function fetchInstagramMediaFromOembed() {
 }
 
 async function fetchInstagramFeed() {
+  if (!shouldAttemptLiveInstagram()) {
+    return null;
+  }
   if (isInstagramRateLimited()) {
     return null;
   }
@@ -1356,8 +1376,12 @@ async function startServer() {
   await loadPersistedInstagramFeed();
   app.listen(PORT, HOST, () => {
     console.log(`Web app running on http://${HOST}:${PORT}`);
-    void refreshInstagramFeedCache();
-    setInterval(() => void refreshInstagramFeedCache(), INSTAGRAM_FEED_CACHE_MS);
+    if (shouldAttemptLiveInstagram()) {
+      void refreshInstagramFeedCache();
+      setInterval(() => void refreshInstagramFeedCache(), INSTAGRAM_FEED_CACHE_MS);
+    } else {
+      console.log('[instagram] live refresh disabled; serving bundled/cached feed');
+    }
   });
 }
 
