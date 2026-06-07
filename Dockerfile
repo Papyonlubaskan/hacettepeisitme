@@ -5,7 +5,7 @@ RUN npm ci
 
 FROM deps AS build
 WORKDIR /app
-ARG VITE_SITE_URL=
+ARG VITE_SITE_URL=https://hacettepeisitme.com.tr
 ARG VITE_GTM_ID=
 ARG VITE_META_PIXEL_ID=
 ENV VITE_SITE_URL=$VITE_SITE_URL

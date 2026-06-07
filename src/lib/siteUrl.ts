@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = 'https://hacettepeisitme-web-production.up.railway.app';
+const DEFAULT_SITE_URL = 'https://hacettepeisitme.com.tr';
 
 export function getSiteUrl(): string {
   const fromEnv = import.meta.env.VITE_SITE_URL;

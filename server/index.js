@@ -17,9 +17,10 @@ const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
 const HOST = process.env.HOST || '0.0.0.0';
 const MAIL_TO = process.env.MAIL_TO || 'hacettepeisitme55@gmail.com';
 const NEWSLETTER_API_KEY = process.env.NEWSLETTER_API_KEY || '';
+const PRIMARY_SITE_HOST = (process.env.PRIMARY_SITE_HOST || 'hacettepeisitme.com.tr').replace(/^https?:\/\//, '').replace(/\/$/, '');
 const CORS_ORIGIN =
   process.env.CORS_ORIGIN ||
-  'https://hacettepeisitme-web-production.up.railway.app,http://localhost:3000';
+  `https://${PRIMARY_SITE_HOST},https://www.${PRIMARY_SITE_HOST},https://hacettepeisitme-web-production.up.railway.app,http://localhost:3000`;
 const FORM_ALERT_THRESHOLD = Number(process.env.FORM_ALERT_THRESHOLD || 30);
 const FORM_ALERT_WINDOW_MS = Number(process.env.FORM_ALERT_WINDOW_MS || 10 * 60 * 1000);
 const FORM_ALERT_COOLDOWN_MS = Number(process.env.FORM_ALERT_COOLDOWN_MS || 60 * 60 * 1000);
@@ -84,6 +85,18 @@ const ipAlertCooldownMap = new Map();
 const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
 
 app.set('trust proxy', 1);
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV !== 'production') return next();
+  const host = (req.hostname || '').toLowerCase();
+  const primary = PRIMARY_SITE_HOST.toLowerCase();
+  if (host === `www.${primary}`) {
+    return res.redirect(301, `https://${primary}${req.originalUrl}`);
+  }
+  if (host.includes('railway.app') && process.env.REDIRECT_RAILWAY_HOST !== 'false') {
+    return res.redirect(301, `https://${primary}${req.originalUrl}`);
+  }
+  return next();
+});
 app.use(
   helmet({
     contentSecurityPolicy: false,

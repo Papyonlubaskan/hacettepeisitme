@@ -36,7 +36,7 @@ export default function TermsOfService() {
             <div>
               <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Sözleşmenin Kabulü</h2>
               <p className="text-gray-500 leading-relaxed">
-                Hacettepe İşitme Cihazları web sitesine (www.hacettepeisitme.com) erişim sağlayarak ve kullanarak, aşağıda belirtilen kullanım koşullarını, şartlarını ve gizlilik politikasını kabul etmiş sayılırsınız. Bu koşulları kabul etmiyorsanız, lütfen web sitemizi kullanmayınız. Web sitesinin kullanımı, Türkiye Cumhuriyeti yasalarına tabidir.
+                Hacettepe İşitme Cihazları web sitesine (hacettepeisitme.com.tr) erişim sağlayarak ve kullanarak, aşağıda belirtilen kullanım koşullarını, şartlarını ve gizlilik politikasını kabul etmiş sayılırsınız. Bu koşulları kabul etmiyorsanız, lütfen web sitemizi kullanmayınız. Web sitesinin kullanımı, Türkiye Cumhuriyeti yasalarına tabidir.
               </p>
             </div>
 

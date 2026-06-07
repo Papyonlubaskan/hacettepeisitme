@@ -25,7 +25,8 @@ npm run build
 
 **Deploy repo:** [Papyonlubaskan/hacettepeisitme](https://github.com/Papyonlubaskan/hacettepeisitme)  
 **Railway:** [hacettepeisitme-web-production](https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f)  
-**Canlı:** https://hacettepeisitme-web-production.up.railway.app
+**Canlı:** https://hacettepeisitme.com.tr  
+**Railway (yedek):** https://hacettepeisitme-web-production.up.railway.app
 
 Push sonrası Railway GitHub bağlantısı otomatik deploy tetikler:
 
@@ -65,7 +66,66 @@ npm run deploy:push
 
 ---
 
-## Alan adı sonrası (manuel — siz yapacaksınız)
+## Alan adı: hacettepeisitme.com.tr (Hostinger + Railway)
+
+Kod tarafı güncellendi. DNS ve Railway panel adımları için aşağıdaki sırayı izleyin.
+
+### Adım 1 — Railway'de domain ekle
+
+1. https://railway.com/project/3c251192-1aa8-4d72-99db-796132bc5f3f adresini açın
+2. **hacettepeisitme-web-production** servisine tıklayın
+3. **Settings** → **Networking** → **Custom Domain** → **Add Domain**
+4. Sırayla ekleyin:
+   - `hacettepeisitme.com.tr`
+   - `www.hacettepeisitme.com.tr`
+5. Railway her domain için bir **CNAME hedefi** gösterir (ör. `xxxxx.up.railway.app`) — not alın
+
+### Adım 2 — Hostinger DNS kayıtları
+
+1. https://hpanel.hostinger.com → **Domains** → **hacettepeisitme.com.tr**
+2. **DNS / DNS Zone** veya **Manage DNS** açın
+3. Eski A/CNAME kayıtları varsa (park sayfası) silin veya devre dışı bırakın
+4. Şu kayıtları ekleyin:
+
+| Tip | Ad (Name) | Hedef (Value) | TTL |
+|-----|-----------|---------------|-----|
+| **CNAME** | `www` | Railway'in verdiği CNAME (ör. `xxxx.up.railway.app`) | 3600 |
+| **CNAME** veya **ALIAS** | `@` | Aynı Railway CNAME hedefi | 3600 |
+
+> Hostinger kök (`@`) için CNAME kabul etmiyorsa: **A kaydı** için Railway panelindeki IP'yi kullanın veya Hostinger **Domain Redirect** ile `@` → `www` yönlendirmesi yapın.
+
+5. Kaydedin; DNS yayılımı **15 dakika – 48 saat** sürebilir (genelde 1–2 saat)
+
+### Adım 3 — Railway ortam değişkenleri
+
+Railway servis → **Variables** → ekleyin/güncelleyin:
+
+```
+CORS_ORIGIN=https://hacettepeisitme.com.tr,https://www.hacettepeisitme.com.tr,https://hacettepeisitme-web-production.up.railway.app,http://localhost:3000
+PRIMARY_SITE_HOST=hacettepeisitme.com.tr
+VITE_SITE_URL=https://hacettepeisitme.com.tr
+```
+
+`VITE_*` değişkenleri **build** sırasında kullanılır → kaydettikten sonra **Redeploy** yapın.
+
+### Adım 4 — SSL ve doğrulama
+
+1. Railway'de domain yanında **Valid** / yeşil kilit görünene kadar bekleyin
+2. Tarayıcıda test edin:
+   - https://hacettepeisitme.com.tr
+   - https://www.hacettepeisitme.com.tr → otomatik `hacettepeisitme.com.tr`'ye yönlenmeli
+   - https://hacettepeisitme.com.tr/api/health
+   - https://hacettepeisitme.com.tr/sitemap.xml
+
+### Adım 5 — Google Search Console (önerilen)
+
+1. https://search.google.com/search-console
+2. **hacettepeisitme.com.tr** mülkü ekle
+3. Sitemap gönder: `https://hacettepeisitme.com.tr/sitemap.xml`
+
+---
+
+## Alan adı sonrası (isteğe bağlı)
 
 Alan adı alındığında:
 
