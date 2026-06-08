@@ -1,73 +1,87 @@
 export interface RouteSeo {
   title: string;
   description: string;
+  keywords?: string;
 }
 
 const DEFAULT_DESCRIPTION =
-  "Samsun'da işitme cihazları satışı, ücretsiz işitme testi ve uzman odyoloji desteği. Hacettepe İşitme Cihazları.";
+  "Samsun İlkadım'da işitme cihazları satışı, ücretsiz işitme testi, Phonak, Siemens ve Oticon markaları. Hacettepe İşitme Cihazları — 15 yıllık uzman destek.";
 
 export const ROUTE_SEO: Record<string, RouteSeo> = {
   '/': {
     title: 'Hacettepe İşitme Cihazları | Samsun İşitme Merkezi',
     description:
-      "Samsun'da işitme cihazları satışı ve ücretsiz işitme testi hizmeti. Siemens, Phonak ve Oticon markalarıyla 15 yıllık deneyim.",
+      "Samsun'da işitme cihazları satışı ve ücretsiz işitme testi. Phonak, Siemens, Oticon markaları, SGK desteği ve 30 gün deneme garantisi. İlkadım merkez.",
+    keywords: 'işitme cihazı Samsun, Samsun işitme merkezi, ücretsiz işitme testi, Phonak Samsun, Siemens işitme cihazı',
   },
   '/hakkimizda': {
     title: 'Hakkımızda | Hacettepe İşitme Cihazları Samsun',
     description:
-      'Hacettepe İşitme Cihazları ekibi, değerlerimiz ve Samsun merkezimizde sunduğumuz işitme sağlığı hizmetleri.',
+      '15 yıllık deneyimle Samsun İlkadım merkezinde işitme sağlığı hizmeti. Uzman odyoloji ekibi, kişiye özel cihaz uygulaması ve satış sonrası destek.',
+    keywords: 'Hacettepe İşitme hakkında, Samsun odyoloji merkezi, işitme uzmanı Samsun',
   },
   '/randevu': {
-    title: 'Online Randevu | Hacettepe İşitme Cihazları Samsun',
+    title: 'Online Randevu | Ücretsiz İşitme Testi Samsun',
     description:
-      'Ücretsiz işitme testi ve cihaz danışmanlığı için online randevu formu. Samsun İlkadım merkezimiz.',
+      'Samsun Hacettepe İşitme Merkezi online randevu formu. Ücretsiz işitme testi, cihaz danışmanlığı ve aynı gün randevu imkanı.',
+    keywords: 'işitme testi randevu Samsun, online randevu işitme, ücretsiz odyometri Samsun',
   },
   '/iletisim': {
     title: 'İletişim | Hacettepe İşitme Cihazları Samsun',
     description:
-      'Adres, telefon, WhatsApp ve iletişim formu ile Hacettepe İşitme Cihazları Samsun merkezine ulaşın.',
+      'Adres: Tepecik İlkadım Samsun. Telefon +90 533 474 58 06, WhatsApp ve iletişim formu. Google Haritalar yol tarifi.',
+    keywords: 'Hacettepe İşitme iletişim, Samsun işitme merkezi adres, işitme cihazı telefon Samsun',
   },
   '/ucretsiz-isitme-testi': {
-    title: 'Ücretsiz İşitme Testi | Hacettepe İşitme Cihazları Samsun',
+    title: 'Ücretsiz İşitme Testi Samsun | Hacettepe İşitme',
     description:
-      'Samsun’da ücretsiz işitme testi randevusu alın. Uzman değerlendirme ve kişiye özel cihaz önerileri.',
+      'Samsun İlkadım’da ücretsiz işitme testi ve uzman odyolog değerlendirmesi. Kişiye özel işitme cihazı önerileri ve SGK bilgilendirmesi.',
+    keywords: 'ücretsiz işitme testi Samsun, işitme testi İlkadım, odyometri testi Samsun',
   },
   '/online-isitme-testi': {
-    title: 'Online İşitme Testi | Hacettepe İşitme Cihazları Samsun',
+    title: 'Online İşitme Testi | Ön Değerlendirme — Samsun',
     description:
-      'Evden ön değerlendirme için online işitme testi. Sonuçlar bilgilendirme amaçlıdır; klinik test önerilir.',
+      'Evden online işitme testi ile ön değerlendirme yapın. Sonuçlar bilgilendirme amaçlıdır; kesin tanı için Samsun merkezimizde ücretsiz klinik test önerilir.',
+    keywords: 'online işitme testi, internet işitme testi Türkçe, işitme kaybı testi',
   },
   '/isitme-cihazi-fiyatlari': {
-    title: 'İşitme Cihazı Fiyatları | Hacettepe İşitme Cihazları Samsun',
+    title: 'İşitme Cihazı Fiyatları 2024-2025 | Samsun',
     description:
-      'İşitme cihazı fiyatlarını etkileyen faktörler, markalar ve SGK desteği hakkında güncel bilgiler.',
+      'İşitme cihazı fiyatlarını etkileyen faktörler, Phonak, Siemens, Oticon modelleri ve SGK ödeme desteği. Samsun merkezimizde ücretsiz fiyat danışmanlığı.',
+    keywords: 'işitme cihazı fiyatları, işitme cihazı fiyat Samsun, SGK işitme cihazı fiyat',
   },
   '/samsun-isitme-testi': {
-    title: 'Samsun İşitme Testi | Hacettepe İşitme Cihazları',
+    title: 'Samsun İşitme Testi | Ücretsiz Odyometri',
     description:
-      'Samsun’da ücretsiz işitme testi, odyometri ve işitme cihazı danışmanlığı. Randevu ve merkez bilgileri.',
+      'Samsun’da ücretsiz işitme testi, odyometri ve işitme cihazı danışmanlığı. Hacettepe İşitme Merkezi randevu, adres ve çalışma saatleri.',
+    keywords: 'Samsun işitme testi, işitme testi Samsun ücretsiz, Samsun odyoloji',
   },
   '/sgk-odeme-tutarlari': {
-    title: 'SGK Ödeme Tutarları | Hacettepe İşitme Cihazları Samsun',
+    title: 'SGK İşitme Cihazı Ödeme Tutarları | Samsun',
     description:
-      'İşitme cihazlarında SGK ödeme tutarları, başvuru süreci ve merkezimizdeki danışmanlık hizmeti.',
+      'SGK işitme cihazı ödeme tutarları, başvuru belgeleri ve süreç. Samsun Hacettepe İşitme Merkezi’nde SGK danışmanlığı ve cihaz uygulaması.',
+    keywords: 'SGK işitme cihazı ödeme, SGK işitme cihazı tutarları, işitme cihazı SGK Samsun',
   },
   '/blog': {
-    title: 'Blog | Hacettepe İşitme Cihazları Samsun',
+    title: 'İşitme Sağlığı Blogu | Hacettepe İşitme Samsun',
     description:
-      'İşitme sağlığı, cihaz teknolojileri, bakım ve SGK süreçleri hakkında uzman blog yazıları.',
+      'İşitme kaybı, cihaz teknolojileri, bakım ipuçları ve SGK süreçleri hakkında uzman blog yazıları. Samsun işitme merkezi rehberleri.',
+    keywords: 'işitme sağlığı blog, işitme cihazı bakımı, işitme kaybı belirtileri',
   },
   '/gizlilik-politikasi': {
-    title: 'Gizlilik Politikası | Hacettepe İşitme Cihazları Samsun',
-    description: 'Kişisel verilerin korunması ve gizlilik politikamız.',
+    title: 'Gizlilik Politikası | Hacettepe İşitme Cihazları',
+    description: 'Kişisel verilerin korunması, çerez kullanımı ve gizlilik politikamız.',
+    keywords: 'gizlilik politikası',
   },
   '/kullanim-kosullari': {
-    title: 'Kullanım Koşulları | Hacettepe İşitme Cihazları Samsun',
-    description: 'Web sitesi kullanım koşulları ve yasal bilgilendirme.',
+    title: 'Kullanım Koşulları | Hacettepe İşitme Cihazları',
+    description: 'Web sitesi kullanım koşulları, sorumluluk reddi ve yasal bilgilendirme.',
+    keywords: 'kullanım koşulları',
   },
   '/kvkk-aydinlatma-metni': {
-    title: 'KVKK Aydınlatma Metni | Hacettepe İşitme Cihazları Samsun',
-    description: '6698 sayılı KVKK kapsamında aydınlatma metni.',
+    title: 'KVKK Aydınlatma Metni | Hacettepe İşitme Cihazları',
+    description: '6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni.',
+    keywords: 'KVKK aydınlatma metni, kişisel veri',
   },
 };
 

@@ -4,6 +4,7 @@ import NotFound from '../NotFound';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 import { SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { absoluteUrl } from '@/lib/siteUrl';
+import Seo from '@/components/Seo';
 
 function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -22,18 +23,32 @@ function BlogDetail() {
     .slice(0, 3 - relatedPosts.length);
 
   const allRelated = [...relatedPosts, ...otherRelated];
-  const postUrl = absoluteUrl(`/blog/${post.slug}`);
+  const postPath = `/blog/${post.slug}`;
+  const postUrl = absoluteUrl(postPath);
+  const postImage = absoluteUrl(post.ogImage);
 
   return (
     <div className="animate-fadeInUp">
-      {/* SEO: Structured Data */}
+      <Seo
+        title={`${post.title} | Hacettepe İşitme Cihazları Blog`}
+        description={post.metaDescription}
+        path={postPath}
+        image={post.ogImage}
+        type="article"
+        keywords={post.keywords}
+        publishedTime={post.date}
+        modifiedTime={post.date}
+        author={post.author}
+        section={post.category}
+      />
       <script type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.metaDescription,
-          image: post.ogImage,
+          image: postImage,
+          url: postUrl,
           author: {
             '@type': 'Person',
             name: post.author,
@@ -44,32 +59,17 @@ function BlogDetail() {
             name: 'Hacettepe İşitme Cihazları',
             logo: {
               '@type': 'ImageObject',
-              url: '/local-images/readdy-blog-logo-seq-logo.webp',
+              url: absoluteUrl('/local-images/brand-favicon.webp'),
             },
           },
           datePublished: post.date,
           dateModified: post.date,
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': absoluteUrl(`/blog/${post.slug}`),
+            '@id': postUrl,
           },
         })}
       </script>
-
-      {/* React 19 Document Metadata */}
-      <title>{`${post.title} | Hacettepe İşitme Cihazları Blog`}</title>
-      <meta name="description" content={post.metaDescription} />
-      <meta name="keywords" content={post.keywords} />
-      <meta property="og:title" content={post.title} />
-      <meta property="og:description" content={post.metaDescription} />
-      <meta property="og:image" content={post.ogImage} />
-      <meta property="og:type" content="article" />
-      <meta property="article:published_time" content={post.date} />
-      <meta property="article:author" content={post.author} />
-      <meta property="article:section" content={post.category} />
-      <meta name="twitter:title" content={post.title} />
-      <meta name="twitter:description" content={post.metaDescription} />
-      <meta name="twitter:image" content={post.ogImage} />
 
       {/* Hero */}
       <section className="relative min-h-[400px] md:min-h-[520px] flex items-end overflow-hidden">

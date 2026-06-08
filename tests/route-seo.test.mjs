@@ -12,3 +12,8 @@ test('routeSeo ana sayfa meta tanımı içerir', () => {
 test('routeSeo blog listesi meta tanımı içerir', () => {
   assert.match(routeSeo, /'\/blog':\s*\{/);
 });
+
+test('routeSeo ana sayfa yerel anahtar kelime içerir', () => {
+  assert.match(routeSeo, /Samsun/);
+  assert.match(routeSeo, /keywords/);
+});

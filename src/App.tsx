@@ -7,11 +7,13 @@ import Footer from "./components/feature/Footer";
 import WhatsAppButton from "./components/feature/WhatsAppButton";
 import ChatBot from "./components/feature/ChatBot";
 import ScrollToTop from "./components/feature/ScrollToTop";
+import SeoJsonLd from "./components/SeoJsonLd";
 
 function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <BrowserRouter basename={__BASE_PATH__}>
+        <SeoJsonLd />
         <ScrollToTop />
         <Navbar />
         <main>

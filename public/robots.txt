@@ -1,4 +1,6 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://hacettepeisitme.com.tr/sitemap.xml
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://hacettepeisitme.com.tr/sitemap.xml
+

@@ -9,6 +9,10 @@ test('robots.txt sitemap adresi içerir', () => {
   assert.match(robots, /Sitemap:\s+https:\/\/hacettepeisitme\.com\.tr\/sitemap\.xml/);
 });
 
+test('robots.txt api yollarını engeller', () => {
+  assert.match(robots, /Disallow:\s+\/api\//);
+});
+
 test('sitemap.xml ana sayfayı listeler', () => {
   assert.match(sitemap, /<loc>https:\/\/hacettepeisitme\.com\.tr\/<\/loc>/);
 });

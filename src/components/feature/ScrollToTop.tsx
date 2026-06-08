@@ -19,5 +19,12 @@ export default function ScrollToTop() {
 
   if (!seo) return null;
 
-  return <Seo title={seo.title} description={seo.description} path={pathname} />;
+  return (
+    <Seo
+      title={seo.title}
+      description={seo.description}
+      path={pathname}
+      keywords={seo.keywords}
+    />
+  );
 }

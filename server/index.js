@@ -93,6 +93,7 @@ const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).fil
 app.set('trust proxy', 1);
 app.use((req, res, next) => {
   if (process.env.NODE_ENV !== 'production') return next();
+  if (req.path.startsWith('/api/')) return next();
   const host = (req.hostname || '').toLowerCase();
   const primary = PRIMARY_SITE_HOST.toLowerCase();
   if (host === `www.${primary}`) {
@@ -1427,17 +1428,22 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
 }
 
 async function startServer() {
-  await loadBundledInstagramFeed();
-  await loadPersistedInstagramFeed();
-  app.listen(PORT, HOST, () => {
-    console.log(`Web app running on http://${HOST}:${PORT}`);
-    if (shouldAttemptLiveInstagram()) {
-      void refreshInstagramFeedCache();
-      setInterval(() => void refreshInstagramFeedCache(), INSTAGRAM_FEED_CACHE_MS);
-    } else {
-      console.log('[instagram] live refresh disabled; serving bundled/cached feed');
-    }
+  await new Promise((resolve) => {
+    app.listen(PORT, HOST, () => {
+      console.log(`Web app running on http://${HOST}:${PORT}`);
+      resolve();
+    });
   });
+  void loadBundledInstagramFeed()
+    .then(() => loadPersistedInstagramFeed())
+    .then(() => {
+      if (shouldAttemptLiveInstagram()) {
+        void refreshInstagramFeedCache();
+        setInterval(() => void refreshInstagramFeedCache(), INSTAGRAM_FEED_CACHE_MS);
+      } else {
+        console.log('[instagram] live refresh disabled; serving bundled/cached feed');
+      }
+    });
 }
 
 startServer().catch((error) => {

@@ -1,10 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
+import Seo from "@/components/Seo";
 
 export default function NotFound() {
   const location = useLocation();
   
   return (
     <div className="relative flex flex-col items-center justify-center h-screen text-center px-4 animate-fadeInUp">
+      <Seo
+        title="Sayfa Bulunamadı | Hacettepe İşitme Cihazları"
+        description="Aradığınız sayfa mevcut değil. Samsun işitme merkezi ana sayfasına dönün."
+        path={location.pathname}
+        noindex
+      />
       <h1 className="absolute bottom-0 text-9xl md:text-[12rem] font-black text-gray-50 select-none pointer-events-none z-0">
         404
       </h1>
