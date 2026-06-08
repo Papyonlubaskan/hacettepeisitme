@@ -45,7 +45,8 @@ const HAS_INSTAGRAM_CREDENTIALS = Boolean(INSTAGRAM_ACCESS_TOKEN || INSTAGRAM_SE
 const INSTAGRAM_LIVE_REFRESH =
   process.env.INSTAGRAM_LIVE_REFRESH === 'true' ||
   (process.env.INSTAGRAM_LIVE_REFRESH !== 'false' && HAS_INSTAGRAM_CREDENTIALS);
-const SITE_PHONE_WA = '905334745806';
+const SITE_PHONE_WA = process.env.WHATSAPP_NOTIFY_PHONE || '905334745806';
+const WHATSAPP_NOTIFY_API_KEY = process.env.WHATSAPP_NOTIFY_API_KEY || '';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
@@ -1081,7 +1082,7 @@ async function addNewsletterSubscriber(email) {
   await writeSubscribers(subscribers);
 }
 
-async function sendFormMail(formType, body) {
+function buildFormNotificationText(formType, body) {
   const name = clean(body.name, 150) || '-';
   const email = clean(body.email, 180) || '-';
   const phone = clean(body.phone, 40) || '-';
@@ -1092,18 +1093,64 @@ async function sendFormMail(formType, body) {
   const time = clean(body.time, 20) || '-';
   const age = clean(body.age, 10) || '-';
 
-  const mailSubject = `[Hacettepe Form] ${formType.toUpperCase()} - ${name}`;
-  const lines = [
-    `Form Tipi: ${formType}`,
+  return [
+    `*Hacettepe İşitme — ${formType.toUpperCase()}*`,
     `Ad Soyad: ${name}`,
     `Telefon: ${phone}`,
     `E-posta: ${email}`,
     `Konu: ${subject}`,
     `Hizmet: ${service}`,
-    `Randevu Tarihi: ${date}`,
-    `Randevu Saati: ${time}`,
-    `Yas: ${age}`,
+    `Randevu: ${date} ${time}`.trim(),
+    `Yaş: ${age}`,
     `Mesaj: ${message}`,
+  ].join('\n');
+}
+
+function hasSmtpConfigured() {
+  return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
+}
+
+async function sendFormWhatsApp(formType, body) {
+  if (!WHATSAPP_NOTIFY_API_KEY) return;
+
+  const text = buildFormNotificationText(formType, body).slice(0, 1200);
+  const url =
+    `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(SITE_PHONE_WA)}` +
+    `&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(WHATSAPP_NOTIFY_API_KEY)}`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    const detail = (await res.text()).slice(0, 200);
+    throw new Error(`WhatsApp notify HTTP ${res.status}: ${detail}`);
+  }
+}
+
+async function deliverFormNotification(formType, body) {
+  const tasks = [];
+  if (hasSmtpConfigured()) {
+    tasks.push(sendFormMail(formType, body));
+  }
+  if (WHATSAPP_NOTIFY_API_KEY) {
+    tasks.push(sendFormWhatsApp(formType, body));
+  }
+  if (tasks.length === 0) {
+    await sendFormMail(formType, body);
+    return;
+  }
+
+  const results = await Promise.allSettled(tasks);
+  if (results.some((result) => result.status === 'fulfilled')) return;
+
+  throw results.find((result) => result.status === 'rejected')?.reason || new Error('FORM_NOTIFY_FAILED');
+}
+
+async function sendFormMail(formType, body) {
+  const name = clean(body.name, 150) || '-';
+  const email = clean(body.email, 180) || '-';
+
+  const mailSubject = `[Hacettepe Form] ${formType.toUpperCase()} - ${name}`;
+  const lines = [
+    buildFormNotificationText(formType, body),
     '',
     '---',
     'Bu mail web sitesi formundan geldi. Müşteriye Gmail\'de Yanıtla ile dönebilirsiniz.',
@@ -1152,7 +1199,7 @@ function formRoute(formType) {
         await addNewsletterSubscriber(email);
         await sendNewsletterWelcomeMail(email);
       }
-      await sendFormMail(formType, parsed.data);
+      await deliverFormNotification(formType, parsed.data);
       res.status(200).json({ ok: true });
     } catch (error) {
       console.error(`[${formType}] form mail error:`, error);
