@@ -28,14 +28,21 @@ npm run build
 **Canlı:** https://hacettepeisitme.com.tr  
 **Railway (yedek):** https://hacettepeisitme-web-production.up.railway.app
 
-Push sonrası Railway GitHub bağlantısı otomatik deploy tetikler:
+Kod push (deploy repo):
 
 ```bash
 npm run deploy:push
 # veya: git push papyon main
 ```
 
-Yerel CLI deploy:
+**Deploy tetiklenmiyorsa** (en sık 2 neden):
+
+1. **GitHub Actions** — `RAILWAY_TOKEN` secret yok → workflow deploy etmez.  
+   Railway → Settings → Tokens → oluştur → GitHub `Papyonlubaskan/hacettepeisitme` → Settings → Secrets → `RAILWAY_TOKEN`
+
+2. **Railway Source** — panelde repo `Papyonlubaskan/hacettepeisitme` + branch `main` olmalı (eski `hacettepeisitme55-a11y` bağlantısı deploy etmez).
+
+Yerel CLI deploy (hemen):
 
 ```bash
 railway login
