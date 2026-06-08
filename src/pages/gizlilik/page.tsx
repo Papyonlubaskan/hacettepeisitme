@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { trackPageView } from '@/lib/tracking';
-import { SITE_ADDRESS_SINGLE, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
+import AddressLink from '@/components/feature/AddressLink';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -167,7 +168,8 @@ export default function PrivacyPolicy() {
                   </a>
                 </p>
                 <p>
-                  <strong className="text-brand-dark">Adres:</strong> {SITE_ADDRESS_SINGLE}
+                  <strong className="text-brand-dark">Adres:</strong>{' '}
+                  <AddressLink showHint={false} className="text-gray-600" />
                 </p>
               </div>
             </div>

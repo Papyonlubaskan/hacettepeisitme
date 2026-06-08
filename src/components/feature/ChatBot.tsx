@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { SITE_ADDRESS_SINGLE, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import { SITE_ADDRESS_SINGLE, SITE_MAP_URL, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 
 interface Message {
   role: 'user' | 'bot';
@@ -41,7 +41,7 @@ const INTENTS: Intent[] = [
   },
   {
     keys: ['adres', 'konum', 'neredesiniz'],
-    answer: `Merkezimiz ${SITE_ADDRESS_SINGLE}. Detaylı yol tarifi için /iletisim sayfasındaki haritayı açabilirsiniz.`,
+    answer: `Merkezimiz ${SITE_ADDRESS_SINGLE}. Konum ve yol tarifi: ${SITE_MAP_URL}`,
     suggestions: ['İletişim sayfasını aç', 'Telefonla aramak istiyorum'],
   },
   {

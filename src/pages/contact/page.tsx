@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
+import AddressLink from '@/components/feature/AddressLink';
+import { trackCTAClick, trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
-import {
-  SITE_MAP_EMBED_URL,
-  SITE_PHONE_DISPLAY,
-  SITE_PHONE_E164,
-  SITE_ADDRESS_SINGLE,
-} from '@/lib/siteContact';
+import { SITE_MAP_EMBED_URL, SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -98,7 +94,7 @@ export default function Contact() {
                 <i className="ri-map-pin-line text-xl text-brand-accent" />
               </div>
               <h3 className="text-sm font-bold text-brand-dark mb-1">Adres</h3>
-              <p className="text-sm text-gray-500 text-pretty">{SITE_ADDRESS_SINGLE}</p>
+              <AddressLink className="text-sm text-gray-500 text-pretty" />
             </div>
           </div>
         </div>
@@ -117,6 +113,16 @@ export default function Contact() {
                 Kliniğimiz İlkadım Tepecik&apos;te, Eğitim Araştırma Hastanesi karşısı Şok Market üstündedir; D010 güzergâhına yakındır.
                 Aşağıdaki haritadan konumumuzu görebilir ve yol tarifi alabilirsiniz.
               </p>
+              <a
+                href={SITE_MAP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+                onClick={() => trackCTAClick('Konum / Harita', 'contact_map_cta', SITE_MAP_URL)}
+              >
+                <i className="ri-navigation-line" aria-hidden />
+                Google Haritalar&apos;da aç / yol tarifi al
+              </a>
               <div className="rounded-2xl overflow-hidden border border-gray-200">
                 <iframe
                   src={SITE_MAP_EMBED_URL}

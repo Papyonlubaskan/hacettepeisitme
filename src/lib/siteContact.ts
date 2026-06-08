@@ -19,5 +19,10 @@ export const SITE_ADDRESS_SCHEMA = {
   addressCountry: 'TR',
 } as const;
 
+/** Google Haritalar konum / yol tarifi (mobilde Haritalar uygulamasını açar) */
+export const SITE_MAP_LAT = 41.2694071;
+export const SITE_MAP_LNG = 36.297792;
+export const SITE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${SITE_MAP_LAT},${SITE_MAP_LNG}`;
+
 /** Embed: adres araması (API anahtarı gerektirmez) */
-export const SITE_MAP_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(SITE_ADDRESS_SINGLE)}&hl=tr&z=17&output=embed`;
+export const SITE_MAP_EMBED_URL = `https://www.google.com/maps?q=${SITE_MAP_LAT},${SITE_MAP_LNG}&hl=tr&z=17&output=embed`;

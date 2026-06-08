@@ -2,14 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
-import {
-  SITE_ADDRESS_LINE1,
-  SITE_ADDRESS_LINE2,
-  SITE_ADDRESS_LINE3,
-  SITE_PHONE_DISPLAY,
-  SITE_PHONE_E164,
-  SITE_PHONE_WA,
-} from '@/lib/siteContact';
+import AddressLink from '@/components/feature/AddressLink';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -178,11 +172,7 @@ export default function Footer() {
                     </span>
                     <span>
                       <span className="block text-xs text-gray-400 mb-0.5">Adres</span>
-                      {SITE_ADDRESS_LINE1}
-                      <br />
-                      {SITE_ADDRESS_LINE2}
-                      <br />
-                      {SITE_ADDRESS_LINE3}
+                      <AddressLink variant="multiline" className="text-gray-300 hover:text-brand-accent" />
                     </span>
                   </div>
                   <div className="flex items-start gap-3 text-sm text-gray-300">

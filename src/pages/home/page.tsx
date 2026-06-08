@@ -1,6 +1,12 @@
 ﻿import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
-import { SITE_ADDRESS_SCHEMA, SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import {
+  SITE_ADDRESS_SCHEMA,
+  SITE_MAP_URL,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+  SITE_PHONE_WA,
+} from '@/lib/siteContact';
 import { services } from '../../mocks/services';
 import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
@@ -275,6 +281,7 @@ export default function Home() {
     name: 'Hacettepe Isitme Cihazlari',
     image: '/local-images/readdy-home-hero-hero2024v2a.webp',
     telephone: SITE_PHONE_E164,
+    hasMap: SITE_MAP_URL,
     address: {
       '@type': 'PostalAddress',
       streetAddress: SITE_ADDRESS_SCHEMA.streetAddress,

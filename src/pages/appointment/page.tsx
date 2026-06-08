@@ -2,12 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
-import {
-  SITE_ADDRESS_LINE1,
-  SITE_ADDRESS_LINE3,
-  SITE_PHONE_DISPLAY,
-  SITE_PHONE_E164,
-} from '@/lib/siteContact';
+import AddressLink from '@/components/feature/AddressLink';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Appointment() {
   const [formData, setFormData] = useState({
@@ -122,9 +118,8 @@ export default function Appointment() {
                 <i className="ri-map-pin-line text-brand-accent" />
               </span>
               <div>
-                <p className="text-xs text-gray-500">Adres</p>
-                <p className="text-sm font-semibold leading-snug">{SITE_ADDRESS_LINE1}</p>
-                <p className="text-xs text-gray-600">{SITE_ADDRESS_LINE3}</p>
+                <p className="text-xs text-gray-500 mb-1">Adres</p>
+                <AddressLink variant="compact" className="text-sm font-semibold text-brand-dark" />
               </div>
             </div>
           </div>
