@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackLead } from '@/lib/tracking';
+import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
+import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
 export default function HeroFormSection() {
@@ -39,6 +41,7 @@ export default function HeroFormSection() {
         trackFormSubmit('landing_free_test', 'success', 'landing-hero-form', {
           age: formData.age,
         });
+        offerFormWhatsAppHandoff('landing', formData);
       })
       .catch(() => {
         setSubmitted(false);
@@ -46,7 +49,7 @@ export default function HeroFormSection() {
         trackFormSubmit('landing_free_test', 'error', 'landing-hero-form', {
           age: formData.age,
         });
-        triggerContactFallback('ücretsiz test');
+        triggerContactFallback('ücretsiz test', 'landing', formData);
       });
   };
 
@@ -127,9 +130,10 @@ export default function HeroFormSection() {
                 <p className="text-sm text-gray-500 mb-1">
                   En kısa sürede {SITE_PHONE_DISPLAY} numaradan size dönüş yapacağız.
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 mb-5">
                   İlkadım/Samsun şubemizden randevunuz onaylanacaktır.
                 </p>
+                <FormWhatsAppButton formType="landing" data={formData} className="w-full sm:w-auto" />
               </div>
             ) : (
               <form onSubmit={handleSubmit} data-form="landing" className="space-y-4">

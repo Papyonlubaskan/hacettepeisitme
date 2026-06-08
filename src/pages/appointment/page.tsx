@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
+import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
+import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
 import AddressLink from '@/components/feature/AddressLink';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
@@ -44,6 +46,7 @@ export default function Appointment() {
           service: formData.service,
           date: formData.date,
         });
+        offerFormWhatsAppHandoff('appointment', formData);
       })
       .catch(() => {
         setSubmitted(false);
@@ -52,7 +55,7 @@ export default function Appointment() {
           service: formData.service,
           date: formData.date,
         });
-        triggerContactFallback('randevu');
+        triggerContactFallback('randevu', 'appointment', formData);
       });
   };
 
@@ -139,15 +142,18 @@ export default function Appointment() {
                   Randevu Talebiniz Alındı!
                 </h2>
                 <p className="text-gray-500 mb-6">
-                  En kısa sürede size dönüş yapacağız. Teşekkür ederiz.
+                  En kısa sürede size dönüş yapacağız. İsterseniz randevuyu WhatsApp ile de iletebilirsiniz.
                 </p>
-                <Link
-                  to="/"
-                  className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
-                >
-                  <i className="ri-home-line" />
-                  <span>Ana Sayfaya Dön</span>
-                </Link>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <FormWhatsAppButton formType="appointment" data={formData} />
+                  <Link
+                    to="/"
+                    className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
+                  >
+                    <i className="ri-home-line" />
+                    <span>Ana Sayfaya Dön</span>
+                  </Link>
+                </div>
               </div>
             ) : (
               <form

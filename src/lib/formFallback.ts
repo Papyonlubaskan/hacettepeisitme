@@ -1,11 +1,13 @@
+import { getFormWhatsAppUrl } from '@/lib/formWhatsApp';
 import { SITE_PHONE_E164 } from '@/lib/siteContact';
 
-export function triggerContactFallback(source: string) {
+export function triggerContactFallback(
+  source: string,
+  formType = 'contact',
+  data: Record<string, string | undefined> = {}
+) {
   const phone = SITE_PHONE_E164;
-  const whatsappMessage = encodeURIComponent(
-    `Merhaba, ${source} formunu doldurdum ancak teknik bir hata nedeniyle iletilemedi. Randevu için destek rica ederim.`
-  );
-  const whatsappUrl = `https://wa.me/${phone.replace('+', '')}?text=${whatsappMessage}`;
+  const whatsappUrl = getFormWhatsAppUrl(formType, data, `Merhaba, ${source} formu teknik hata nedeniyle iletilemedi.`);
   const telUrl = `tel:${phone}`;
 
   if (typeof window === 'undefined') return;

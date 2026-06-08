@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import AddressLink from '@/components/feature/AddressLink';
 import { trackCTAClick, trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
+import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
+import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
 import { SITE_MAP_EMBED_URL, SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Contact() {
@@ -34,6 +36,7 @@ export default function Contact() {
         trackFormSubmit('contact', 'success', 'contact-form', {
           subject: formData.subject,
         });
+        offerFormWhatsAppHandoff('contact', formData);
       })
       .catch(() => {
         setSubmitted(false);
@@ -41,7 +44,7 @@ export default function Contact() {
         trackFormSubmit('contact', 'error', 'contact-form', {
           subject: formData.subject,
         });
-        triggerContactFallback('iletişim');
+        triggerContactFallback('iletişim', 'contact', formData);
       });
   };
 
@@ -160,9 +163,10 @@ export default function Contact() {
                   <h2 className="font-serif text-2xl font-bold text-brand-dark mb-3">
                     Mesajınız Gönderildi!
                   </h2>
-                  <p className="text-gray-500">
-                    En kısa sürede size dönüş yapacağız.
+                  <p className="text-gray-500 mb-6">
+                    En kısa sürede size dönüş yapacağız. İsterseniz formu WhatsApp ile de iletebilirsiniz.
                   </p>
+                  <FormWhatsAppButton formType="contact" data={formData} />
                 </div>
               ) : (
                 <form
