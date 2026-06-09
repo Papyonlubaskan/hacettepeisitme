@@ -129,6 +129,12 @@ export default function InstagramFeedSection() {
                             decoding="async"
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              const img = e.currentTarget;
+                              if (img.dataset.fallback === '1') return;
+                              img.dataset.fallback = '1';
+                              img.src = '/local-images/pro-hero-main.webp';
+                            }}
                           />
                           {post.mediaType === 'VIDEO' && (
                             <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white">

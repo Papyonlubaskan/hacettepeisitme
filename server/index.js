@@ -312,7 +312,9 @@ function isAllowedInstagramImageUrl(imageUrl) {
 }
 
 function proxifyInstagramImageUrl(imageUrl) {
-  if (!imageUrl || !isAllowedInstagramImageUrl(imageUrl)) return imageUrl;
+  if (!imageUrl) return imageUrl;
+  if (imageUrl.startsWith('/local-images/')) return imageUrl;
+  if (!isAllowedInstagramImageUrl(imageUrl)) return imageUrl;
   return `/api/instagram/media?src=${encodeURIComponent(imageUrl)}`;
 }
 
@@ -1273,7 +1275,7 @@ app.get('/api/health', (_req, res) => {
   res.json({
     ok: true,
     service: 'local-form-api',
-    instagramFeed: 'bundled-oembed-v4',
+    instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
   });
 });
