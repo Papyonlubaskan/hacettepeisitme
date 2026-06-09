@@ -1280,6 +1280,10 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+app.get('/google399566b06c8c412a.html', (_req, res) => {
+  res.type('text/html').send('google-site-verification: google399566b06c8c412a.html');
+});
+
 app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
   try {
     const now = Date.now();

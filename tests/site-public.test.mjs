@@ -4,6 +4,7 @@ import { test } from 'node:test';
 
 const robots = readFileSync('public/robots.txt', 'utf8');
 const sitemap = readFileSync('public/sitemap.xml', 'utf8');
+const googleVerification = readFileSync('public/google399566b06c8c412a.html', 'utf8');
 
 test('robots.txt sitemap adresi içerir', () => {
   assert.match(robots, /Sitemap:\s+https:\/\/hacettepeisitme\.com\.tr\/sitemap\.xml/);
@@ -19,4 +20,11 @@ test('sitemap.xml ana sayfayı listeler', () => {
 
 test('sitemap.xml blog listesini içerir', () => {
   assert.match(sitemap, /\/blog<\/loc>/);
+});
+
+test('Google Search Console doğrulama dosyası mevcut', () => {
+  assert.equal(
+    googleVerification.trim(),
+    'google-site-verification: google399566b06c8c412a.html',
+  );
 });
