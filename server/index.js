@@ -82,6 +82,8 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'newsletter-subscribers.json');
 const FORM_REQUESTS_LOG_FILE = path.join(DATA_DIR, 'form-requests.log');
+const FORM_SUBMISSIONS_LOG_FILE = path.join(DATA_DIR, 'form-submissions.jsonl');
+const FORM_NOTIFY_TIMEOUT_MS = Number(process.env.FORM_NOTIFY_TIMEOUT_MS || 8000);
 const INSTAGRAM_CACHE_FILE = path.join(DATA_DIR, 'instagram-feed-cache.json');
 const INSTAGRAM_BUNDLED_FILE = path.join(__dirname, 'data', 'instagram-feed-bundled.json');
 const INSTAGRAM_SEED_FILE = path.join(__dirname, 'data', 'instagram-permalink-seed.json');
@@ -894,15 +896,19 @@ async function fetchInstagramFeed() {
   return null;
 }
 
+const smtpPort = Number(process.env.SMTP_PORT || 465);
 const transporter = nodemailer.createTransport({
   service: process.env.SMTP_SERVICE || 'gmail',
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: Number(process.env.SMTP_PORT || 465),
-  secure: true,
+  port: smtpPort,
+  secure: smtpPort === 465,
   auth: {
     user: process.env.SMTP_USER || '',
     pass: process.env.SMTP_PASS || '',
   },
+  connectionTimeout: FORM_NOTIFY_TIMEOUT_MS,
+  greetingTimeout: FORM_NOTIFY_TIMEOUT_MS,
+  socketTimeout: FORM_NOTIFY_TIMEOUT_MS + 4000,
 });
 
 function clean(value, max = 5000) {
@@ -1111,6 +1117,25 @@ function hasSmtpConfigured() {
   return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
 }
 
+function withNotifyTimeout(promise, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`${label}_TIMEOUT`)), FORM_NOTIFY_TIMEOUT_MS);
+    }),
+  ]);
+}
+
+async function persistFormSubmission(formType, body) {
+  await fs.mkdir(DATA_DIR, { recursive: true });
+  const entry = {
+    timestamp: new Date().toISOString(),
+    formType,
+    data: body,
+  };
+  await fs.appendFile(FORM_SUBMISSIONS_LOG_FILE, `${JSON.stringify(entry)}\n`, 'utf-8');
+}
+
 async function sendFormWhatsApp(formType, body) {
   if (!WHATSAPP_NOTIFY_API_KEY) return;
 
@@ -1119,7 +1144,7 @@ async function sendFormWhatsApp(formType, body) {
     `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(SITE_PHONE_WA)}` +
     `&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(WHATSAPP_NOTIFY_API_KEY)}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(FORM_NOTIFY_TIMEOUT_MS) });
   if (!res.ok) {
     const detail = (await res.text()).slice(0, 200);
     throw new Error(`WhatsApp notify HTTP ${res.status}: ${detail}`);
@@ -1129,20 +1154,21 @@ async function sendFormWhatsApp(formType, body) {
 async function deliverFormNotification(formType, body) {
   const tasks = [];
   if (hasSmtpConfigured()) {
-    tasks.push(sendFormMail(formType, body));
+    tasks.push(withNotifyTimeout(sendFormMail(formType, body), 'SMTP'));
   }
   if (WHATSAPP_NOTIFY_API_KEY) {
-    tasks.push(sendFormWhatsApp(formType, body));
+    tasks.push(withNotifyTimeout(sendFormWhatsApp(formType, body), 'WHATSAPP'));
   }
   if (tasks.length === 0) {
-    await sendFormMail(formType, body);
+    console.warn(`[${formType}] Bildirim kanalı yok — kayıt dosyada: form-submissions.jsonl`);
     return;
   }
 
   const results = await Promise.allSettled(tasks);
   if (results.some((result) => result.status === 'fulfilled')) return;
 
-  throw results.find((result) => result.status === 'rejected')?.reason || new Error('FORM_NOTIFY_FAILED');
+  const reason = results.find((result) => result.status === 'rejected')?.reason;
+  console.error(`[${formType}] Bildirim kanalları başarısız:`, reason);
 }
 
 async function sendFormMail(formType, body) {
@@ -1191,6 +1217,9 @@ function formRoute(formType) {
         });
         return;
       }
+
+      await persistFormSubmission(formType, parsed.data);
+
       if (formType === 'newsletter') {
         const email = clean(parsed.data?.email, 180);
         if (!isValidEmail(email)) {
@@ -1198,13 +1227,18 @@ function formRoute(formType) {
           return;
         }
         await addNewsletterSubscriber(email);
-        await sendNewsletterWelcomeMail(email);
+        res.status(200).json({ ok: true });
+        void withNotifyTimeout(sendNewsletterWelcomeMail(email), 'NEWSLETTER_MAIL').catch((error) => {
+          console.error('[newsletter] welcome mail error:', error);
+        });
+        return;
       }
-      await deliverFormNotification(formType, parsed.data);
+
       res.status(200).json({ ok: true });
+      void deliverFormNotification(formType, parsed.data);
     } catch (error) {
-      console.error(`[${formType}] form mail error:`, error);
-      res.status(500).json({ ok: false, error: 'FORM_MAIL_FAILED' });
+      console.error(`[${formType}] form error:`, error);
+      res.status(500).json({ ok: false, error: 'FORM_SUBMIT_FAILED' });
     }
   };
 }
