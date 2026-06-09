@@ -1207,26 +1207,17 @@ async function sendFormWhatsApp(formType, body) {
   }
 }
 
-async function sendFormMailResend(formType, body) {
+async function sendResendMail({ to, subject, text, replyTo }) {
   const apiKey = (process.env.RESEND_API_KEY || '').trim();
-  const name = clean(body.name, 150) || '-';
-  const customerEmail = clean(body.email, 180);
-  const mailSubject = `[Hacettepe Form] ${formType.toUpperCase()} - ${name}`;
-  const text = [
-    buildFormNotificationText(formType, body),
-    '',
-    '---',
-    'Bu mail web sitesi formundan geldi.',
-  ].join('\n');
-
+  const recipients = Array.isArray(to) ? to : [to];
   const payload = {
     from: process.env.RESEND_FROM || 'Hacettepe İşitme <onboarding@resend.dev>',
-    to: [MAIL_TO],
-    subject: mailSubject,
+    to: recipients,
+    subject,
     text,
   };
-  if (isValidEmail(customerEmail)) {
-    payload.reply_to = customerEmail;
+  if (replyTo && isValidEmail(replyTo)) {
+    payload.reply_to = replyTo;
   }
 
   const res = await fetch('https://api.resend.com/emails', {
@@ -1243,6 +1234,43 @@ async function sendFormMailResend(formType, body) {
     const detail = (await res.text()).slice(0, 400);
     throw new Error(`Resend HTTP ${res.status}: ${detail}`);
   }
+}
+
+async function sendOutboundMail({ to, subject, text, replyTo }) {
+  if (hasResendConfigured()) {
+    await sendResendMail({ to, subject, text, replyTo });
+    return;
+  }
+
+  const mailOptions = {
+    from: process.env.MAIL_FROM || process.env.SMTP_USER || MAIL_TO,
+    to,
+    subject,
+    text,
+  };
+  if (replyTo && isValidEmail(replyTo)) {
+    mailOptions.replyTo = replyTo;
+  }
+  await transporter.sendMail(mailOptions);
+}
+
+async function sendFormMailResend(formType, body) {
+  const name = clean(body.name, 150) || '-';
+  const customerEmail = clean(body.email, 180);
+  const mailSubject = `[Hacettepe Form] ${formType.toUpperCase()} - ${name}`;
+  const text = [
+    buildFormNotificationText(formType, body),
+    '',
+    '---',
+    'Bu mail web sitesi formundan geldi.',
+  ].join('\n');
+
+  await sendResendMail({
+    to: MAIL_TO,
+    subject: mailSubject,
+    text,
+    replyTo: customerEmail,
+  });
 }
 
 async function deliverFormNotification(formType, body) {
@@ -1305,12 +1333,12 @@ async function sendFormMail(formType, body) {
 }
 
 async function sendNewsletterWelcomeMail(email) {
-  await transporter.sendMail({
-    from: process.env.MAIL_FROM || process.env.SMTP_USER || MAIL_TO,
+  await sendOutboundMail({
     to: email,
     subject: 'Hacettepe İşitme - Abonelik Onayı',
     text:
       'Aboneliğiniz alınmıştır. Instagram üzerinden paylaştığımız duyuru, kampanya ve tanıtım içerikleri e-posta adresinize iletilecektir.',
+    replyTo: MAIL_TO,
   });
 }
 
@@ -1539,17 +1567,16 @@ app.post('/api/newsletter/instagram-broadcast', requireNewsletterApiKey, async (
 
     let sent = 0;
     for (const subscriber of activeSubscribers) {
-      await transporter.sendMail({
-        from: process.env.MAIL_FROM || process.env.SMTP_USER || MAIL_TO,
+      await sendOutboundMail({
         to: subscriber.email,
         subject,
         text: textBody,
+        replyTo: MAIL_TO,
       });
       sent += 1;
     }
 
-    await transporter.sendMail({
-      from: process.env.MAIL_FROM || process.env.SMTP_USER || MAIL_TO,
+    await sendOutboundMail({
       to: MAIL_TO,
       subject: `[Instagram Duyuru Gönderimi] ${subject}`,
       text: `Toplam gönderilen abone sayısı: ${sent}`,
