@@ -35,12 +35,12 @@ npm run deploy:push
 # veya: git push papyon main
 ```
 
-**Deploy tetiklenmiyorsa** (en sık 2 neden):
+**Otomatik deploy:** `main` push → CI + GitHub Actions `Deploy to Railway` (`RAILWAY_TOKEN` secret tanımlı).
 
-1. **GitHub Actions** — `RAILWAY_TOKEN` secret yok → workflow deploy etmez.  
-   Railway → Settings → Tokens → oluştur → GitHub `Papyonlubaskan/hacettepeisitme` → Settings → Secrets → `RAILWAY_TOKEN`
+**Deploy tetiklenmiyorsa:**
 
-2. **Railway Source** — panelde repo `Papyonlubaskan/hacettepeisitme` + branch `main` olmalı (eski `hacettepeisitme55-a11y` bağlantısı deploy etmez).
+1. GitHub → Actions → **Deploy to Railway** → **Run workflow**
+2. Railway Source: `Papyonlubaskan/hacettepeisitme` + branch `main`
 
 Yerel CLI deploy (hemen):
 
@@ -59,7 +59,8 @@ Build sırasında (Docker):
 
 Runtime:
 
-- `SMTP_USER`, `SMTP_PASS`, `MAIL_TO` — form e-postaları
+- `SMTP_USER`, `SMTP_PASS` (Gmail **uygulama şifresi**, 16 hane), `MAIL_TO` — form e-postaları
+- `WHATSAPP_NOTIFY_API_KEY` — boş bırakın (CallMeBot isteğe bağlı; formlar WhatsApp handoff kullanır)
 - `CORS_ORIGIN` — izin verilen kök adresler
 - `INSTAGRAM_ACCESS_TOKEN` — isteğe bağlı; canlı Instagram güncellemesi için
 

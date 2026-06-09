@@ -1114,7 +1114,20 @@ function buildFormNotificationText(formType, body) {
 }
 
 function hasSmtpConfigured() {
-  return Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').trim();
+  if (!user || !pass) return false;
+  const lower = pass.toLowerCase();
+  if (
+    pass.length < 12 ||
+    lower.includes('uygulama') ||
+    lower.includes('gmail uygulama') ||
+    lower.includes('16 hane') ||
+    lower.includes('placeholder')
+  ) {
+    return false;
+  }
+  return true;
 }
 
 function withNotifyTimeout(promise, label) {

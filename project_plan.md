@@ -46,7 +46,9 @@ Supabase bağlı değil. Tüm veriler mock dosyaları ile yönetilmektedir.
 ### Phase 2: İçerik ve AI Bot Geliştirmesi
 - Goal: Blog içeriklerini zenginleştirme, AI destek botu akışlarını iyileştirme
 - Deliverable: Daha fazla blog yazısı, gelişmiş bot konuşma akışları
+- Status: Blog listesi ve SEO meta katmanı eklendi; içerik hâlâ mock veri
 
 ### Phase 3: Dijital Pazarlama Optimizasyonu
 - Goal: Google Analytics, daha detaylı SEO, sosyal medya paylaşım widget'ları
 - Deliverable: Schema.org ürün yapılandırılmış verisi, paylaşım butonları
+- Status: robots/sitemap, route SEO, CI, RAILWAY_TOKEN, form güvenilirliği tamamlandı; GTM/Pixel ID ve gerçek SMTP_PASS kullanıcı girdisi bekleniyor

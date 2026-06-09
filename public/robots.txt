@@ -3,4 +3,3 @@ Allow: /
 Disallow: /api/
 
 Sitemap: https://hacettepeisitme.com.tr/sitemap.xml
-
