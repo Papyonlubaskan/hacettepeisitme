@@ -1,8 +1,6 @@
 ﻿import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import {
-  SITE_ADDRESS_SCHEMA,
-  SITE_MAP_URL,
   SITE_PHONE_DISPLAY,
   SITE_PHONE_E164,
   SITE_PHONE_WA,
@@ -12,8 +10,6 @@ import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
 import { blogPosts } from '../../mocks/blog';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
-import { absoluteUrl } from '@/lib/siteUrl';
-import { SITE_GOOGLE_MAPS_URL, SITE_INSTAGRAM_URL } from '@/lib/siteSeo';
 
 function HeroSection() {
   const ctaVariant = useMemo<'A' | 'B'>(() => {
@@ -277,47 +273,8 @@ function CTASection() {
 }
 
 export default function Home() {
-  const localBusinessJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'HearingAidStore',
-    '@id': absoluteUrl('/'),
-    name: 'Hacettepe İşitme Cihazları',
-    url: absoluteUrl('/'),
-    image: absoluteUrl('/local-images/pro-hero-main.webp'),
-    telephone: SITE_PHONE_E164,
-    priceRange: '₺₺',
-    hasMap: SITE_MAP_URL,
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 41.2694071,
-      longitude: 36.297792,
-    },
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: SITE_ADDRESS_SCHEMA.streetAddress,
-      postalCode: SITE_ADDRESS_SCHEMA.postalCode,
-      addressLocality: SITE_ADDRESS_SCHEMA.addressLocality,
-      addressRegion: SITE_ADDRESS_SCHEMA.addressRegion,
-      addressCountry: SITE_ADDRESS_SCHEMA.addressCountry,
-    },
-    areaServed: { '@type': 'City', name: 'Samsun' },
-    sameAs: [SITE_INSTAGRAM_URL, SITE_GOOGLE_MAPS_URL],
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        opens: '09:00',
-        closes: '18:00',
-      },
-    ],
-  };
-
   return (
     <div className="animate-fadeInUp">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
-      />
       <HeroSection />
       <ServicesSection />
       <InstagramFeedSection />

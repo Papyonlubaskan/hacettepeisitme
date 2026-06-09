@@ -46,7 +46,11 @@ export default function Seo({
       <meta name="robots" content={robots} />
       <meta name="author" content={SITE_NAME} />
       <meta name="language" content="Turkish" />
+      <meta name="geo.region" content="TR-55" />
+      <meta name="geo.placename" content="Samsun" />
       <link rel="canonical" href={canonical} />
+      <link rel="alternate" hrefLang="tr" href={canonical} />
+      <link rel="alternate" hrefLang="x-default" href={canonical} />
 
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:title" content={title} />
@@ -56,6 +60,8 @@ export default function Seo({
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:alt" content={title} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />

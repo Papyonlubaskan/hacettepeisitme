@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import { injectSeoIntoHtml, resolveSeoEntry } from './seo-inject.js';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -90,6 +91,9 @@ const INSTAGRAM_SEED_FILE = path.join(__dirname, 'data', 'instagram-permalink-se
 const FRONTEND_DIST_DIR = path.resolve(__dirname, '..', 'out');
 const GOOGLE_SITE_VERIFICATION_FILE = 'google399566b06c8c412a.html';
 const GOOGLE_SITE_VERIFICATION_BODY = `google-site-verification: ${GOOGLE_SITE_VERIFICATION_FILE}`;
+const SITE_PUBLIC_URL = `https://${PRIMARY_SITE_HOST}`;
+let spaIndexHtml = '';
+let seoManifest = null;
 const ipHitMap = new Map();
 const ipAlertCooldownMap = new Map();
 const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
@@ -1476,9 +1480,25 @@ app.post('/api/form/appointment', formRequestAudit, formLimiter, formRoute('appo
 app.post('/api/form/newsletter', formRequestAudit, formLimiter, formRoute('newsletter'));
 
 if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
+  const indexPath = path.join(FRONTEND_DIST_DIR, 'index.html');
+  const manifestPath = path.join(FRONTEND_DIST_DIR, 'seo-manifest.json');
+  if (fsSync.existsSync(indexPath)) {
+    spaIndexHtml = fsSync.readFileSync(indexPath, 'utf8');
+  }
+  if (fsSync.existsSync(manifestPath)) {
+    seoManifest = JSON.parse(fsSync.readFileSync(manifestPath, 'utf8'));
+  }
+
   app.use(express.static(FRONTEND_DIST_DIR));
-  app.get(/^\/(?!api).*/, (_req, res) => {
-    res.sendFile(path.join(FRONTEND_DIST_DIR, 'index.html'));
+  app.get(/^\/(?!api).*/, (req, res) => {
+    const pathname = req.path === '' ? '/' : req.path;
+    const entry = resolveSeoEntry(seoManifest, pathname);
+    if (spaIndexHtml && entry) {
+      const html = injectSeoIntoHtml(spaIndexHtml, pathname, entry, SITE_PUBLIC_URL);
+      res.type('text/html').set('Cache-Control', 'public, max-age=300').send(html);
+      return;
+    }
+    res.sendFile(indexPath);
   });
 }
 

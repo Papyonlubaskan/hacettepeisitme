@@ -1,3 +1,5 @@
+import { SITE_FAQ } from '@/lib/schema';
+
 export default function About() {
   return (
     <div className="pt-[72px] animate-fadeInUp">
@@ -152,38 +154,17 @@ export default function About() {
             </div>
 
             <div itemScope itemType="https://schema.org/FAQPage" className="space-y-4">
-              {[
-                {
-                  q: 'İşitme testi gerçekten ücretsiz mi?',
-                  a: 'Evet, kliniğimizde yapılan ilk işitme testi ve danışmanlık hizmeti tamamen ücretsizdir. Hiçbir gizli ücret talep edilmez.',
-                },
-                {
-                  q: 'İşitme cihazı fiyatları ne kadar?',
-                  a: 'Fiyatlar marka, model ve teknolojiye göre değişmektedir. Ücretsiz danışmanlık sırasında bütçenize ve ihtiyacınıza en uygun seçenekleri sunuyoruz.',
-                },
-                {
-                  q: 'Cihaz uyarlama süreci nasıl işliyor?',
-                  a: 'Test sonuçlarınıza göre en uygun cihazı seçiyor, kulağınıza özel mold alıyor ve cihazı tam olarak ihtiyacınıza göre programlıyoruz. Bu süreç 1-2 seans sürebilir.',
-                },
-                {
-                  q: 'Satın aldıktan sonra destek alabilir miyim?',
-                  a: 'Kesinlikle! Tüm cihazlarımız 2 yıl garantilidir ve ömür boyu ücretsiz teknik destek, bakım ve ayarlama hizmetimiz bulunmaktadır.',
-                },
-                {
-                  q: 'Kaç yılda bir cihaz değiştirmeliyim?',
-                  a: 'İşitme cihazlarının ortalama ömrü 5-7 yıldır. Ancak işitme kaybınızdaki değişim, teknolojik gelişmeler ve cihazın durumu değiştirme kararını etkileyebilir.',
-                },
-              ].map((faq, i) => (
+              {SITE_FAQ.map((faq, i) => (
                 <div key={i} itemScope itemProp="mainEntity" itemType="https://schema.org/Question" className="bg-brand-cream rounded-2xl p-6">
                   <h3 itemProp="name" className="text-base font-bold text-brand-dark mb-2 flex items-start gap-2">
                     <span className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-accent/10 shrink-0 mt-0.5">
                       <i className="ri-question-line text-brand-accent text-xs" />
                     </span>
-                    {faq.q}
+                    {faq.question}
                   </h3>
                   <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
                     <p itemProp="text" className="text-sm text-gray-500 leading-relaxed pl-8">
-                      {faq.a}
+                      {faq.answer}
                     </p>
                   </div>
                 </div>

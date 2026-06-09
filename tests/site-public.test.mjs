@@ -28,3 +28,15 @@ test('Google Search Console doğrulama dosyası mevcut', () => {
     'google-site-verification: google399566b06c8c412a.html',
   );
 });
+
+test('feed.xml blog yazılarını içerir', () => {
+  const feed = readFileSync('public/feed.xml', 'utf8');
+  assert.match(feed, /<rss version="2.0">/);
+  assert.match(feed, /\/blog\//);
+});
+
+test('seo-manifest.json üretilmiş olmalı', () => {
+  const manifest = readFileSync('out/seo-manifest.json', 'utf8');
+  assert.match(manifest, /"\/randevu"/);
+  assert.match(manifest, /"\/blog\//);
+});

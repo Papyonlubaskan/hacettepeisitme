@@ -43,13 +43,28 @@ export function websiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${absoluteUrl('/')}#website`,
     name: SITE_NAME,
     url: absoluteUrl('/'),
     inLanguage: SITE_LANGUAGE,
+    description:
+      "Samsun'da ücretsiz işitme testi, işitme cihazı satışı ve SGK danışmanlığı. Phonak, Siemens, Oticon yetkili merkez.",
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: absoluteUrl('/'),
+    },
+    potentialAction: {
+      '@type': 'ReserveAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: absoluteUrl('/randevu'),
+        actionPlatform: [
+          'http://schema.org/DesktopWebPlatform',
+          'http://schema.org/MobileWebPlatform',
+        ],
+      },
+      name: 'Ücretsiz İşitme Testi Randevusu',
     },
   };
 }

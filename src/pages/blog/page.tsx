@@ -5,6 +5,8 @@ import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 import { SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { absoluteUrl } from '@/lib/siteUrl';
 import Seo from '@/components/Seo';
+import SeoBreadcrumbJsonLd from '@/components/SeoBreadcrumbJsonLd';
+import { getBreadcrumbs } from '@/lib/breadcrumbs';
 
 function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -41,6 +43,7 @@ function BlogDetail() {
         author={post.author}
         section={post.category}
       />
+      <SeoBreadcrumbJsonLd items={getBreadcrumbs(postPath, post.title)} />
       <script type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',

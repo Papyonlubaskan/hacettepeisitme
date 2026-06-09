@@ -1,0 +1,17 @@
+{
+  "name": "Hacettepe İşitme Cihazları",
+  "short_name": "Hacettepe İşitme",
+  "description": "Samsun'da ücretsiz işitme testi ve işitme cihazı satışı",
+  "lang": "tr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f2e2c",
+  "theme_color": "#00a896",
+  "icons": [
+    {
+      "src": "/local-images/brand-favicon.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    }
+  ]
+}

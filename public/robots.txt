@@ -1,5 +1,11 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://hacettepeisitme.com.tr/sitemap.xml
+User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+Sitemap: https://hacettepeisitme.com.tr/sitemap.xml

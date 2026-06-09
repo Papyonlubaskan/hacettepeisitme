@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
+import { serviceJsonLd } from '@/lib/schema';
 
 export default function SamsunIsitmeTestiPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Samsun İşitme Testi',
-    areaServed: 'Samsun',
-    provider: 'Hacettepe İşitme Cihazları',
-  };
+  const jsonLd = serviceJsonLd(
+    'Samsun İşitme Testi',
+    'Samsun İlkadım merkezimizde ücretsiz odyometri ve işitme testi hizmeti.',
+    '/samsun-isitme-testi',
+  );
 
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
