@@ -58,6 +58,15 @@ function buildManifest() {
       );
     }
 
+    if (path === '/samsun-isitme-cihazi') {
+      entry.jsonLd = serviceJsonLd(
+        'Samsun İşitme Cihazı Satışı',
+        'Samsun İlkadım merkezinde işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı.',
+        path,
+      );
+      entry.priority = '0.95';
+    }
+
     if (path === '/isitme-cihazi-fiyatlari') {
       entry.jsonLd = serviceJsonLd(
         'İşitme Cihazı Fiyatları Samsun',

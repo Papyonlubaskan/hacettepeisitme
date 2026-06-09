@@ -12,6 +12,7 @@ const quickLinks = [
   { label: 'İletişim', to: '/iletisim' },
   { label: 'Online İşitme Testi', to: '/online-isitme-testi' },
   { label: 'İşitme Cihazı Fiyatları', to: '/isitme-cihazi-fiyatlari' },
+  { label: 'Samsun İşitme Cihazı', to: '/samsun-isitme-cihazi' },
   { label: 'Samsun İşitme Testi', to: '/samsun-isitme-testi' },
   { label: 'SGK Ödeme Tutarları', to: '/sgk-odeme-tutarlari' },
 ];

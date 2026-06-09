@@ -15,6 +15,7 @@ const BlogList = lazy(() => import("../pages/blog/list"));
 const BlogDetail = lazy(() => import("../pages/blog/page"));
 const IsitmeCihaziFiyatlariPage = lazy(() => import("../pages/seo/isime-cihazi-fiyatlari"));
 const SamsunIsitmeTestiPage = lazy(() => import("../pages/seo/samsun-isitme-testi"));
+const SamsunIsitmeCihaziPage = lazy(() => import("../pages/seo/samsun-isitme-cihazi"));
 const SgkOdemeTutarlariPage = lazy(() => import("../pages/sgk-odeme-tutarlari/page"));
 
 const routes: RouteObject[] = [
@@ -79,6 +80,14 @@ const routes: RouteObject[] = [
     element: (
       <Suspense fallback={null}>
         <SamsunIsitmeTestiPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/samsun-isitme-cihazi",
+    element: (
+      <Suspense fallback={null}>
+        <SamsunIsitmeCihaziPage />
       </Suspense>
     ),
   },

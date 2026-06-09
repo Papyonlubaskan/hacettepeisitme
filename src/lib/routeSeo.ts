@@ -10,11 +10,11 @@ const DEFAULT_DESCRIPTION =
 
 export const ROUTE_SEO: Record<string, RouteSeo> = {
   '/': {
-    title: 'Hacettepe İşitme Cihazları | Samsun İşitme Merkezi — Ücretsiz Test',
+    title: 'Samsun İşitme Cihazları | Ücretsiz Test — Hacettepe İşitme Merkezi',
     description:
-      "Samsun İlkadım'da işitme cihazları satışı ve ücretsiz işitme testi. Phonak, Siemens, Oticon, SGK desteği, 30 gün deneme garantisi. Tepecik merkez — aynı gün randevu.",
+      "Samsun İlkadım'da işitme cihazı satışı ve ücretsiz işitme testi. Phonak, Siemens, Oticon, SGK desteği, 30 gün deneme. Tepecik merkez — aynı gün randevu: +90 533 474 58 06.",
     keywords:
-      'işitme cihazı Samsun, Samsun işitme merkezi, ücretsiz işitme testi Samsun, Phonak Samsun, Siemens işitme cihazı, Oticon Samsun, İlkadım işitme testi, Hacettepe İşitme',
+      'işitme cihazı Samsun, Samsun işitme cihazı, Samsun işitme merkezi, ücretsiz işitme testi Samsun, işitme testi Samsun, Phonak Samsun, İlkadım işitme merkezi',
     image: '/local-images/pro-hero-main.webp',
   },
   '/hakkimizda': {
@@ -63,6 +63,14 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
       'İşitme cihazı fiyatlarını etkileyen faktörler, Phonak, Siemens, Oticon modelleri ve SGK ödeme desteği. Samsun merkezimizde ücretsiz fiyat danışmanlığı.',
     keywords:
       'işitme cihazı fiyatları, işitme cihazı fiyat Samsun, SGK işitme cihazı fiyat, Phonak fiyat, Siemens işitme cihazı fiyat',
+    image: '/local-images/pro-hero-main.webp',
+  },
+  '/samsun-isitme-cihazi': {
+    title: 'Samsun İşitme Cihazı | Phonak, Siemens, Oticon — Hacettepe',
+    description:
+      'Samsun’da işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı. İlkadım Tepecik merkez, Phonak, Siemens, Oticon, 30 gün deneme garantisi.',
+    keywords:
+      'Samsun işitme cihazı, işitme cihazı Samsun, işitme merkezi Samsun, Phonak Samsun, Siemens Samsun, Oticon Samsun',
     image: '/local-images/pro-hero-main.webp',
   },
   '/samsun-isitme-testi': {

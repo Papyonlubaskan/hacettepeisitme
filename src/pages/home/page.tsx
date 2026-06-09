@@ -9,6 +9,7 @@ import { services } from '../../mocks/services';
 import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
 import { blogPosts } from '../../mocks/blog';
+import LocalSeoSection from '@/components/feature/LocalSeoSection';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
@@ -33,7 +34,7 @@ function HeroSection() {
       <div className="absolute inset-0">
         <img
           src="/local-images/pro-hero-main.webp"
-          alt="Uzman tarafından işitme cihazı uygulaması"
+          alt="Samsun işitme cihazı uzman uygulaması — Hacettepe İşitme Merkezi"
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/85 via-brand-dark/60 to-transparent" />
@@ -46,15 +47,18 @@ function HeroSection() {
             <span className="text-sm text-white font-medium">Samsun&apos;un En Güvenilir İşitme Merkezi</span>
           </div>
 
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+            <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold text-white/95 mb-2">
+              Samsun İşitme Cihazları
+            </span>
             Hayatınızı
             <br />
             <em className="text-brand-accent">Yeniden Duyun</em>
           </h1>
 
           <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-lg">
-            Almanya teknolojisi işitme cihazları ile yaşam kalitenizi artırın.
-            Ücretsiz işitme testi ve 30 gün deneme garantisi.
+            İlkadım Tepecik merkezimizde ücretsiz işitme testi, Phonak, Siemens ve Oticon cihazlar ile 30 gün deneme
+            garantisi.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -296,6 +300,7 @@ export default function Home() {
       <InstagramFeedSection />
       <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
       <BlogSection />
+      <LocalSeoSection />
       <CTASection />
     </div>
   );
