@@ -8,6 +8,7 @@ on:
 
 env:
   RAILWAY_PROJECT_ID: 3c251192-1aa8-4d72-99db-796132bc5f3f
+  RAILWAY_ENVIRONMENT_ID: 6455bbee-ac75-42f1-82f8-2b053ecea5f6
   RAILWAY_SERVICE_ID: 70c3a2b7-7dac-486e-a17f-0048fc07a5b2
 
 jobs:
@@ -25,4 +26,7 @@ jobs:
             echo "Railway → Proje → Settings → Tokens → Create → GitHub: Papyonlubaskan/hacettepeisitme → Secrets → RAILWAY_TOKEN"
             exit 1
           fi
-          railway up --detach --project "${RAILWAY_PROJECT_ID}" --service "${RAILWAY_SERVICE_ID}"
+          railway up --detach \
+            --project "${RAILWAY_PROJECT_ID}" \
+            --environment "${RAILWAY_ENVIRONMENT_ID}" \
+            --service "${RAILWAY_SERVICE_ID}"

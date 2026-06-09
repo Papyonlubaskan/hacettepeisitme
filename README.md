@@ -154,4 +154,4 @@ gh auth login   # hacettepeisitme55-a11y hesabı
 git push origin main
 ```
 
-Şu an deploy `papyon` remote üzerinden çalışıyor; `origin` hedef hesapla senkron olunca Railway source'u oraya taşınabilir.
+**`origin` senkronu:** `hacettepeisitme55-a11y` hesabıyla giriş yapıp push edin (`gh auth login`). Papyonlubaskan hesabı `origin`'e yazamaz (403). Aktif deploy kaynağı: `papyon` → `Papyonlubaskan/hacettepeisitme`.
