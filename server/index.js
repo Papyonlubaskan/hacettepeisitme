@@ -88,14 +88,20 @@ const INSTAGRAM_CACHE_FILE = path.join(DATA_DIR, 'instagram-feed-cache.json');
 const INSTAGRAM_BUNDLED_FILE = path.join(__dirname, 'data', 'instagram-feed-bundled.json');
 const INSTAGRAM_SEED_FILE = path.join(__dirname, 'data', 'instagram-permalink-seed.json');
 const FRONTEND_DIST_DIR = path.resolve(__dirname, '..', 'out');
+const GOOGLE_SITE_VERIFICATION_FILE = 'google399566b06c8c412a.html';
+const GOOGLE_SITE_VERIFICATION_BODY = `google-site-verification: ${GOOGLE_SITE_VERIFICATION_FILE}`;
 const ipHitMap = new Map();
 const ipAlertCooldownMap = new Map();
 const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
 
 app.set('trust proxy', 1);
+app.get(`/${GOOGLE_SITE_VERIFICATION_FILE}`, (_req, res) => {
+  res.type('text/html').set('Cache-Control', 'no-store').send(GOOGLE_SITE_VERIFICATION_BODY);
+});
 app.use((req, res, next) => {
   if (process.env.NODE_ENV !== 'production') return next();
   if (req.path.startsWith('/api/')) return next();
+  if (req.path === `/${GOOGLE_SITE_VERIFICATION_FILE}`) return next();
   const host = (req.hostname || '').toLowerCase();
   const primary = PRIMARY_SITE_HOST.toLowerCase();
   if (host === `www.${primary}`) {
@@ -1278,10 +1284,6 @@ app.get('/api/health', (_req, res) => {
     instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
   });
-});
-
-app.get('/google399566b06c8c412a.html', (_req, res) => {
-  res.type('text/html').send('google-site-verification: google399566b06c8c412a.html');
 });
 
 app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
