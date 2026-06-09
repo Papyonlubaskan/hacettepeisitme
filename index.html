@@ -29,6 +29,23 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hacettepe İşitme Cihazları | Samsun" />
     <meta name="twitter:description" content="Samsun'un güvenilir işitme cihazları merkezi. Ücretsiz işitme testi ve premium cihazlar." />
+    <!-- Google Analytics (GA4) -->
+    <script>
+      (function () {
+        var id = '%VITE_GA_MEASUREMENT_ID%';
+        if (!id || id.indexOf('%VITE_') === 0) return;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', id);
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+        document.head.appendChild(s);
+      })();
+    </script>
+    <!-- End Google Analytics -->
+
     <!-- Google Tag Manager -->
     <script>
       (function(w,d,s,l,i){

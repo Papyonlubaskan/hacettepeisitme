@@ -17,8 +17,15 @@ interface GTMEvent {
 declare global {
   interface Window {
     dataLayer: GTMEvent[];
+    gtag?: (...args: unknown[]) => void;
     fbq: (...args: (string | number | object)[]) => void;
     _fbq: unknown;
+  }
+}
+
+function trackGtag(event: string, params?: Record<string, string | number | undefined>) {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', event, params);
   }
 }
 
@@ -29,10 +36,19 @@ export function pushDataLayer(event: GTMEvent) {
 }
 
 export function trackPageView(title?: string, path?: string) {
+  const pageTitle = title || document.title;
+  const pagePath = path || window.location.pathname;
+
   pushDataLayer({
     event: 'pageview',
-    pageTitle: title || document.title,
-    pagePath: path || window.location.pathname,
+    pageTitle,
+    pagePath,
+  });
+
+  trackGtag('page_view', {
+    page_title: pageTitle,
+    page_path: pagePath,
+    page_location: typeof window !== 'undefined' ? window.location.href : undefined,
   });
 
   if (typeof window !== 'undefined' && window.fbq) {
@@ -59,8 +75,11 @@ export function trackFormSubmit(
     ...extra,
   });
 
-  if (isSuccess && typeof window !== 'undefined' && window.fbq) {
-    window.fbq('track', 'Lead');
+  if (isSuccess) {
+    trackGtag('generate_lead', { form_name: formName, form_id: formId });
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Lead');
+    }
   }
 }
 
@@ -97,6 +116,8 @@ export function trackPhoneClick(phoneNumber: string) {
     eventLabel: phoneNumber,
   });
 
+  trackGtag('contact', { method: 'phone', contact_label: phoneNumber });
+
   if (typeof window !== 'undefined' && window.fbq) {
     window.fbq('track', 'Contact', { method: 'phone' });
   }
@@ -127,6 +148,12 @@ export function trackCTAClick(
     eventLabel: buttonText,
     buttonText,
     buttonLocation,
+    destination,
+  });
+
+  trackGtag('cta_click', {
+    button_text: buttonText,
+    button_location: buttonLocation,
     destination,
   });
 }

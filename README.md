@@ -55,7 +55,8 @@ railway up --detach
 Build sırasında (Docker):
 
 - `VITE_SITE_URL` — canonical URL (şu an Railway adresi)
-- `VITE_GTM_ID`, `VITE_META_PIXEL_ID` — analytics (boş bırakılırsa yüklenmez)
+- `VITE_GA_MEASUREMENT_ID` — Google Analytics 4 (ör. `G-5HBR604GT5`)
+- `VITE_GTM_ID`, `VITE_META_PIXEL_ID` — isteğe bağlı (boş bırakılırsa yüklenmez)
 
 Runtime:
 
