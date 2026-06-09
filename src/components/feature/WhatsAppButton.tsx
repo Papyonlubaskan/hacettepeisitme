@@ -7,11 +7,11 @@ export default function WhatsAppButton() {
       <a
         href={`tel:${SITE_PHONE_E164}`}
         className="inline-flex h-11 items-center gap-2 rounded-full bg-brand-accent px-4 text-sm font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-105"
-        aria-label="Telefonla Randevu Al"
+        aria-label="Bizi Ara"
         onClick={() => trackPhoneClick(SITE_PHONE_E164)}
       >
         <i className="ri-phone-line text-base" />
-        <span>Randevu Al</span>
+        <span>Bizi Ara</span>
       </a>
       <a
         href={`https://wa.me/${SITE_PHONE_WA}`}

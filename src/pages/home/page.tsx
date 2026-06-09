@@ -9,6 +9,7 @@ import { services } from '../../mocks/services';
 import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
 import { blogPosts } from '../../mocks/blog';
+import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
 function HeroSection() {
@@ -71,6 +72,11 @@ function HeroSection() {
               <span>{heroCta.title}</span>
               <i className="ri-arrow-right-line" />
             </Link>
+            <PhoneCallButton
+              label="Bizi Ara"
+              trackingLabel="home_hero_call"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all whitespace-nowrap"
+            />
             <a
               href={`https://wa.me/${SITE_PHONE_WA}`}
               target="_blank"
@@ -79,7 +85,7 @@ function HeroSection() {
               onClick={() => trackWhatsAppClick(SITE_PHONE_E164)}
             >
               <i className="ri-whatsapp-line text-lg" />
-              <span>WhatsApp Destek</span>
+              <span>WhatsApp</span>
             </a>
           </div>
 
@@ -256,17 +262,27 @@ function CTASection() {
           Bugün Ücretsiz İşitme Testinizi Yaptırın
         </h2>
         <p className="text-white/80 text-base md:text-lg mb-2">
-          Randevu için bizi arayın: {SITE_PHONE_DISPLAY}
+          Randevu için bizi arayın:{' '}
+          <a href={`tel:${SITE_PHONE_E164}`} className="font-semibold underline underline-offset-4 hover:text-brand-accent">
+            {SITE_PHONE_DISPLAY}
+          </a>
         </p>
         <p className="text-white/60 text-sm mb-8">Aynı gün randevu imkanı</p>
-        <Link
-          to="/randevu"
-          className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
-          onClick={() => trackCTAClick('Randevu Oluştur', 'home_cta', '/randevu')}
-        >
-          <span>Randevu Oluştur</span>
-          <i className="ri-arrow-right-line" />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <PhoneCallButton
+            label="Bizi Ara"
+            trackingLabel="home_cta_call"
+            className="inline-flex items-center gap-2 bg-white text-brand-dark font-semibold px-8 py-4 rounded-full hover:bg-brand-light transition-all hover:scale-105 whitespace-nowrap"
+          />
+          <Link
+            to="/randevu"
+            className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
+            onClick={() => trackCTAClick('Randevu Oluştur', 'home_cta', '/randevu')}
+          >
+            <span>Randevu Oluştur</span>
+            <i className="ri-arrow-right-line" />
+          </Link>
+        </div>
       </div>
     </section>
   );

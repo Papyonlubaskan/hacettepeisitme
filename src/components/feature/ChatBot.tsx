@@ -15,6 +15,7 @@ interface Intent {
 
 const QUICK_ACTIONS = [
   'Randevu almak istiyorum',
+  'Telefonla aramak istiyorum',
   'WhatsApp destek',
   'Fiyat bilgisi alabilir miyim?',
   'Teknik servis desteği',
@@ -147,7 +148,7 @@ export default function ChatBot() {
         {
           role: 'bot',
           text: 'Size en hızlı şekilde yardımcı olabilmemiz için hemen randevu formu doldurabilir veya WhatsApp hattımıza yazabilirsiniz. Aynı gün geri dönüş sağlıyoruz.',
-          suggestions: ['Randevu sayfasını aç', 'WhatsApp destek'],
+          suggestions: ['Randevu sayfasını aç', 'Telefonla aramak istiyorum', 'WhatsApp destek'],
         },
       ]);
       setAutoCtaShown(true);
@@ -243,20 +244,27 @@ export default function ChatBot() {
         </div>
 
         <div className="px-4 py-3 border-t border-gray-100 shrink-0">
-          <div className="grid grid-cols-2 gap-2 mb-2">
+          <div className="grid grid-cols-3 gap-2 mb-2">
             <button
               type="button"
               onClick={() => handleSend('Randevu sayfasını aç')}
               className="text-xs bg-brand-accent text-white rounded-full py-2 font-semibold hover:bg-[#008f7f] transition-colors"
             >
-              Randevu Formu
+              Randevu
             </button>
+            <a
+              href={`tel:${SITE_PHONE_E164}`}
+              className="text-xs bg-white border border-brand-accent text-brand-accent rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
+            >
+              <i className="ri-phone-line" />
+              Bizi Ara
+            </a>
             <button
               type="button"
               onClick={() => handleSend('WhatsApp destek')}
               className="text-xs bg-green-500 text-white rounded-full py-2 font-semibold hover:bg-green-600 transition-colors"
             >
-              WhatsApp Canli Destek
+              WhatsApp
             </button>
           </div>
           <div className="flex gap-2">
