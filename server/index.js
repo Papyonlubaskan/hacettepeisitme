@@ -1125,21 +1125,33 @@ function buildFormNotificationText(formType, body) {
   ].join('\n');
 }
 
-function hasSmtpConfigured() {
-  const user = (process.env.SMTP_USER || '').trim();
-  const pass = (process.env.SMTP_PASS || '').trim();
-  if (!user || !pass) return false;
+function isInvalidSmtpPass(pass) {
   const lower = pass.toLowerCase();
-  if (
+  return (
     pass.length < 12 ||
     lower.includes('uygulama') ||
     lower.includes('gmail uygulama') ||
     lower.includes('16 hane') ||
-    lower.includes('placeholder')
-  ) {
-    return false;
+    lower.includes('placeholder') ||
+    lower.includes('şifre') ||
+    lower.includes('sifre')
+  );
+}
+
+function getSmtpStatus() {
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').trim();
+  if (!user || !pass) {
+    return { configured: false, reason: 'missing_credentials' };
   }
-  return true;
+  if (isInvalidSmtpPass(pass)) {
+    return { configured: false, reason: 'invalid_placeholder' };
+  }
+  return { configured: true, mailTo: MAIL_TO };
+}
+
+function hasSmtpConfigured() {
+  return getSmtpStatus().configured;
 }
 
 function withNotifyTimeout(promise, label) {
@@ -1177,23 +1189,26 @@ async function sendFormWhatsApp(formType, body) {
 }
 
 async function deliverFormNotification(formType, body) {
-  const tasks = [];
-  if (hasSmtpConfigured()) {
-    tasks.push(withNotifyTimeout(sendFormMail(formType, body), 'SMTP'));
+  if (!hasSmtpConfigured()) {
+    const err = new Error('SMTP_NOT_CONFIGURED');
+    err.code = 'SMTP_NOT_CONFIGURED';
+    throw err;
   }
+
+  try {
+    await withNotifyTimeout(sendFormMail(formType, body), 'SMTP');
+  } catch (error) {
+    console.error(`[${formType}] Gmail gönderimi başarısız:`, error);
+    const err = new Error('SMTP_FAILED');
+    err.code = 'SMTP_FAILED';
+    throw err;
+  }
+
   if (WHATSAPP_NOTIFY_API_KEY) {
-    tasks.push(withNotifyTimeout(sendFormWhatsApp(formType, body), 'WHATSAPP'));
+    void withNotifyTimeout(sendFormWhatsApp(formType, body), 'WHATSAPP').catch((error) => {
+      console.warn(`[${formType}] WhatsApp bildirimi atlandı:`, error?.message || error);
+    });
   }
-  if (tasks.length === 0) {
-    console.warn(`[${formType}] Bildirim kanalı yok — kayıt dosyada: form-submissions.jsonl`);
-    return;
-  }
-
-  const results = await Promise.allSettled(tasks);
-  if (results.some((result) => result.status === 'fulfilled')) return;
-
-  const reason = results.find((result) => result.status === 'rejected')?.reason;
-  console.error(`[${formType}] Bildirim kanalları başarısız:`, reason);
 }
 
 async function sendFormMail(formType, body) {
@@ -1259,11 +1274,13 @@ function formRoute(formType) {
         return;
       }
 
+      await deliverFormNotification(formType, parsed.data);
       res.status(200).json({ ok: true });
-      void deliverFormNotification(formType, parsed.data);
     } catch (error) {
       console.error(`[${formType}] form error:`, error);
-      res.status(500).json({ ok: false, error: 'FORM_SUBMIT_FAILED' });
+      const code = error?.code || 'FORM_SUBMIT_FAILED';
+      const status = code === 'SMTP_NOT_CONFIGURED' ? 503 : 500;
+      res.status(status).json({ ok: false, error: code });
     }
   };
 }
@@ -1282,11 +1299,14 @@ function requireNewsletterApiKey(req, res, next) {
 }
 
 app.get('/api/health', (_req, res) => {
+  const smtp = getSmtpStatus();
   res.json({
     ok: true,
     service: 'local-form-api',
     instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
+    formMail: smtp.configured ? 'gmail_ready' : smtp.reason,
+    mailTo: MAIL_TO,
   });
 });
 
@@ -1507,7 +1527,13 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
 async function startServer() {
   await new Promise((resolve) => {
     app.listen(PORT, HOST, () => {
+      const smtp = getSmtpStatus();
       console.log(`Web app running on http://${HOST}:${PORT}`);
+      if (smtp.configured) {
+        console.log(`[form-mail] Gmail SMTP aktif → ${MAIL_TO}`);
+      } else {
+        console.warn(`[form-mail] Gmail SMTP kapalı (${smtp.reason}) — Railway SMTP_PASS güncelleyin`);
+      }
       resolve();
     });
   });

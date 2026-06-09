@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import AddressLink from '@/components/feature/AddressLink';
 import { trackCTAClick, trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
-import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
-import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
+import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
 import { SITE_MAP_EMBED_URL, SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Contact() {
@@ -11,6 +10,7 @@ export default function Contact() {
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,31 +20,26 @@ export default function Contact() {
     e.preventDefault();
     if (!consent) return;
     setLoading(true);
+    setFormError('');
     const form = e.currentTarget as HTMLFormElement;
-    const data = new FormData(form);
-    fetch('/api/form/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data as never).toString(),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('CONTACT_FORM_FAILED');
-        }
+    submitForm('/api/form/contact', form)
+      .then(() => {
         setSubmitted(true);
         setLoading(false);
         trackFormSubmit('contact', 'success', 'contact-form', {
           subject: formData.subject,
         });
-        offerFormWhatsAppHandoff('contact', formData);
       })
-      .catch(() => {
+      .catch((error: Error & { code?: string }) => {
         setSubmitted(false);
         setLoading(false);
+        setFormError(getFormErrorMessage(error.code));
         trackFormSubmit('contact', 'error', 'contact-form', {
           subject: formData.subject,
         });
-        triggerContactFallback('iletişim', 'contact', formData);
+        if (error.code === 'SMTP_NOT_CONFIGURED' || error.code === 'SMTP_FAILED') {
+          triggerContactFallback('iletişim', 'contact', formData);
+        }
       });
   };
 
@@ -164,9 +159,8 @@ export default function Contact() {
                     Mesajınız Gönderildi!
                   </h2>
                   <p className="text-gray-500 mb-6">
-                    En kısa sürede size dönüş yapacağız. İsterseniz formu WhatsApp ile de iletebilirsiniz.
+                    Talebiniz <strong>hacettepeisitme55@gmail.com</strong> adresine iletildi. En kısa sürede size dönüş yapacağız.
                   </p>
-                  <FormWhatsAppButton formType="contact" data={formData} />
                 </div>
               ) : (
                 <form
@@ -272,6 +266,12 @@ export default function Contact() {
                       {formData.message.length}/500
                     </p>
                   </div>
+
+                  {formError ? (
+                    <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                      {formError}
+                    </p>
+                  ) : null}
 
                   <button
                     type="submit"

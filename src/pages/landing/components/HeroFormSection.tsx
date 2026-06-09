@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { trackFormSubmit, trackLead } from '@/lib/tracking';
-import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
-import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
+import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
 export default function HeroFormSection() {
@@ -15,6 +14,7 @@ export default function HeroFormSection() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,32 +24,27 @@ export default function HeroFormSection() {
     e.preventDefault();
     if (!consent) return;
     setLoading(true);
+    setFormError('');
     const form = e.currentTarget as HTMLFormElement;
-    const data = new FormData(form);
-    fetch('/api/form/landing', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data as never).toString(),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('LANDING_FORM_FAILED');
-        }
+    submitForm('/api/form/landing', form)
+      .then(() => {
         setSubmitted(true);
         setLoading(false);
         trackLead('free_hearing_test', 1, 'TRY');
         trackFormSubmit('landing_free_test', 'success', 'landing-hero-form', {
           age: formData.age,
         });
-        offerFormWhatsAppHandoff('landing', formData);
       })
-      .catch(() => {
+      .catch((error: Error & { code?: string }) => {
         setSubmitted(false);
         setLoading(false);
+        setFormError(getFormErrorMessage(error.code));
         trackFormSubmit('landing_free_test', 'error', 'landing-hero-form', {
           age: formData.age,
         });
-        triggerContactFallback('ücretsiz test', 'landing', formData);
+        if (error.code === 'SMTP_NOT_CONFIGURED' || error.code === 'SMTP_FAILED') {
+          triggerContactFallback('ücretsiz test', 'landing', formData);
+        }
       });
   };
 
@@ -128,12 +123,11 @@ export default function HeroFormSection() {
                   Randevu Talebiniz Alındı!
                 </h3>
                 <p className="text-sm text-gray-500 mb-1">
-                  En kısa sürede {SITE_PHONE_DISPLAY} numaradan size dönüş yapacağız.
+                  Talebiniz <strong>hacettepeisitme55@gmail.com</strong> adresine iletildi.
                 </p>
                 <p className="text-xs text-gray-400 mb-5">
-                  İlkadım/Samsun şubemizden randevunuz onaylanacaktır.
+                  En kısa sürede {SITE_PHONE_DISPLAY} numaradan size dönüş yapacağız.
                 </p>
-                <FormWhatsAppButton formType="landing" data={formData} className="w-full sm:w-auto" />
               </div>
             ) : (
               <form onSubmit={handleSubmit} data-form="landing" className="space-y-4">
@@ -210,6 +204,12 @@ export default function HeroFormSection() {
                     />
                   </div>
                 </div>
+
+                {formError ? (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                    {formError}
+                  </p>
+                ) : null}
 
                 <button
                   type="submit"

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
-import FormWhatsAppButton from '@/components/feature/FormWhatsAppButton';
 import { triggerContactFallback } from '@/lib/formFallback';
-import { offerFormWhatsAppHandoff } from '@/lib/formWhatsApp';
+import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
 import AddressLink from '@/components/feature/AddressLink';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
@@ -20,6 +19,7 @@ export default function Appointment() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,33 +29,28 @@ export default function Appointment() {
     e.preventDefault();
     if (!consent) return;
     setLoading(true);
+    setFormError('');
     const form = e.currentTarget as HTMLFormElement;
-    const data = new FormData(form);
-    fetch('/api/form/appointment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data as never).toString(),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('APPOINTMENT_FORM_FAILED');
-        }
+    submitForm('/api/form/appointment', form)
+      .then(() => {
         setSubmitted(true);
         setLoading(false);
         trackFormSubmit('appointment', 'success', 'appointment-form', {
           service: formData.service,
           date: formData.date,
         });
-        offerFormWhatsAppHandoff('appointment', formData);
       })
-      .catch(() => {
+      .catch((error: Error & { code?: string }) => {
         setSubmitted(false);
         setLoading(false);
+        setFormError(getFormErrorMessage(error.code));
         trackFormSubmit('appointment', 'error', 'appointment-form', {
           service: formData.service,
           date: formData.date,
         });
-        triggerContactFallback('randevu', 'appointment', formData);
+        if (error.code === 'SMTP_NOT_CONFIGURED' || error.code === 'SMTP_FAILED') {
+          triggerContactFallback('randevu', 'appointment', formData);
+        }
       });
   };
 
@@ -142,10 +137,9 @@ export default function Appointment() {
                   Randevu Talebiniz Alındı!
                 </h2>
                 <p className="text-gray-500 mb-6">
-                  En kısa sürede size dönüş yapacağız. İsterseniz randevuyu WhatsApp ile de iletebilirsiniz.
+                  Randevu talebiniz <strong>hacettepeisitme55@gmail.com</strong> adresine iletildi. En kısa sürede size dönüş yapacağız.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <FormWhatsAppButton formType="appointment" data={formData} />
                   <Link
                     to="/"
                     className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
@@ -292,6 +286,12 @@ export default function Appointment() {
                     {formData.message.length}/500
                   </p>
                 </div>
+
+                {formError ? (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                    {formError}
+                  </p>
+                ) : null}
 
                 <button
                   type="submit"
