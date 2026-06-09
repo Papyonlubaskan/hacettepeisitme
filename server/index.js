@@ -918,9 +918,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER || '',
     pass: process.env.SMTP_PASS || '',
   },
-  connectionTimeout: FORM_NOTIFY_TIMEOUT_MS,
-  greetingTimeout: FORM_NOTIFY_TIMEOUT_MS,
-  socketTimeout: FORM_NOTIFY_TIMEOUT_MS + 4000,
+  connectionTimeout: Math.min(FORM_NOTIFY_TIMEOUT_MS, 6000),
+  greetingTimeout: Math.min(FORM_NOTIFY_TIMEOUT_MS, 6000),
+  socketTimeout: Math.min(FORM_NOTIFY_TIMEOUT_MS, 6000) + 2000,
 });
 
 function clean(value, max = 5000) {
@@ -1154,6 +1154,25 @@ function hasSmtpConfigured() {
   return getSmtpStatus().configured;
 }
 
+function hasResendConfigured() {
+  return !!(process.env.RESEND_API_KEY || '').trim();
+}
+
+function hasFormMailConfigured() {
+  return hasResendConfigured() || hasSmtpConfigured();
+}
+
+function getFormMailStatus() {
+  if (hasResendConfigured()) {
+    return { configured: true, channel: 'resend', mailTo: MAIL_TO };
+  }
+  const smtp = getSmtpStatus();
+  if (smtp.configured) {
+    return { configured: true, channel: 'gmail_smtp', mailTo: MAIL_TO };
+  }
+  return { configured: false, channel: 'none', reason: smtp.reason };
+}
+
 function withNotifyTimeout(promise, label) {
   return Promise.race([
     promise,
@@ -1188,20 +1207,69 @@ async function sendFormWhatsApp(formType, body) {
   }
 }
 
+async function sendFormMailResend(formType, body) {
+  const apiKey = (process.env.RESEND_API_KEY || '').trim();
+  const name = clean(body.name, 150) || '-';
+  const customerEmail = clean(body.email, 180);
+  const mailSubject = `[Hacettepe Form] ${formType.toUpperCase()} - ${name}`;
+  const text = [
+    buildFormNotificationText(formType, body),
+    '',
+    '---',
+    'Bu mail web sitesi formundan geldi.',
+  ].join('\n');
+
+  const payload = {
+    from: process.env.RESEND_FROM || 'Hacettepe İşitme <onboarding@resend.dev>',
+    to: [MAIL_TO],
+    subject: mailSubject,
+    text,
+  };
+  if (isValidEmail(customerEmail)) {
+    payload.reply_to = customerEmail;
+  }
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(FORM_NOTIFY_TIMEOUT_MS),
+  });
+
+  if (!res.ok) {
+    const detail = (await res.text()).slice(0, 400);
+    throw new Error(`Resend HTTP ${res.status}: ${detail}`);
+  }
+}
+
 async function deliverFormNotification(formType, body) {
-  if (!hasSmtpConfigured()) {
+  if (!hasFormMailConfigured()) {
     const err = new Error('SMTP_NOT_CONFIGURED');
     err.code = 'SMTP_NOT_CONFIGURED';
     throw err;
   }
 
-  try {
-    await withNotifyTimeout(sendFormMail(formType, body), 'SMTP');
-  } catch (error) {
-    console.error(`[${formType}] Gmail gönderimi başarısız:`, error);
-    const err = new Error('SMTP_FAILED');
-    err.code = 'SMTP_FAILED';
-    throw err;
+  if (hasResendConfigured()) {
+    try {
+      await withNotifyTimeout(sendFormMailResend(formType, body), 'RESEND');
+    } catch (error) {
+      console.error(`[${formType}] Resend gönderimi başarısız:`, error);
+      const err = new Error('SMTP_FAILED');
+      err.code = 'SMTP_FAILED';
+      throw err;
+    }
+  } else {
+    try {
+      await withNotifyTimeout(sendFormMail(formType, body), 'SMTP');
+    } catch (error) {
+      console.error(`[${formType}] Gmail SMTP başarısız (Railway Hobby SMTP engelliyor olabilir):`, error);
+      const err = new Error('SMTP_FAILED');
+      err.code = 'SMTP_FAILED';
+      throw err;
+    }
   }
 
   if (WHATSAPP_NOTIFY_API_KEY) {
@@ -1299,13 +1367,13 @@ function requireNewsletterApiKey(req, res, next) {
 }
 
 app.get('/api/health', (_req, res) => {
-  const smtp = getSmtpStatus();
+  const mail = getFormMailStatus();
   res.json({
     ok: true,
     service: 'local-form-api',
     instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
-    formMail: smtp.configured ? 'gmail_ready' : smtp.reason,
+    formMail: mail.configured ? mail.channel : mail.reason,
     mailTo: MAIL_TO,
   });
 });
@@ -1527,12 +1595,12 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
 async function startServer() {
   await new Promise((resolve) => {
     app.listen(PORT, HOST, () => {
-      const smtp = getSmtpStatus();
+      const mail = getFormMailStatus();
       console.log(`Web app running on http://${HOST}:${PORT}`);
-      if (smtp.configured) {
-        console.log(`[form-mail] Gmail SMTP aktif → ${MAIL_TO}`);
+      if (mail.configured) {
+        console.log(`[form-mail] ${mail.channel} aktif → ${MAIL_TO}`);
       } else {
-        console.warn(`[form-mail] Gmail SMTP kapalı (${smtp.reason}) — Railway SMTP_PASS güncelleyin`);
+        console.warn(`[form-mail] Mail kapalı (${mail.reason}) — RESEND_API_KEY veya Railway Pro+SMTP gerekli`);
       }
       resolve();
     });
