@@ -37,8 +37,29 @@ function removeJsonLdBlocks(html) {
   );
 }
 
+export const GA_MEASUREMENT_ID = process.env.VITE_GA_MEASUREMENT_ID || 'G-5HBR604GT5';
+
+export function ensureGa4Script(html) {
+  if (!GA_MEASUREMENT_ID || html.includes(GA_MEASUREMENT_ID)) return html;
+  const gaScript = `<!-- Google Analytics (GA4) -->
+  <script>
+    (function () {
+      var id = '${GA_MEASUREMENT_ID}';
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', id);
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+    })();
+  </script>`;
+  return html.replace('</head>', `  ${gaScript}\n</head>`);
+}
+
 export function injectSeoIntoHtml(html, pathname, entry, siteUrl) {
-  if (!entry) return html;
+  if (!entry) return ensureGa4Script(html);
 
   const canonical = `${siteUrl}${entry.path || pathname}`;
   const ogImage = entry.image?.startsWith('http') ? entry.image : `${siteUrl}${entry.image || '/local-images/pro-hero-main.webp'}`;
@@ -66,7 +87,7 @@ export function injectSeoIntoHtml(html, pathname, entry, siteUrl) {
     next = next.replace('</head>', `  ${script}\n</head>`);
   }
 
-  return next;
+  return ensureGa4Script(next);
 }
 
 export function resolveSeoEntry(manifest, pathname) {

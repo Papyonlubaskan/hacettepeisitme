@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { injectSeoIntoHtml, resolveSeoEntry } from './seo-inject.js';
+import { ensureGa4Script, injectSeoIntoHtml, resolveSeoEntry } from './seo-inject.js';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -1493,8 +1493,10 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
   app.get(/^\/(?!api).*/, (req, res) => {
     const pathname = req.path === '' ? '/' : req.path;
     const entry = resolveSeoEntry(seoManifest, pathname);
-    if (spaIndexHtml && entry) {
-      const html = injectSeoIntoHtml(spaIndexHtml, pathname, entry, SITE_PUBLIC_URL);
+    if (spaIndexHtml) {
+      const html = entry
+        ? injectSeoIntoHtml(spaIndexHtml, pathname, entry, SITE_PUBLIC_URL)
+        : ensureGa4Script(spaIndexHtml);
       res.type('text/html').set('Cache-Control', 'public, max-age=300').send(html);
       return;
     }
