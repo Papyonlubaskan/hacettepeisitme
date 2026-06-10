@@ -9,6 +9,8 @@ interface ImageFlowBackgroundProps {
   className?: string;
   /** Hero gibi kritik alanlarda tüm slaytları önceden yükle */
   eagerLoad?: boolean;
+  /** Aktif slaytta yavaş zoom (statik + hafif hareket) */
+  kenBurns?: boolean;
 }
 
 export default function ImageFlowBackground({
@@ -18,22 +20,16 @@ export default function ImageFlowBackground({
   imageClassName = 'object-cover object-center',
   className = 'absolute inset-0',
   eagerLoad = false,
+  kenBurns = true,
 }: ImageFlowBackgroundProps) {
   const [index, setIndex] = useState(0);
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReduceMotion(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
+  const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
     if (slides.length < 2) return undefined;
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % slides.length);
+      setCycle((current) => current + 1);
     }, intervalMs);
     return () => window.clearInterval(timer);
   }, [slides.length, intervalMs]);
@@ -44,17 +40,16 @@ export default function ImageFlowBackground({
     <div className={className} aria-hidden>
       {slides.map((slide, slideIndex) => {
         const active = slideIndex === index;
-        const motionClass = active && !reduceMotion ? ' ken-burns-active' : '';
         return (
           <img
-            key={slide.src}
+            key={active ? `${slide.src}-${cycle}` : slide.src}
             src={slide.src}
             alt=""
             loading={eagerLoad || slideIndex === 0 ? 'eager' : 'lazy'}
             decoding="async"
             fetchPriority={eagerLoad && slideIndex === 0 ? 'high' : undefined}
-            className={`absolute inset-0 h-full w-full transition-opacity duration-[1800ms] ease-in-out ${imageClassName}${
-              active ? ` opacity-100${motionClass}` : ' opacity-0'
+            className={`absolute inset-0 h-full w-full transition-opacity duration-[1800ms] ease-in-out ${imageClassName} ${
+              active ? `opacity-100${kenBurns ? ' ken-burns-active' : ''}` : 'opacity-0'
             }`}
           />
         );

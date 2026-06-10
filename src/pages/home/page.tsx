@@ -39,8 +39,9 @@ function HeroSection() {
       {/* Background */}
       <ImageFlowBackground
         slides={HOME_FLOW_SLIDES}
-        intervalMs={6000}
+        intervalMs={7000}
         eagerLoad
+        kenBurns
         overlayClassName="bg-gradient-to-r from-brand-dark/88 via-brand-dark/62 to-brand-dark/25"
       />
 
@@ -266,6 +267,8 @@ function CTASection() {
       <ImageFlowBackground
         slides={HOME_FLOW_SLIDES}
         intervalMs={8000}
+        eagerLoad
+        kenBurns
         overlayClassName="bg-brand-dark/55"
       />
 
