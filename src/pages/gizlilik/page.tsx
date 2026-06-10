@@ -99,6 +99,28 @@ export default function PrivacyPolicy() {
             </div>
 
             <div>
+              <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Veri Saklama ve Silme</h2>
+              <p className="text-gray-500 leading-relaxed mb-4">
+                Web sitemiz üzerinden gönderdiğiniz form verileri (ad, telefon, e-posta, mesaj) öncelikle size dönüş
+                yapılabilmesi için e-posta ile bildirilir; ayrıca sunucuda en fazla <strong>2 yıl</strong> süreyle yedek
+                olarak saklanır. Güvenlik amaçlı form istek kayıtları (IP adresi ve teknik log) en fazla{' '}
+                <strong>90 gün</strong> tutulur. Bülten aboneliğiniz iptal edildikten sonra e-posta kaydınız en fazla{' '}
+                <strong>1 yıl</strong> içinde silinir.
+              </p>
+              <p className="text-gray-500 leading-relaxed">
+                Saklama süreleri dolduğunda kayıtlar otomatik silinir. Verilerinizin silinmesini istemeniz halinde{' '}
+                <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent hover:underline">
+                  hacettepeisitme55@gmail.com
+                </a>{' '}
+                adresine başvurabilirsiniz; talebiniz 30 gün içinde yanıtlanır. Ayrıntılı bilgi için{' '}
+                <a href="/kvkk-aydinlatma-metni" className="text-brand-accent hover:underline">
+                  KVKK Aydınlatma Metni
+                </a>
+                &apos;ni inceleyebilirsiniz.
+              </p>
+            </div>
+
+            <div>
               <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Veri Güvenliği</h2>
               <p className="text-gray-500 leading-relaxed">
                 Kişisel verilerinizin güvenliği bizim için kritik öneme sahiptir. Verileriniz, yetkisiz erişime, değişikliğe, açıklamaya veya imhaya karşı korumak için teknik ve idari tedbirler almaktayız. SSL şifreleme teknolojisi kullanarak veri iletimini güvence altına alıyoruz. Verilerinize yalnızca yetkili personelimiz erişebilmektedir.

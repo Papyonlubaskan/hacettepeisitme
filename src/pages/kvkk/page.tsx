@@ -105,9 +105,31 @@ export default function KvkkNotice() {
             <div>
               <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Veri Saklama Süreleri</h2>
               <p className="text-gray-500 leading-relaxed mb-4">
-                Kişisel verileriniz, ilgili mevzuatta öngörülen asgari saklama süreleri göz önünde bulundurularak saklanmaktadır:
+                Kişisel verileriniz, ilgili mevzuatta öngörülen asgari saklama süreleri ve işleme amacının gerektirdiği süre
+                kadar saklanır. Süre dolduğunda veriler otomatik olarak silinir veya anonim hale getirilir.
               </p>
-              <ul className="space-y-2 text-gray-500">
+              <ul className="space-y-2 text-gray-500 mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
+                  <span>
+                    <strong className="text-brand-dark">Web form kayıtları</strong> (randevu, iletişim, landing formları):
+                    en fazla <strong>2 yıl</strong> — sunucuda yedek log olarak tutulur, e-posta bildirimi iletilir
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
+                  <span>
+                    <strong className="text-brand-dark">Form güvenlik kayıtları</strong> (IP, tarih, istek özeti):
+                    en fazla <strong>90 gün</strong> — spam ve kötüye kullanım denetimi için
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
+                  <span>
+                    <strong className="text-brand-dark">Bülten abonelik verileri</strong>: abonelik süresince; iptal
+                    sonrası en fazla <strong>1 yıl</strong>
+                  </span>
+                </li>
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
                   <span>Hasta dosyaları ve sağlık kayıtları: Tedavi süresi + 15 yıl (Hasta Hakları Yönetmeliği)</span>
@@ -116,15 +138,25 @@ export default function KvkkNotice() {
                   <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
                   <span>Mali kayıtlar ve fatura bilgileri: 10 yıl (Vergi Usul Kanunu)</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
-                  <span>Randevu ve iletişim kayıtları: 2 yıl</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 rounded-full bg-brand-accent mt-2 shrink-0" />
-                  <span>Bülten abonelik verileri: Abonelik iptali + 1 yıl</span>
-                </li>
               </ul>
+              <p className="text-gray-500 leading-relaxed">
+                Sunucu tarafında saklanan form verileri yalnızca yetkili personel erişimine açık dizinlerde tutulur; süresi
+                dolan kayıtlar günlük otomatik temizlik ile silinir. Form içeriğinde yer alan ad, telefon, e-posta ve mesaj
+                bilgileri KVKK kapsamında işlenir; üçüncü taraflarla ticari amaçla paylaşılmaz.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Veri Silme Talebi</h2>
+              <p className="text-gray-500 leading-relaxed">
+                KVKK&apos;nın 11. maddesi kapsamında silme talebinizi{' '}
+                <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent hover:underline">
+                  hacettepeisitme55@gmail.com
+                </a>{' '}
+                adresine veya merkezimize yazılı başvuru ile iletebilirsiniz. Talebiniz en geç{' '}
+                <strong>30 gün</strong> içinde sonuçlandırılır; web form yedek kayıtları ve bülten aboneliğiniz (varsa)
+                silinir. Yasal zorunluluk gereği saklanması gereken mali ve sağlık kayıtları bu kapsam dışındadır.
+              </p>
             </div>
 
             <div>

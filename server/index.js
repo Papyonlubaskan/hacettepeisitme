@@ -11,6 +11,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { scraper as scrapeGoogleMapsReviews } from 'google-maps-review-scraper';
+import {
+  RETENTION_DAYS,
+  erasePersonalDataByContact,
+  runDataRetentionJob,
+} from './dataRetention.mjs';
 
 const app = express();
 const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
@@ -18,6 +23,8 @@ const PORT = Number(process.env.PORT || process.env.API_PORT || 8787);
 const HOST = process.env.HOST || '0.0.0.0';
 const MAIL_TO = process.env.MAIL_TO || 'hacettepeisitme55@gmail.com';
 const NEWSLETTER_API_KEY = process.env.NEWSLETTER_API_KEY || '';
+const PRIVACY_API_KEY = process.env.PRIVACY_API_KEY || NEWSLETTER_API_KEY || '';
+const DATA_RETENTION_INTERVAL_MS = Number(process.env.DATA_RETENTION_INTERVAL_MS || 24 * 60 * 60 * 1000);
 const PRIMARY_SITE_HOST = (process.env.PRIMARY_SITE_HOST || 'hacettepeisitme.com.tr').replace(/^https?:\/\//, '').replace(/\/$/, '');
 const CORS_ORIGIN =
   process.env.CORS_ORIGIN ||
@@ -1471,6 +1478,38 @@ function formRoute(formType) {
   };
 }
 
+function getDataRetentionPaths() {
+  return {
+    formSubmissions: FORM_SUBMISSIONS_LOG_FILE,
+    formAudit: FORM_REQUESTS_LOG_FILE,
+    newsletter: SUBSCRIBERS_FILE,
+  };
+}
+
+async function runScheduledDataRetention() {
+  try {
+    const report = await runDataRetentionJob(getDataRetentionPaths());
+    if (report.totalRemoved > 0) {
+      console.log(`[data-retention] ${report.totalRemoved} kayıt silindi`, report.results);
+    }
+  } catch (error) {
+    console.error('[data-retention] purge error:', error);
+  }
+}
+
+function requirePrivacyApiKey(req, res, next) {
+  if (!PRIVACY_API_KEY) {
+    res.status(500).json({ ok: false, error: 'PRIVACY_API_KEY_MISSING' });
+    return;
+  }
+  const incoming = req.headers['x-api-key'];
+  if (incoming !== PRIVACY_API_KEY) {
+    res.status(401).json({ ok: false, error: 'UNAUTHORIZED' });
+    return;
+  }
+  next();
+}
+
 function requireNewsletterApiKey(req, res, next) {
   if (!NEWSLETTER_API_KEY) {
     res.status(500).json({ ok: false, error: 'NEWSLETTER_API_KEY_MISSING' });
@@ -1492,7 +1531,24 @@ app.get('/api/health', (_req, res) => {
     instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
     formMail: mail.configured ? mail.channel : mail.reason,
+    dataRetentionDays: RETENTION_DAYS,
   });
+});
+
+app.post('/api/privacy/erase', requirePrivacyApiKey, async (req, res) => {
+  try {
+    const email = clean(req.body?.email, 180);
+    const phone = clean(req.body?.phone, 40);
+    if (!email && !phone) {
+      res.status(400).json({ ok: false, error: 'EMAIL_OR_PHONE_REQUIRED' });
+      return;
+    }
+    const result = await erasePersonalDataByContact(getDataRetentionPaths(), { email, phone });
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    console.error('[privacy-erase] error:', error);
+    res.status(500).json({ ok: false, error: 'PRIVACY_ERASE_FAILED' });
+  }
 });
 
 app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
@@ -1735,6 +1791,9 @@ async function startServer() {
       resolve();
     });
   });
+  void runScheduledDataRetention();
+  setInterval(() => void runScheduledDataRetention(), DATA_RETENTION_INTERVAL_MS);
+
   void loadBundledInstagramFeed()
     .then(() => loadPersistedInstagramFeed())
     .then(() => {
