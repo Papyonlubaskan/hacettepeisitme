@@ -9,6 +9,8 @@ const ROUTE_LABELS: Record<string, string> = {
   '/samsun-isitme-testi': 'Samsun İşitme Testi',
   '/samsun-isitme-cihazi': 'Samsun İşitme Cihazı',
   '/sgk-odeme-tutarlari': 'SGK Ödeme Tutarları',
+  '/isitme-cihazlari': 'İşitme Cihazları',
+  '/katalog': 'Katalog',
   '/blog': 'Blog',
   '/gizlilik-politikasi': 'Gizlilik Politikası',
   '/kullanim-kosullari': 'Kullanım Koşulları',
@@ -28,6 +30,18 @@ export function getBreadcrumbs(pathname: string, pageTitle?: string): Breadcrumb
   if (pathname.startsWith('/blog/') && pathname !== '/blog') {
     items.push({ name: 'Blog', path: '/blog' });
     items.push({ name: pageTitle || 'Yazı', path: pathname });
+    return items;
+  }
+
+  if (pathname.startsWith('/isitme-cihazlari/')) {
+    items.push({ name: 'İşitme Cihazları', path: '/isitme-cihazlari' });
+    items.push({ name: pageTitle || 'Kategori', path: pathname });
+    return items;
+  }
+
+  if (pathname.startsWith('/katalog/')) {
+    items.push({ name: 'Katalog', path: '/katalog' });
+    items.push({ name: pageTitle || 'Marka', path: pathname });
     return items;
   }
 

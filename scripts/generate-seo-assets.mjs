@@ -14,6 +14,7 @@ const importSource = jiti(import.meta.url, {
 });
 const { ROUTE_SEO } = importSource('../src/lib/routeSeo.ts');
 const { blogPosts } = importSource('../src/mocks/blog.ts');
+const { DEVICE_CATEGORIES, CATALOGS } = importSource('../src/mocks/hearingAids.ts');
 const { breadcrumbJsonLd, localBusinessJsonLd, faqPageJsonLd, SITE_FAQ, serviceJsonLd } =
   importSource('../src/lib/schema.ts');
 const { organizationJsonLd, websiteJsonLd } = importSource('../src/lib/siteSeo.ts');
@@ -67,6 +68,15 @@ function buildManifest() {
       entry.priority = '0.95';
     }
 
+    if (path === '/isitme-cihazlari') {
+      entry.priority = '0.9';
+      entry.jsonLd = serviceJsonLd(
+        'İşitme Cihazları Satışı',
+        'Samsun Hacettepe İşitme Merkezi’nde Phonak, Signia, Oticon işitme cihazı satışı ve uyarlama.',
+        path,
+      );
+    }
+
     if (path === '/isitme-cihazi-fiyatlari') {
       entry.jsonLd = serviceJsonLd(
         'İşitme Cihazı Fiyatları Samsun',
@@ -76,6 +86,36 @@ function buildManifest() {
     }
 
     manifest[path] = entry;
+  }
+
+  for (const cat of DEVICE_CATEGORIES) {
+    const path = `/isitme-cihazlari/${cat.slug}`;
+    manifest[path] = {
+      path,
+      title: cat.seoTitle,
+      description: cat.seoDescription,
+      keywords: cat.keywords,
+      image: absoluteUrl('/local-images/pro-hero-main.webp'),
+      type: 'website',
+      priority: '0.75',
+      changefreq: 'monthly',
+      lastmod: today,
+    };
+  }
+
+  for (const catalog of CATALOGS) {
+    const path = `/katalog/${catalog.slug}`;
+    manifest[path] = {
+      path,
+      title: catalog.seoTitle,
+      description: catalog.seoDescription,
+      keywords: catalog.keywords,
+      image: absoluteUrl('/local-images/pro-hero-main.webp'),
+      type: 'website',
+      priority: '0.75',
+      changefreq: 'monthly',
+      lastmod: today,
+    };
   }
 
   for (const post of blogPosts) {

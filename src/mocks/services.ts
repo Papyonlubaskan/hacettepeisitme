@@ -14,7 +14,7 @@ export const services = [
     description:
       'Siemens, Phonak ve Oticon gibi dünya markalarından ihtiyacınıza en uygun işitme cihazını seçiyor, profesyonel uyarlama yapıyoruz.',
     icon: 'ri-headphone-line',
-    link: '/randevu',
+    link: '/isitme-cihazlari',
     cta: 'Cihaz İncele',
   },
   {

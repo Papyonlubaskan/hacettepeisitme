@@ -17,6 +17,10 @@ const IsitmeCihaziFiyatlariPage = lazy(() => import("../pages/seo/isime-cihazi-f
 const SamsunIsitmeTestiPage = lazy(() => import("../pages/seo/samsun-isitme-testi"));
 const SamsunIsitmeCihaziPage = lazy(() => import("../pages/seo/samsun-isitme-cihazi"));
 const SgkOdemeTutarlariPage = lazy(() => import("../pages/sgk-odeme-tutarlari/page"));
+const HearingAidsIndex = lazy(() => import("../pages/hearing-aids/index"));
+const HearingAidCategory = lazy(() => import("../pages/hearing-aids/category"));
+const CatalogIndex = lazy(() => import("../pages/catalog/index"));
+const CatalogDetail = lazy(() => import("../pages/catalog/detail"));
 
 const routes: RouteObject[] = [
   {
@@ -64,6 +68,38 @@ const routes: RouteObject[] = [
     element: (
       <Suspense fallback={null}>
         <OnlineHearingTest />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/isitme-cihazlari",
+    element: (
+      <Suspense fallback={null}>
+        <HearingAidsIndex />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/isitme-cihazlari/:slug",
+    element: (
+      <Suspense fallback={null}>
+        <HearingAidCategory />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/katalog",
+    element: (
+      <Suspense fallback={null}>
+        <CatalogIndex />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/katalog/:slug",
+    element: (
+      <Suspense fallback={null}>
+        <CatalogDetail />
       </Suspense>
     ),
   },

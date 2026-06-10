@@ -10,6 +10,7 @@ import GoogleReviewsSection from '@/components/feature/GoogleReviewsSection';
 import InstagramFeedSection from '@/components/feature/InstagramFeedSection';
 import { blogPosts } from '../../mocks/blog';
 import LocalSeoSection from '@/components/feature/LocalSeoSection';
+import HearingAidsSection from '@/components/feature/HearingAidsSection';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
@@ -297,6 +298,7 @@ export default function Home() {
     <div className="animate-fadeInUp">
       <HeroSection />
       <ServicesSection />
+      <HearingAidsSection />
       <InstagramFeedSection />
       <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
       <BlogSection />

@@ -57,6 +57,22 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
       'online işitme testi, internet işitme testi Türkçe, işitme kaybı testi, evde işitme testi',
     image: '/local-images/pro-hero-main.webp',
   },
+  '/isitme-cihazlari': {
+    title: 'İşitme Cihazları Samsun | Phonak, Signia, Oticon — Hacettepe',
+    description:
+      'Kulak arkası, kulak içi, RIC ve çocuk işitme cihazları. Samsun İlkadım’da ücretsiz test, marka katalogları ve SGK danışmanlığı.',
+    keywords:
+      'işitme cihazları Samsun, Phonak Samsun, Signia Siemens, Oticon, işitme cihazı modelleri',
+    image: '/local-images/pro-hero-main.webp',
+  },
+  '/katalog': {
+    title: 'İşitme Cihazı Katalogları Samsun | Phonak, Signia, Oticon',
+    description:
+      'Phonak, Signia, Oticon, ReSound ve Starkey işitme cihazı katalogları. Samsun Hacettepe İşitme Merkezi’nde katalog danışmanlığı ve deneme.',
+    keywords:
+      'işitme cihazı katalog, Phonak katalog Samsun, Signia katalog, Oticon katalog',
+    image: '/local-images/pro-hero-main.webp',
+  },
   '/isitme-cihazi-fiyatlari': {
     title: 'İşitme Cihazı Fiyatları 2025 | Samsun — Phonak, Siemens, Oticon',
     description:
@@ -116,6 +132,12 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
 
 export function getRouteSeo(pathname: string): RouteSeo | null {
   if (pathname.startsWith('/blog/') && pathname !== '/blog') {
+    return null;
+  }
+  if (pathname.startsWith('/isitme-cihazlari/')) {
+    return null;
+  }
+  if (pathname.startsWith('/katalog/')) {
     return null;
   }
   return ROUTE_SEO[pathname] ?? null;

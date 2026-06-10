@@ -11,6 +11,8 @@ const quickLinks = [
   { label: 'Randevu Oluştur', to: '/randevu' },
   { label: 'İletişim', to: '/iletisim' },
   { label: 'Online İşitme Testi', to: '/online-isitme-testi' },
+  { label: 'İşitme Cihazları', to: '/isitme-cihazlari' },
+  { label: 'Marka Katalogları', to: '/katalog' },
   { label: 'İşitme Cihazı Fiyatları', to: '/isitme-cihazi-fiyatlari' },
   { label: 'Samsun İşitme Cihazı', to: '/samsun-isitme-cihazi' },
   { label: 'Samsun İşitme Testi', to: '/samsun-isitme-testi' },
@@ -20,7 +22,8 @@ const quickLinks = [
 const serviceLinks = [
   { label: 'Ücretsiz İşitme Testi', to: '/ucretsiz-isitme-testi' },
   { label: 'Online İşitme Testi', to: '/online-isitme-testi' },
-  { label: 'Cihaz Satışı', to: '/' },
+  { label: 'Cihaz Satışı', to: '/isitme-cihazlari' },
+  { label: 'Marka Katalogları', to: '/katalog' },
   { label: 'Cihaz Uyarlama', to: '/randevu' },
   { label: 'Teknik Servis', to: '/iletisim' },
   { label: 'Danışmanlık', to: '/randevu' },
