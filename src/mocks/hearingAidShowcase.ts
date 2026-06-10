@@ -44,6 +44,16 @@ const ig = (code: string) => ({
   video: `/local-images/instagram/${code}.mp4`,
 });
 
+const SHOWCASE_IMG = {
+  vista: '/local-images/showcase/vista-showcase.png',
+  am: '/local-images/showcase/am-showcase.png',
+  nitro: '/local-images/showcase/nitro-showcase.png',
+  pediatrik: '/local-images/pediatrik-isitme-cocuk.webp',
+  ric: '/local-images/showcase/device-ric-thumb.png',
+  bte: '/local-images/showcase/device-bte-thumb.png',
+  ite: '/local-images/showcase/device-ite-thumb.png',
+} as const;
+
 export const SHOWCASE_SERIES: ShowcaseSeries[] = [
   {
     id: 'vista',
@@ -62,14 +72,15 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
       { text: 'Uzaktan program güncelleme', highlight: 'Mobil uygulama' },
     ],
     badges: ['Bluetooth', 'Şarjlı', 'IP68', 'RIC'],
+    image: SHOWCASE_IMG.vista,
     ...(() => {
       const m = ig('DWD689UjXKO');
-      return { image: m.image, videoSrc: m.video, videoPoster: m.image };
+      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.vista };
     })(),
     warranty: '2 Yıl Garanti',
     modelTypes: [
-      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Vista RIC serisi', image: ig('DWD689UjXKO').image },
-      { label: 'KULAK ARKASI', sublabel: 'Vista güçlü modeller', image: ig('DVo36dZjaz9').image },
+      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Vista RIC serisi', image: SHOWCASE_IMG.ric },
+      { label: 'KULAK ARKASI', sublabel: 'Vista güçlü modeller', image: SHOWCASE_IMG.bte },
     ],
     products: [
       { name: 'Vista Premium', specs: 'Premium RIC · Şarjlı · Gelişmiş konuşma netliği' },
@@ -94,14 +105,15 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
       { text: 'Uzaktan odyolog desteği', highlight: 'Tele-danışmanlık' },
     ],
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
+    image: SHOWCASE_IMG.am,
     ...(() => {
       const m = ig('DVo36dZjaz9');
-      return { image: m.image, videoSrc: m.video, videoPoster: m.image };
+      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.am };
     })(),
     warranty: '2 Yıl Garanti',
     modelTypes: [
-      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'A&M şarjlı RIC', image: ig('DVo36dZjaz9').image },
-      { label: 'KULAK ARKASI', sublabel: 'A&M BTE serisi', image: ig('DVlx-9xjRAV').image },
+      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'A&M şarjlı RIC', image: SHOWCASE_IMG.ric },
+      { label: 'KULAK ARKASI', sublabel: 'A&M BTE serisi', image: SHOWCASE_IMG.bte },
     ],
     products: [
       { name: 'A&M Premium', specs: 'Premium RIC · Şarjlı · Kişisel ses dengeleme' },
@@ -126,14 +138,15 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
       { text: 'Kişiye özel kulak içi üretim', highlight: 'Özel kalıp' },
     ],
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
+    image: SHOWCASE_IMG.nitro,
     ...(() => {
       const m = ig('DVlx-9xjRAV');
-      return { image: m.image, videoSrc: m.video, videoPoster: m.image };
+      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.nitro };
     })(),
     warranty: '2 Yıl Garanti',
     modelTypes: [
-      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Nitro RIC modeller', image: ig('DVlx-9xjRAV').image },
-      { label: 'KULAK ARKASI', sublabel: 'Nitro güçlü seri', image: ig('DVgQKkSDaAP').image },
+      { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Nitro RIC modeller', image: SHOWCASE_IMG.ric },
+      { label: 'KULAK ARKASI', sublabel: 'Nitro güçlü seri', image: SHOWCASE_IMG.bte },
     ],
     products: [
       { name: 'Nitro Elite', specs: 'Flagship RIC · Gelişmiş ses işleme · Şarjlı' },
@@ -159,14 +172,15 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
       { text: 'SGK süreç danışmanlığı', highlight: 'Evrak desteği' },
     ],
     badges: ['Pediatrik', 'SGK', 'Aile Desteği', 'BTE'],
+    image: SHOWCASE_IMG.pediatrik,
     ...(() => {
       const m = ig('DVibqUJjYWy');
-      return { image: m.image, videoSrc: m.video, videoPoster: m.image };
+      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.pediatrik };
     })(),
     warranty: '2 Yıl Garanti',
     modelTypes: [
-      { label: 'KULAK ARKASI', sublabel: 'Pediatrik BTE modeller', image: ig('DVibqUJjYWy').image },
-      { label: 'GÜÇLÜ MODELLER', sublabel: 'İleri kayıp için SP serileri', image: ig('DVdethoDS03').image },
+      { label: 'KULAK ARKASI', sublabel: 'Pediatrik BTE modeller', image: SHOWCASE_IMG.bte },
+      { label: 'GÜÇLÜ MODELLER', sublabel: 'İleri kayıp için SP serileri', image: SHOWCASE_IMG.ric },
     ],
     products: [
       { name: 'Pediatrik Grup RIC', specs: 'Pediatrik RIC · Dayanıklı · LED durum göstergesi' },

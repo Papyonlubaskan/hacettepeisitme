@@ -196,13 +196,13 @@ export const DEVICE_CATEGORIES: DeviceCategory[] = [
     title: 'Teknik Servis ve Bakım',
     icon: 'ri-tools-line',
     summary:
-      'Tüm marka işitme cihazlarında bakım, onarım, kulak kalıbı yenileme ve yazılım güncellemesi.',
+      'Tüm seri işitme cihazlarında bakım, onarım, kulak kalıbı yenileme ve yazılım güncellemesi.',
     paragraphs: [
       'Hacettepe İşitme Merkezi teknik servis biriminde kulak kalıbı tamiri, hoparlör değişimi, gövde temizliği ve yazılım güncellemeleri yapılır. Satış sonrası periyodik kontroller cihaz ömrünü uzatır.',
       'Samsun içi danışanlarımız için hızlı servis randevusu; il dışından gelen cihazlarda ön inceleme sonrası işlem planı paylaşılır.',
     ],
     highlights: [
-      'Çok markalı servis desteği',
+      'Çok serili servis desteği',
       'Kulak kalıbı üretim ve yenileme',
       'Yazılım güncelleme ve uyarlama',
       'Periyodik bakım hatırlatması',
@@ -331,7 +331,14 @@ export const CATALOGS: CatalogEntry[] = [
   },
 ];
 
-const igImg = (code: string) => `/local-images/instagram/${code}.jpg`;
+const CATALOG_IMG = {
+  vistaPremium: '/local-images/showcase/vista-showcase.png',
+  amPremium: '/local-images/showcase/am-showcase.png',
+  nitroElite: '/local-images/showcase/nitro-showcase.png',
+  vistaPower: '/local-images/showcase/catalog-vista-power.png',
+  nitroCustom: '/local-images/showcase/catalog-nitro-custom.png',
+  pediatrik: '/local-images/pediatrik-isitme-cocuk.webp',
+} as const;
 
 export const FEATURED_PRODUCTS: HearingAidProduct[] = [
   {
@@ -342,7 +349,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'Şarjlı RIC',
     description: 'Sosyal ortamlarda konuşma netliğini öne çıkaran, şarjlı ve Bluetooth destekli premium model.',
     features: ['Akıllı ortam algılama', 'Bluetooth bağlantı', 'Şarjlı gövde', 'IP68 koruma'],
-    image: igImg('DWD689UjXKO'),
+    image: CATALOG_IMG.vistaPremium,
   },
   {
     slug: 'a-m-premium',
@@ -352,7 +359,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'Şarjlı RIC',
     description: 'Kişisel ses dengeleme ve gürültü yönetimi sunan şarjlı kulak içi hoparlörlü seri.',
     features: ['Kişisel ses dengeleme', 'Şarj istasyonu', 'Uygulama kontrolü', 'Gürültü yönetimi'],
-    image: igImg('DVo36dZjaz9'),
+    image: CATALOG_IMG.amPremium,
   },
   {
     slug: 'nitro-elite',
@@ -362,7 +369,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'RIC / BTE',
     description: 'Çevresel sesleri dengeleyen, doğal dinleme sunan gelişmiş işlemci serisi.',
     features: ['Yapay zeka destekli işleme', 'Çoklu cihaz bağlantısı', 'Şarjlı seçenek', 'Tinnitus desteği'],
-    image: igImg('DVlx-9xjRAV'),
+    image: CATALOG_IMG.nitroElite,
   },
   {
     slug: 'vista-power',
@@ -372,7 +379,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'Güçlü BTE',
     description: 'İleri ve profund işitme kayıpları için tasarlanmış yüksek güçlü kulak arkası model.',
     features: ['Güçlü amplifikasyon', 'Dayanıklı gövde', 'Uzaktan ayar', 'Su tozu direnci'],
-    image: igImg('DVgQKkSDaAP'),
+    image: CATALOG_IMG.vistaPower,
   },
   {
     slug: 'nitro-custom',
@@ -382,7 +389,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'Özel IIC',
     description: 'Kulak anatomisine göre üretilen, neredeyse görünmez kanal içi işitme cihazı.',
     features: ['Özel kalıp', 'Minimal görünüm', 'Doğal ses', 'Mobil ayar'],
-    image: igImg('DVbD74JDYJd'),
+    image: CATALOG_IMG.nitroCustom,
   },
   {
     slug: 'pediatrik-bte',
@@ -392,7 +399,7 @@ export const FEATURED_PRODUCTS: HearingAidProduct[] = [
     type: 'BTE',
     description: 'Çocuklara özel dayanıklı gövde, renkli kabuk ve güvenli pil yuvası.',
     features: ['Dayanıklı tasarım', 'Renkli kabuk', 'Aile eğitimi', 'SGK uyumlu seçenekler'],
-    image: igImg('DVibqUJjYWy'),
+    image: CATALOG_IMG.pediatrik,
   },
 ];
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AddressLink from '@/components/feature/AddressLink';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import AdaptiveImage from '@/components/hearing-aids/AdaptiveImage';
 import ShowcaseVideo from '@/components/hearing-aids/ShowcaseVideo';
 import { FIT_VIDEOS, SHOWCASE_SERIES } from '@/mocks/hearingAidShowcase';
 import { serviceJsonLd } from '@/lib/schema';
@@ -99,7 +100,6 @@ export default function HearingAidsIndexPage() {
       </section>
 
       {SHOWCASE_SERIES.map((series, index) => {
-        const isPediatric = series.id === 'pediatrik';
         const bgClass = index % 2 === 0 ? 'bg-gradient-to-br from-cyan-50 via-teal-50/80 to-white' : 'bg-white';
 
         return (
@@ -143,13 +143,12 @@ export default function HearingAidsIndexPage() {
                 </div>
 
                 <div className="space-y-5">
-                  <div className={`rounded-2xl overflow-hidden shadow-xl ${isPediatric ? '' : 'flex justify-center bg-white/50 p-4'}`}>
-                    <img
-                      src={series.image}
-                      alt={`${series.seriesName} işitme cihazı`}
-                      className={isPediatric ? 'w-full h-64 md:h-80 object-cover' : 'max-h-48 md:max-h-56 object-contain mx-auto'}
-                    />
-                  </div>
+                  <AdaptiveImage
+                    src={series.image}
+                    alt={`${series.seriesName} işitme cihazı`}
+                    className="shadow-xl"
+                    maxWidthClass="max-w-sm"
+                  />
                   <div className="flex justify-center">
                     <ShowcaseVideo
                       src={series.videoSrc}
@@ -167,7 +166,9 @@ export default function HearingAidsIndexPage() {
                     key={mt.label}
                     className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 shadow-sm"
                   >
-                    <img src={mt.image} alt={mt.label} className="w-20 h-20 object-cover rounded-lg shrink-0" loading="lazy" />
+                    <div className="w-20 shrink-0">
+                      <AdaptiveImage src={mt.image} alt={mt.label} maxWidthClass="max-w-20" className="rounded-lg" />
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-brand-accent uppercase tracking-wide">{mt.label}</p>
                       <p className="text-sm font-semibold text-brand-dark">{mt.sublabel}</p>
@@ -239,7 +240,7 @@ export default function HearingAidsIndexPage() {
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-brand-dark mb-4">Teknik Servis Desteği</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
               2 yıl cihaz garantisi ile birlikte periyodik bakım, kulak kalıbı yenileme ve yazılım güncellemesi
-              hizmeti sunuyoruz. Çok markalı servis desteği.
+              hizmeti sunuyoruz. Çok serili servis desteği.
             </p>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center gap-2"><i className="ri-tools-line text-brand-accent" /> Kulak kalıbı üretim ve onarım</li>

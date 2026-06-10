@@ -6,7 +6,7 @@ export const SITE_LOCALE = 'tr_TR';
 export const SITE_LANGUAGE = 'tr-TR';
 
 export const SITE_DEFAULT_KEYWORDS =
-  'işitme cihazı Samsun, işitme testi Samsun, ücretsiz işitme testi, Phonak, Siemens, Oticon, SGK işitme cihazı, Hacettepe İşitme';
+  'işitme cihazı Samsun, işitme testi Samsun, ücretsiz işitme testi, Vista, A&M, Nitro, SGK işitme cihazı, Hacettepe İşitme';
 
 export const SITE_DEFAULT_OG_IMAGE = '/local-images/pro-hero-main.webp';
 
@@ -48,7 +48,7 @@ export function websiteJsonLd() {
     url: absoluteUrl('/'),
     inLanguage: SITE_LANGUAGE,
     description:
-      "Samsun'da ücretsiz işitme testi, işitme cihazı satışı ve SGK danışmanlığı. Phonak, Siemens, Oticon yetkili merkez.",
+      "Samsun'da ücretsiz işitme testi, işitme cihazı satışı ve SGK danışmanlığı. Vista, A&M ve Nitro serileri ile uzman danışmanlık.",
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,

@@ -72,7 +72,7 @@ function buildManifest() {
       entry.priority = '0.9';
       entry.jsonLd = serviceJsonLd(
         'İşitme Cihazları Satışı',
-        'Samsun Hacettepe İşitme Merkezi’nde Phonak, Signia, Oticon işitme cihazı satışı ve uyarlama.',
+        'Samsun Hacettepe İşitme Merkezi’nde Vista, A&M ve Nitro işitme cihazı satışı ve uyarlama.',
         path,
       );
     }
@@ -80,7 +80,7 @@ function buildManifest() {
     if (path === '/isitme-cihazi-fiyatlari') {
       entry.jsonLd = serviceJsonLd(
         'İşitme Cihazı Fiyatları Samsun',
-        'Phonak, Siemens ve Oticon işitme cihazı fiyat danışmanlığı ve SGK bilgilendirmesi.',
+        'Vista, A&M ve Nitro işitme cihazı fiyat danışmanlığı ve SGK bilgilendirmesi.',
         path,
       );
     }

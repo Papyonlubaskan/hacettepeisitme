@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { HearingAidProduct } from '@/mocks/hearingAids';
+import AdaptiveImage from '@/components/hearing-aids/AdaptiveImage';
 
 interface ProductCardProps {
   product: HearingAidProduct;
@@ -8,14 +9,12 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="h-48 bg-brand-cream flex items-center justify-center p-6">
-        <img
-          src={product.image}
-          alt={`${product.lineName} ${product.name}`}
-          loading="lazy"
-          className="max-h-full max-w-full object-contain"
-        />
-      </div>
+      <AdaptiveImage
+        src={product.image}
+        alt={`${product.lineName} ${product.name}`}
+        className="bg-brand-cream rounded-none"
+        maxWidthClass="max-w-full"
+      />
       <div className="p-6">
         <p className="text-xs font-semibold text-brand-accent uppercase tracking-wide mb-1">{product.lineName}</p>
         <h3 className="text-lg font-bold text-brand-dark mb-1">{product.name}</h3>

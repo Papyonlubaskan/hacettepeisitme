@@ -37,15 +37,13 @@ const INSTAGRAM_POST_PERMALINKS = (process.env.INSTAGRAM_POST_PERMALINKS || '')
   .filter(Boolean);
 const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_USERNAME}/`;
 const GRAPH_API_VERSION = process.env.GRAPH_API_VERSION || 'v21.0';
-const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 15 * 60 * 1000);
+const INSTAGRAM_FEED_CACHE_MS = Number(process.env.INSTAGRAM_FEED_CACHE_MS || 90 * 1000);
 const INSTAGRAM_FEED_LIMIT = Math.min(Math.max(Number(process.env.INSTAGRAM_FEED_LIMIT || 12), 3), 24);
 const INSTAGRAM_BROWSER_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 const HAS_INSTAGRAM_CREDENTIALS = Boolean(INSTAGRAM_ACCESS_TOKEN || INSTAGRAM_SESSION_ID);
 /** Production'da token yokken canlı Instagram API çağrısı yapma (429 önleme). */
-const INSTAGRAM_LIVE_REFRESH =
-  process.env.INSTAGRAM_LIVE_REFRESH === 'true' ||
-  (process.env.INSTAGRAM_LIVE_REFRESH !== 'false' && HAS_INSTAGRAM_CREDENTIALS);
+const INSTAGRAM_LIVE_REFRESH = process.env.INSTAGRAM_LIVE_REFRESH !== 'false';
 const SITE_PHONE_WA = process.env.WHATSAPP_NOTIFY_PHONE || '905334745806';
 const WHATSAPP_NOTIFY_API_KEY = process.env.WHATSAPP_NOTIFY_API_KEY || '';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
@@ -191,13 +189,21 @@ function shouldAttemptLiveInstagram() {
   return true;
 }
 
+function proxifyInstagramMediaUrl(mediaUrl) {
+  if (!mediaUrl) return mediaUrl;
+  if (mediaUrl.startsWith('/local-images/') || mediaUrl.startsWith('/api/instagram/')) return mediaUrl;
+  if (!isAllowedInstagramMediaUrl(mediaUrl)) return mediaUrl;
+  return `/api/instagram/media?src=${encodeURIComponent(mediaUrl)}`;
+}
+
 function applyProxyToInstagramPayload(payload) {
   if (!payload?.posts?.length) return payload;
   return {
     ...payload,
     posts: payload.posts.map((post) => ({
       ...post,
-      imageUrl: proxifyInstagramImageUrl(post.imageUrl) || post.imageUrl,
+      imageUrl: proxifyInstagramMediaUrl(post.imageUrl) || post.imageUrl,
+      videoUrl: post.videoUrl ? proxifyInstagramMediaUrl(post.videoUrl) : null,
     })),
   };
 }
@@ -308,9 +314,9 @@ function captionToTitle(caption) {
   return line.slice(0, 120) || 'Instagram paylaşımı';
 }
 
-function isAllowedInstagramImageUrl(imageUrl) {
+function isAllowedInstagramMediaUrl(mediaUrl) {
   try {
-    const parsed = new URL(imageUrl);
+    const parsed = new URL(mediaUrl);
     if (parsed.protocol !== 'https:') return false;
     return (
       parsed.hostname.endsWith('cdninstagram.com') ||
@@ -322,21 +328,12 @@ function isAllowedInstagramImageUrl(imageUrl) {
   }
 }
 
-function proxifyInstagramImageUrl(imageUrl) {
-  if (!imageUrl) return imageUrl;
-  if (imageUrl.startsWith('/local-images/')) return imageUrl;
-  if (!isAllowedInstagramImageUrl(imageUrl)) return imageUrl;
-  return `/api/instagram/media?src=${encodeURIComponent(imageUrl)}`;
-}
-
 function mapInstagramFeedPost({ id, imageUrl, videoUrl, permalink, title, mediaType, timestamp }) {
   if (!imageUrl || !permalink) return null;
-  const localVideo =
-    typeof videoUrl === 'string' && videoUrl.startsWith('/local-images/') ? videoUrl : null;
   return {
     id: String(id),
-    imageUrl: proxifyInstagramImageUrl(imageUrl),
-    videoUrl: localVideo,
+    imageUrl: proxifyInstagramMediaUrl(imageUrl),
+    videoUrl: videoUrl ? proxifyInstagramMediaUrl(videoUrl) : null,
     permalink,
     title: captionToTitle(title),
     mediaType: mediaType || 'IMAGE',
@@ -358,9 +355,12 @@ function mapInstagramGraphItem(item) {
   } else {
     imageUrl = imgSource.media_url || imgSource.thumbnail_url || '';
   }
+  const isVideo = item.media_type === 'VIDEO' || imgSource.media_type === 'VIDEO';
+  const remoteVideo = isVideo ? item.media_url || imgSource.media_url || '' : '';
   return mapInstagramFeedPost({
     id: item.id,
     imageUrl,
+    videoUrl: remoteVideo || null,
     permalink,
     title: caption,
     mediaType: item.media_type || 'IMAGE',
@@ -1461,7 +1461,7 @@ app.get('/api/google/reviews', googleReviewsLimiter, async (_req, res) => {
 app.get('/api/instagram/media', instagramFeedLimiter, async (req, res) => {
   try {
     const src = clean(req.query?.src, 2000);
-    if (!src || !isAllowedInstagramImageUrl(src)) {
+    if (!src || !isAllowedInstagramMediaUrl(src)) {
       res.status(400).json({ ok: false, error: 'INVALID_MEDIA_URL' });
       return;
     }
@@ -1469,7 +1469,7 @@ app.get('/api/instagram/media', instagramFeedLimiter, async (req, res) => {
       headers: {
         'User-Agent': INSTAGRAM_BROWSER_USER_AGENT,
         Referer: INSTAGRAM_PROFILE_URL,
-        Accept: 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+        Accept: 'image/avif,image/webp,image/apng,image/*,video/*,*/*;q=0.8',
       },
       redirect: 'follow',
     });
@@ -1488,20 +1488,34 @@ app.get('/api/instagram/media', instagramFeedLimiter, async (req, res) => {
   }
 });
 
-app.get('/api/instagram/feed', instagramFeedLimiter, async (_req, res) => {
+app.get('/api/instagram/feed', instagramFeedLimiter, async (req, res) => {
   try {
     const now = Date.now();
-    if (instagramFeedCache && instagramFeedCache.expiresAt > now) {
+    const forceFresh = req.query?.fresh === '1';
+
+    if (!forceFresh && instagramFeedCache && instagramFeedCache.expiresAt > now) {
       res.json(instagramFeedCache.payload);
-      if (instagramFeedCache.expiresAt - now < INSTAGRAM_FEED_CACHE_MS / 3) {
+      if (instagramFeedCache.expiresAt - now < INSTAGRAM_FEED_CACHE_MS / 2) {
         void refreshInstagramFeedCache();
       }
       return;
     }
 
+    if (shouldAttemptLiveInstagram()) {
+      const liveNow = await fetchInstagramFeed();
+      if (liveNow?.posts?.length) {
+        const payload = buildInstagramFeedPayload(liveNow.posts, { live: true });
+        instagramFeedCache = { expiresAt: now + INSTAGRAM_FEED_CACHE_MS, payload };
+        rememberInstagramFeedPayload(payload);
+        await persistInstagramFeedCache(payload);
+        res.json(payload);
+        return;
+      }
+    }
+
     if (instagramFeedStalePayload) {
       const stalePayload = { ...instagramFeedStalePayload, stale: true };
-      instagramFeedCache = { expiresAt: now + 10 * 60 * 1000, payload: stalePayload };
+      instagramFeedCache = { expiresAt: now + 60 * 1000, payload: stalePayload };
       res.json(stalePayload);
       void refreshInstagramFeedCache();
       return;

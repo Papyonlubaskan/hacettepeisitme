@@ -8,7 +8,7 @@ const PAGE_FAQ = [
   {
     question: 'Samsun’da işitme cihazı nereden alınır?',
     answer:
-      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Phonak, Siemens ve Oticon işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır.',
+      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Vista, A&M ve Nitro serileri satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır.',
   },
   {
     question: 'Samsun’da ücretsiz işitme testi var mı?',
@@ -43,7 +43,7 @@ export default function SamsunIsitmeCihaziPage() {
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Samsun İşitme Cihazı</h1>
           <p className="text-white/80 text-lg max-w-3xl">
             İlkadım Tepecik&apos;te 15 yıllık deneyimle işitme cihazı satışı, ücretsiz işitme testi ve kişiye özel
-            cihaz uyarlama. Phonak, Siemens ve Oticon yetkili merkez.
+            cihaz uyarlama. Vista, A&M ve Nitro serileri ile uzman danışmanlık.
           </p>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default function SamsunIsitmeCihaziPage() {
           <p>İlkadım, Atakum, Canik, Tekkeköy ve Samsun genelinde danışanlarımıza hizmet veriyoruz.</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Ücretsiz işitme testi ve odyometri</li>
-            <li>Phonak, Siemens, Oticon işitme cihazı satışı</li>
+            <li>Vista, A&M, Nitro ve Pediatrik Grup işitme cihazı satışı</li>
             <li>SGK işitme cihazı danışmanlığı</li>
             <li>30 gün deneme ve ömür boyu teknik destek</li>
           </ul>

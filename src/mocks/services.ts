@@ -12,7 +12,7 @@ export const services = [
     id: 2,
     title: 'Cihaz Seçimi ve Uyarlama',
     description:
-      'Siemens, Phonak ve Oticon gibi dünya markalarından ihtiyacınıza en uygun işitme cihazını seçiyor, profesyonel uyarlama yapıyoruz.',
+      'Vista, A&M ve Nitro serilerinden ihtiyacınıza en uygun işitme cihazını seçiyor, profesyonel uyarlama yapıyoruz.',
     icon: 'ri-headphone-line',
     link: '/isitme-cihazlari',
     cta: 'Cihaz İncele',

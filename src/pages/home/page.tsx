@@ -58,7 +58,7 @@ function HeroSection() {
           </h1>
 
           <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-lg">
-            İlkadım Tepecik merkezimizde ücretsiz işitme testi, Phonak, Siemens ve Oticon cihazlar ile 30 gün deneme
+            İlkadım Tepecik merkezimizde ücretsiz işitme testi, Vista, A&M ve Nitro serileri ile 30 gün deneme
             garantisi.
           </p>
 
@@ -297,10 +297,10 @@ export default function Home() {
   return (
     <div className="animate-fadeInUp">
       <HeroSection />
-      <ServicesSection />
-      <HearingAidsSection />
       <InstagramFeedSection />
       <GoogleReviewsSection subtitle="Google Haritalar üzerindeki güncel işletme yorumları" />
+      <ServicesSection />
+      <HearingAidsSection />
       <BlogSection />
       <LocalSeoSection />
       <CTASection />

@@ -22,7 +22,7 @@ export const SITE_FAQ = [
   {
     question: 'İşitme cihazı fiyatları ne kadar?',
     answer:
-      'Fiyatlar marka, model ve teknolojiye göre değişmektedir. Ücretsiz danışmanlık sırasında bütçenize ve ihtiyacınıza en uygun seçenekleri sunuyoruz.',
+      'Fiyatlar seri, model ve teknolojiye göre değişmektedir. Ücretsiz danışmanlık sırasında bütçenize ve ihtiyacınıza en uygun seçenekleri sunuyoruz.',
   },
   {
     question: 'Cihaz uyarlama süreci nasıl işliyor?',
@@ -53,7 +53,7 @@ export function localBusinessJsonLd() {
     telephone: SITE_PHONE_E164,
     priceRange: '₺₺',
     description:
-      "Samsun İlkadım'da ücretsiz işitme testi, Phonak, Siemens ve Oticon işitme cihazları satışı, SGK danışmanlığı ve 30 gün deneme garantisi.",
+      "Samsun İlkadım'da ücretsiz işitme testi, Vista, A&M ve Nitro işitme cihazları satışı, SGK danışmanlığı ve 30 gün deneme garantisi.",
     hasMap: SITE_MAP_URL,
     geo: {
       '@type': 'GeoCoordinates',
@@ -72,9 +72,10 @@ export function localBusinessJsonLd() {
       'işitme cihazı',
       'odyometri',
       'işitme testi',
-      'Phonak',
-      'Siemens',
-      'Oticon',
+      'Vista',
+      'A&M',
+      'Nitro',
+      'Pediatrik Grup',
       'SGK işitme cihazı',
     ],
     sameAs: [SITE_INSTAGRAM_URL, SITE_GOOGLE_MAPS_URL],

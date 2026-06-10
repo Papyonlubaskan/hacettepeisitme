@@ -82,7 +82,7 @@ export const blogPosts = [
 
 <h3>Hacettepe İşitme Cihazları'nda Son Teknoloji</h3>
 
-<p>Merkezimizde Phonak, Oticon, Siemens ve Widex gibi dünya lideri markaların en güncel 2024 modelleri mevcuttur. Size en uygun cihazı seçmek ve tüm teknolojik özellikleri en verimli şekilde kullanabilmeniz için ücretsiz danışmanlık hizmetimizden yararlanabilirsiniz.</p>`,
+<p>Merkezimizde Vista, A&M, Nitro ve Pediatrik Grup serilerinin en güncel modelleri mevcuttur. Size en uygun cihazı seçmek ve tüm teknolojik özellikleri en verimli şekilde kullanabilmeniz için ücretsiz danışmanlık hizmetimizden yararlanabilirsiniz.</p>`,
     category: 'Teknoloji',
     readTime: '6 dk',
     date: '2024-02-28',
@@ -136,7 +136,7 @@ export const blogPosts = [
 
 <p>Bakımsız bir işitme cihazı ses kalitesini kaybeder, sürekli arızalanır ve erken ömrünü tamamlar. Ayrıca, tıkanmış filtreler ve mikrofonlar, cihazın ses seviyesini artırmak zorunda kalmasına neden olur; bu da geri besleme (ıslık sesi) sorunlarına yol açar.</p>
 
-<p>Hacettepe İşitme Cihazları olarak Samsun'daki merkezimizde tüm marka ve model cihazlar için profesyonel bakım ve onarım hizmeti sunmaktayız. Ücretsiz ilk kontrol ve bakım randevunuz için bizimle iletişime geçebilirsiniz.</p>`,
+<p>Hacettepe İşitme Cihazları olarak Samsun'daki merkezimizde tüm seri ve model cihazlar için profesyonel bakım ve onarım hizmeti sunmaktayız. Ücretsiz ilk kontrol ve bakım randevunuz için bizimle iletişime geçebilirsiniz.</p>`,
     category: 'Bakım',
     readTime: '5 dk',
     date: '2024-02-10',

@@ -6,15 +6,15 @@ export interface RouteSeo {
 }
 
 const DEFAULT_DESCRIPTION =
-  "Samsun İlkadım'da işitme cihazları satışı, ücretsiz işitme testi, Phonak, Siemens ve Oticon markaları. Hacettepe İşitme Cihazları — 15 yıllık uzman destek.";
+  "Samsun İlkadım'da işitme cihazları satışı, ücretsiz işitme testi, Vista, A&M ve Nitro serileri. Hacettepe İşitme Cihazları — 15 yıllık uzman destek.";
 
 export const ROUTE_SEO: Record<string, RouteSeo> = {
   '/': {
     title: 'Samsun İşitme Cihazları | Ücretsiz Test — Hacettepe İşitme Merkezi',
     description:
-      "Samsun İlkadım'da işitme cihazı satışı ve ücretsiz işitme testi. Phonak, Siemens, Oticon, SGK desteği, 30 gün deneme. Tepecik merkez — aynı gün randevu: +90 533 474 58 06.",
+      "Samsun İlkadım'da işitme cihazı satışı ve ücretsiz işitme testi. Vista, A&M, Nitro serileri, SGK desteği, 30 gün deneme. Tepecik merkez — aynı gün randevu: +90 533 474 58 06.",
     keywords:
-      'işitme cihazı Samsun, Samsun işitme cihazı, Samsun işitme merkezi, ücretsiz işitme testi Samsun, işitme testi Samsun, Phonak Samsun, İlkadım işitme merkezi',
+      'işitme cihazı Samsun, Samsun işitme cihazı, Samsun işitme merkezi, ücretsiz işitme testi Samsun, işitme testi Samsun, Vista işitme cihazı Samsun, İlkadım işitme merkezi',
     image: '/local-images/pro-hero-main.webp',
   },
   '/hakkimizda': {
@@ -82,11 +82,11 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
     image: '/local-images/pro-hero-main.webp',
   },
   '/samsun-isitme-cihazi': {
-    title: 'Samsun İşitme Cihazı | Phonak, Siemens, Oticon — Hacettepe',
+    title: 'Samsun İşitme Cihazı | Vista, A&M, Nitro — Hacettepe',
     description:
-      'Samsun’da işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı. İlkadım Tepecik merkez, Phonak, Siemens, Oticon, 30 gün deneme garantisi.',
+      'Samsun’da işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı. İlkadım Tepecik merkez, Vista, A&M, Nitro serileri, 30 gün deneme garantisi.',
     keywords:
-      'Samsun işitme cihazı, işitme cihazı Samsun, işitme merkezi Samsun, Phonak Samsun, Siemens Samsun, Oticon Samsun',
+      'Samsun işitme cihazı, işitme cihazı Samsun, işitme merkezi Samsun, Vista Samsun, Nitro işitme cihazı Samsun',
     image: '/local-images/pro-hero-main.webp',
   },
   '/samsun-isitme-testi': {

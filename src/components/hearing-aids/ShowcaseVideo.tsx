@@ -5,8 +5,9 @@ interface ShowcaseVideoProps {
   poster?: string;
   title: string;
   className?: string;
-  /** Instagram reel varsayılanı 9:16; metadata yüklenince otomatik güncellenir */
   aspectRatio?: string;
+  /** Alt banttaki site URL watermark'ını kırpar */
+  cropWatermark?: boolean;
 }
 
 export default function ShowcaseVideo({
@@ -15,6 +16,7 @@ export default function ShowcaseVideo({
   title,
   className = '',
   aspectRatio = '9 / 16',
+  cropWatermark = true,
 }: ShowcaseVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,10 +52,14 @@ export default function ShowcaseVideo({
     setRatio(`${video.videoWidth} / ${video.videoHeight}`);
   };
 
+  const videoClass = cropWatermark
+    ? 'absolute left-1/2 top-1/2 min-h-[112%] min-w-[112%] -translate-x-1/2 -translate-y-[46%] object-cover'
+    : 'absolute inset-0 h-full w-full object-contain';
+
   return (
     <div
       ref={containerRef}
-      className={`relative mx-auto w-full max-w-md rounded-2xl overflow-hidden bg-black shadow-xl ${className}`}
+      className={`relative mx-auto w-full max-w-md overflow-hidden rounded-2xl bg-black shadow-xl ${className}`}
       style={{ aspectRatio: ratio }}
     >
       {active ? (
@@ -62,7 +68,7 @@ export default function ShowcaseVideo({
           src={src}
           poster={poster}
           title={title}
-          className="absolute inset-0 w-full h-full object-contain bg-black"
+          className={videoClass}
           autoPlay
           muted
           loop
@@ -73,9 +79,9 @@ export default function ShowcaseVideo({
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-black" aria-hidden>
           {poster ? (
-            <img src={poster} alt="" className="absolute inset-0 w-full h-full object-contain opacity-60" />
+            <img src={poster} alt="" className="absolute inset-0 h-full w-full object-contain opacity-60" />
           ) : null}
-          <span className="relative w-10 h-10 border-2 border-white/20 border-t-brand-accent rounded-full animate-spin" />
+          <span className="relative h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-brand-accent" />
         </div>
       )}
     </div>

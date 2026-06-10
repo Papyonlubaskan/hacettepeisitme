@@ -41,8 +41,8 @@ export default function About() {
                   umut olduk ve onların yaşam kalitesini artırmaya yardımcı olduk.
                 </p>
                 <p>
-                  Kliniğimizde Siemens, Phonak ve Oticon gibi dünyanın en prestijli işitme cihazı
-                  üreticilerinin en güncel modellerini bulabilirsiniz. Uzman odyometristlerimiz,
+                  Kliniğimizde Vista, A&M, Nitro ve Pediatrik Grup serilerinin en güncel modellerini
+                  bulabilirsiniz. Uzman odyometristlerimiz,
                   her hastamıza özel kapsamlı işitme testi yaparak en doğru çözümü sunmaktadır.
                 </p>
                 <p>

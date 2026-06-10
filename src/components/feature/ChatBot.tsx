@@ -38,7 +38,7 @@ const INTENTS: Intent[] = [
     keys: ['fiyat', 'ucret', 'ücret', 'cihaz fiyat'],
     answer:
       'Fiyatlar cihaz teknolojisine göre değişir. En doğru teklif için ücretsiz test sonrası kişiye özel öneriler sunuyoruz.',
-    suggestions: ['Fiyat için randevu al', 'Markalar hakkında bilgi', 'WhatsApp destek'],
+    suggestions: ['Fiyat için randevu al', 'Seriler hakkında bilgi', 'WhatsApp destek'],
   },
   {
     keys: ['adres', 'konum', 'neredesiniz'],
@@ -58,9 +58,9 @@ const INTENTS: Intent[] = [
     suggestions: ['Teknik servis için iletişim', 'Telefonla aramak istiyorum'],
   },
   {
-    keys: ['siemens', 'phonak', 'oticon', 'marka'],
+    keys: ['vista', 'nitro', 'a&m', 'seri', 'model'],
     answer:
-      'Kliniğimizde Siemens, Phonak ve Oticon gibi premium markaların güncel modelleri bulunur.',
+      'Kliniğimizde Vista, A&M, Nitro ve Pediatrik Grup serilerinin güncel modelleri bulunur.',
     suggestions: ['Fiyat bilgisi alabilir miyim?', 'Randevu almak istiyorum'],
   },
 ];

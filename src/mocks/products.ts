@@ -1,34 +1,30 @@
 export const products = [
   {
     id: 1,
-    name: 'Phonak Lumity 90',
-    features: ['Otomatik Ses Optimizasyonu', 'Bluetooth Bağlantı', '30 Saat Batarya'],
-    price: '38.900 TL',
-    image:
-      '/local-images/readdy-products-prod1opt.webp',
+    name: 'Vista Premium',
+    image: '/local-images/showcase/vista-showcase.png',
+    description: 'Gelişmiş ses işleme ve konforlu kullanım.',
+    price: 'Fiyat için danışın',
   },
   {
     id: 2,
-    name: 'Siemens Pure 7X',
-    features: ['Gürültü Filtreleme', 'Akıllı Uygulama', 'Kulak İçi Tasarım'],
-    price: '42.500 TL',
-    image:
-      '/local-images/readdy-products-prod2opt.webp',
+    name: 'A&M Serisi',
+    image: '/local-images/showcase/am-showcase.png',
+    description: 'Günlük yaşam için dengeli performans.',
+    price: 'Fiyat için danışın',
   },
   {
     id: 3,
-    name: 'Oticon Real 2',
-    features: ['BrainHearing Teknoloji', 'Çok Kanal İşlemci', 'Şarj Edilebilir'],
-    price: '35.200 TL',
-    image:
-      '/local-images/readdy-products-prod3opt.webp',
+    name: 'Nitro Aktif',
+    image: '/local-images/showcase/nitro-showcase.png',
+    description: 'Dinamik ortamlarda net işitme desteği.',
+    price: 'Fiyat için danışın',
   },
   {
     id: 4,
-    name: 'Phonak Slim',
-    features: ['Ultra İnce Tasarım', 'IP68 Su Geçirmez', 'Uzaktan Ayar'],
-    price: '29.900 TL',
-    image:
-      '/local-images/readdy-products-prod4opt.webp',
+    name: 'Pediatrik Grup',
+    image: '/local-images/pediatrik-isitme-cocuk.webp',
+    description: 'Çocuklar için güvenli ve dayanıklı çözümler.',
+    price: 'Fiyat için danışın',
   },
 ];

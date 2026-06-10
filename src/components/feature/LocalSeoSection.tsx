@@ -12,7 +12,7 @@ export default function LocalSeoSection() {
         <p className="mb-4">
           <strong>Hacettepe İşitme Cihazları</strong>, Samsun İlkadım Tepecik&apos;te işitme sağlığı alanında 15 yılı
           aşkın deneyimle hizmet veren yerel bir işitme merkezidir. Ücretsiz işitme testi, odyometri değerlendirmesi,
-          Phonak, Siemens ve Oticon marka cihaz satışı ile SGK süreç danışmanlığı tek çatı altında sunulur.
+          Vista, A&M ve Nitro serileri ile SGK süreç danışmanlığı tek çatı altında sunulur.
         </p>
         <p className="mb-6">
           Samsun ve çevre ilçelerden gelen danışanlarımız için aynı gün randevu, 30 gün deneme garantisi ve ömür boyu
