@@ -1,5 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { SITE_ADDRESS_SINGLE, SITE_MAP_URL, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import MapDirectionsCTA from '@/components/feature/MapDirectionsCTA';
+import {
+  SITE_ADDRESS_SINGLE,
+  SITE_MAP_DIRECTIONS_URL,
+  SITE_PHONE_E164,
+  SITE_PHONE_WA,
+} from '@/lib/siteContact';
 
 interface Message {
   role: 'user' | 'bot';
@@ -15,6 +21,7 @@ interface Intent {
 
 const QUICK_ACTIONS = [
   'Randevu almak istiyorum',
+  'Konuma git / yol tarifi',
   'Telefonla aramak istiyorum',
   'WhatsApp destek',
   'Fiyat bilgisi alabilir miyim?',
@@ -42,8 +49,8 @@ const INTENTS: Intent[] = [
   },
   {
     keys: ['adres', 'konum', 'neredesiniz'],
-    answer: `Merkezimiz ${SITE_ADDRESS_SINGLE}. Konum ve yol tarifi: ${SITE_MAP_URL}`,
-    suggestions: ['İletişim sayfasını aç', 'Telefonla aramak istiyorum'],
+    answer: `Merkezimiz ${SITE_ADDRESS_SINGLE}. Aşağıdaki "Konuma Git" butonundan doğrudan Google Haritalar yol tarifi alabilirsiniz.`,
+    suggestions: ['Konuma git / yol tarifi', 'İletişim sayfasını aç', 'Telefonla aramak istiyorum'],
   },
   {
     keys: ['saat', 'calisma', 'çalışma', 'mesai', 'acik mi', 'açık mı'],
@@ -73,6 +80,10 @@ function runQuickAction(action: string) {
   }
   if (lower.includes('iletişim sayfasını aç') || lower.includes('teknik servis için iletişim')) {
     window.location.href = '/iletisim';
+    return true;
+  }
+  if (lower.includes('konuma git') || lower.includes('yol tarifi')) {
+    window.open(SITE_MAP_DIRECTIONS_URL, '_blank', 'noopener,noreferrer');
     return true;
   }
   if (lower.includes('whatsapp')) {
@@ -173,6 +184,8 @@ export default function ChatBot() {
 
   return (
     <>
+      {!open ? <MapDirectionsCTA variant="floating" trackingLabel="chatbot_floating_directions" /> : null}
+
       <button
         onClick={() => setOpen(!open)}
         className="fixed bottom-6 right-6 z-40 w-14 h-14 flex items-center justify-center rounded-full bg-brand-accent text-white shadow-lg hover:scale-110 transition-transform duration-300"
@@ -187,13 +200,18 @@ export default function ChatBot() {
         }`}
         style={{ height: open ? '500px' : '0px' }}
       >
-        <div className="bg-brand-dark text-white px-5 py-4 flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-full bg-brand-accent flex items-center justify-center shrink-0">
-            <i className="ri-customer-service-2-line text-white" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Hacettepe AI Destek</p>
+        <div className="bg-brand-dark text-white px-5 py-4 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-brand-accent flex items-center justify-center shrink-0">
+              <i className="ri-customer-service-2-line text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Hacettepe AI Destek</p>
               <p className="text-[11px] text-gray-300">Canlı yönlendirme destekli</p>
+            </div>
+          </div>
+          <div className="mt-3">
+            <MapDirectionsCTA variant="chat-header" trackingLabel="chatbot_header_directions" />
           </div>
         </div>
 
@@ -244,7 +262,7 @@ export default function ChatBot() {
         </div>
 
         <div className="px-4 py-3 border-t border-gray-100 shrink-0">
-          <div className="grid grid-cols-3 gap-2 mb-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
             <button
               type="button"
               onClick={() => handleSend('Randevu sayfasını aç')}
@@ -253,11 +271,20 @@ export default function ChatBot() {
               Randevu
             </button>
             <a
+              href={SITE_MAP_DIRECTIONS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs bg-white border border-brand-accent text-brand-accent rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
+            >
+              <i className="ri-map-pin-2-line" />
+              Konum
+            </a>
+            <a
               href={`tel:${SITE_PHONE_E164}`}
               className="text-xs bg-white border border-brand-accent text-brand-accent rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
             >
               <i className="ri-phone-line" />
-              Bizi Ara
+              Ara
             </a>
             <button
               type="button"

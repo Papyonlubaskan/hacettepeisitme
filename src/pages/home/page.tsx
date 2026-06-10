@@ -1,6 +1,8 @@
 ﻿import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import {
+  SITE_ADDRESS_LINE1,
+  SITE_ADDRESS_LINE3,
   SITE_PHONE_DISPLAY,
   SITE_PHONE_E164,
   SITE_PHONE_WA,
@@ -12,6 +14,7 @@ import { blogPosts } from '../../mocks/blog';
 import LocalSeoSection from '@/components/feature/LocalSeoSection';
 import HearingAidsSection from '@/components/feature/HearingAidsSection';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import MapDirectionsCTA from '@/components/feature/MapDirectionsCTA';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
 function HeroSection() {
@@ -62,7 +65,7 @@ function HeroSection() {
             garantisi.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4">
             <Link
               to="/randevu"
               className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
@@ -77,6 +80,7 @@ function HeroSection() {
               <span>{heroCta.title}</span>
               <i className="ri-arrow-right-line" />
             </Link>
+            <MapDirectionsCTA variant="hero" trackingLabel="home_hero_directions" />
             <PhoneCallButton
               label="Bizi Ara"
               trackingLabel="home_hero_call"
@@ -93,6 +97,13 @@ function HeroSection() {
               <span>WhatsApp</span>
             </a>
           </div>
+
+          <p className="mt-4 text-xs text-white/70 flex items-start gap-1.5 max-w-lg">
+            <i className="ri-map-pin-line text-brand-accent shrink-0 mt-0.5" aria-hidden />
+            <span>
+              {SITE_ADDRESS_LINE1} · {SITE_ADDRESS_LINE3} — Google Haritalar&apos;da yol tarifi
+            </span>
+          </p>
 
           {/* Trust badges */}
           <div className="flex flex-wrap items-center gap-6 mt-10">

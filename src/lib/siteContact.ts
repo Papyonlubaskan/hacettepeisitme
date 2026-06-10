@@ -24,5 +24,8 @@ export const SITE_MAP_LAT = 41.2694071;
 export const SITE_MAP_LNG = 36.297792;
 export const SITE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${SITE_MAP_LAT},${SITE_MAP_LNG}`;
 
+/** Google Haritalar yol tarifi (doğrudan navigasyon) */
+export const SITE_MAP_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${SITE_MAP_LAT},${SITE_MAP_LNG}&travelmode=driving`;
+
 /** Embed: adres araması (API anahtarı gerektirmez) */
 export const SITE_MAP_EMBED_URL = `https://www.google.com/maps?q=${SITE_MAP_LAT},${SITE_MAP_LNG}&hl=tr&z=17&output=embed`;
