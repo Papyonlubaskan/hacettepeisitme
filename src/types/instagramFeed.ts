@@ -1,6 +1,7 @@
 export type InstagramFeedPost = {
   id: string;
   imageUrl: string;
+  videoUrl?: string | null;
   permalink: string;
   title: string;
   mediaType?: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';

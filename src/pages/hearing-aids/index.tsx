@@ -25,7 +25,7 @@ export default function HearingAidsIndexPage() {
   const path = '/isitme-cihazlari';
   const jsonLd = serviceJsonLd(
     'İşitme Cihazları Satışı',
-    'Samsun Hacettepe İşitme Merkezi’nde Phonak, Signia, Oticon, ReSound işitme cihazı satışı, video tanıtım ve deneme.',
+    'Samsun Hacettepe İşitme Merkezi’nde Vista, A&M, Nitro ve Pediatrik Grup işitme cihazları; video tanıtım ve deneme.',
     path,
   );
 
@@ -34,11 +34,12 @@ export default function HearingAidsIndexPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const heroImage = SHOWCASE_SERIES[0].image;
+
   return (
     <div className="pt-[72px] animate-fadeInUp">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* Hero — referans düzen: koyu arka plan, logo, başlık, seri menüsü */}
       <section className="relative overflow-hidden bg-[#071525] text-white">
         <div className="absolute inset-0 opacity-40">
           <div className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-brand-accent/30 blur-3xl" />
@@ -60,15 +61,15 @@ export default function HearingAidsIndexPage() {
               İşitme Cihazları
             </h1>
             <p className="text-white/70 max-w-2xl mx-auto mb-10 text-sm md:text-base">
-              Phonak, Signia, Oticon ve ReSound dünya markalarını merkezimizde deneyin. Uzman odyolog eşliğinde
+              Vista, A&M, Nitro ve Pediatrik Grup işitme cihazlarını merkezimizde deneyin. Uzman odyolog eşliğinde
               ücretsiz test ve 30 gün deneme imkânı.
             </p>
 
             <div className="flex justify-center mb-10">
               <img
-                src="/local-images/readdy-products-prod1opt.webp"
+                src={heroImage}
                 alt="Premium işitme cihazı"
-                className="h-28 md:h-40 object-contain drop-shadow-2xl"
+                className="h-28 md:h-40 object-contain drop-shadow-2xl rounded-xl"
               />
             </div>
 
@@ -97,7 +98,6 @@ export default function HearingAidsIndexPage() {
         </div>
       </section>
 
-      {/* Seri bölümleri */}
       {SHOWCASE_SERIES.map((series, index) => {
         const isPediatric = series.id === 'pediatrik';
         const bgClass = index % 2 === 0 ? 'bg-gradient-to-br from-cyan-50 via-teal-50/80 to-white' : 'bg-white';
@@ -107,16 +107,13 @@ export default function HearingAidsIndexPage() {
             <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">
               <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center ${index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
                 <div>
-                  <p className="text-brand-accent text-xs font-bold uppercase tracking-wider mb-2">{series.brand}</p>
+                  <p className="text-brand-accent text-xs font-bold uppercase tracking-wider mb-2">{series.seriesName}</p>
                   <h2 className="font-serif text-2xl md:text-4xl font-bold text-brand-dark mb-3 leading-snug">
                     {series.headline}
                   </h2>
                   {series.subline ? <p className="text-gray-600 mb-6">{series.subline}</p> : null}
 
                   <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-brand-accent/30 text-brand-accent text-xs font-bold">
-                      {series.seriesName}
-                    </span>
                     {series.badges.map((b) => (
                       <span
                         key={b}
@@ -146,35 +143,28 @@ export default function HearingAidsIndexPage() {
                 </div>
 
                 <div className="space-y-5">
-                  {isPediatric ? (
-                    <div className="rounded-2xl overflow-hidden shadow-xl">
-                      <img
-                        src={series.image}
-                        alt="Çocuk işitme cihazı uygulaması — Hacettepe İşitme Samsun"
-                        className="w-full h-64 md:h-80 object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex justify-center">
-                      <img
-                        src={series.image}
-                        alt={`${series.brand} ${series.seriesName}`}
-                        className="max-h-48 md:max-h-56 object-contain drop-shadow-lg"
-                      />
-                    </div>
-                  )}
-                  <ShowcaseVideo videoId={series.videoId} title={`${series.brand} ${series.seriesName} tanıtım`} />
+                  <div className={`rounded-2xl overflow-hidden shadow-xl ${isPediatric ? '' : 'flex justify-center bg-white/50 p-4'}`}>
+                    <img
+                      src={series.image}
+                      alt={`${series.seriesName} işitme cihazı`}
+                      className={isPediatric ? 'w-full h-64 md:h-80 object-cover' : 'max-h-48 md:max-h-56 object-contain mx-auto'}
+                    />
+                  </div>
+                  <ShowcaseVideo
+                    src={series.videoSrc}
+                    poster={series.videoPoster}
+                    title={`${series.seriesName} tanıtım videosu`}
+                  />
                 </div>
               </div>
 
-              {/* Model tipleri */}
               <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {series.modelTypes.map((mt) => (
                   <div
                     key={mt.label}
                     className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 shadow-sm"
                   >
-                    <img src={mt.image} alt={mt.label} className="w-20 h-20 object-contain shrink-0" loading="lazy" />
+                    <img src={mt.image} alt={mt.label} className="w-20 h-20 object-cover rounded-lg shrink-0" loading="lazy" />
                     <div>
                       <p className="text-xs font-bold text-brand-accent uppercase tracking-wide">{mt.label}</p>
                       <p className="text-sm font-semibold text-brand-dark">{mt.sublabel}</p>
@@ -183,11 +173,8 @@ export default function HearingAidsIndexPage() {
                 ))}
               </div>
 
-              {/* Ürün listesi */}
               <div className="mt-10">
-                <h3 className="font-serif text-xl font-bold text-brand-dark mb-4">
-                  {series.brand} Modelleri
-                </h3>
+                <h3 className="font-serif text-xl font-bold text-brand-dark mb-4">{series.seriesName} Modelleri</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {series.products.map((product) => (
                     <div
@@ -205,16 +192,16 @@ export default function HearingAidsIndexPage() {
                 <Link
                   to="/randevu"
                   className="inline-flex justify-center items-center gap-2 bg-brand-accent text-white font-bold px-8 py-3.5 rounded-full hover:bg-[#008f7f] transition-all"
-                  onClick={() => trackCTAClick(`${series.brand} Deneme`, 'showcase_series', '/randevu')}
+                  onClick={() => trackCTAClick(`${series.seriesName} Deneme`, 'showcase_series', '/randevu')}
                 >
                   Deneme Randevusu Al
                   <i className="ri-arrow-right-line" />
                 </Link>
                 <Link
-                  to={`/katalog/${series.catalogSlug}`}
+                  to="/iletisim"
                   className="inline-flex justify-center items-center gap-2 border-2 border-brand-accent text-brand-accent font-semibold px-8 py-3.5 rounded-full hover:bg-brand-light transition-all"
                 >
-                  {series.brand} Kataloğu
+                  Bilgi Al
                 </Link>
               </div>
             </div>
@@ -222,35 +209,34 @@ export default function HearingAidsIndexPage() {
         );
       })}
 
-      {/* Kulağımda nasıl gözükür — video grid */}
       <section className="py-16 md:py-24 bg-brand-dark text-white">
         <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-3">
             Cihazlar Kulağımda Nasıl Görünür?
           </h2>
           <p className="text-white/60 text-center mb-12 max-w-2xl mx-auto">
-            Kulak içi, kulak arkası ve şarjlı modellerin takım ve bakım videoları
+            Kulak içi, kulak arkası ve şarjlı modellerin takım ve bakım videoları — Hacettepe İşitme Instagram
+            paylaşımları
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {FIT_VIDEOS.map((fv) => (
               <div key={fv.title}>
                 <p className="text-brand-accent text-xs font-bold uppercase mb-2">{fv.category}</p>
                 <p className="text-white font-semibold mb-3 text-sm">{fv.title}</p>
-                <ShowcaseVideo videoId={fv.videoId} title={fv.title} />
+                <ShowcaseVideo src={fv.videoSrc} poster={fv.videoPoster} title={fv.title} />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Teknik servis + iletişim */}
       <section className="py-16 md:py-20 bg-brand-cream">
         <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-brand-dark mb-4">Teknik Servis Desteği</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
               2 yıl cihaz garantisi ile birlikte periyodik bakım, kulak kalıbı yenileme ve yazılım güncellemesi
-              hizmeti sunuyoruz. Phonak, Signia, Oticon ve ReSound dahil çok markalı servis desteği.
+              hizmeti sunuyoruz. Çok markalı servis desteği.
             </p>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center gap-2"><i className="ri-tools-line text-brand-accent" /> Kulak kalıbı üretim ve onarım</li>
@@ -281,7 +267,7 @@ export default function HearingAidsIndexPage() {
 
       <p className="text-center text-xs text-gray-400 px-6 py-8 max-w-3xl mx-auto">
         * Özellikler modele göre değişebilir. Kesin bilgi ve fiyat için merkezimizde ücretsiz işitme testi sonrası
-        uzman danışmanlığı alınız. Video içerikleri ilgili üretici kanallarından alınmıştır.
+        uzman danışmanlığı alınız. Video ve görseller Hacettepe İşitme Instagram hesabından alınmıştır.
       </p>
     </div>
   );

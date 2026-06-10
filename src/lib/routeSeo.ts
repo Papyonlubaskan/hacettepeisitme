@@ -58,11 +58,11 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
     image: '/local-images/pro-hero-main.webp',
   },
   '/isitme-cihazlari': {
-    title: 'İşitme Cihazları Samsun | Phonak, Signia, Oticon — Hacettepe',
+    title: 'İşitme Cihazları Samsun | Vista, A&M, Nitro — Hacettepe',
     description:
-      'Kulak arkası, kulak içi, RIC ve çocuk işitme cihazları. Samsun İlkadım’da ücretsiz test, marka katalogları ve SGK danışmanlığı.',
+      'Vista, A&M, Nitro ve Pediatrik Grup işitme cihazları. Samsun İlkadım’da ücretsiz test, deneme ve SGK danışmanlığı.',
     keywords:
-      'işitme cihazları Samsun, Phonak Samsun, Signia Siemens, Oticon, işitme cihazı modelleri',
+      'işitme cihazları Samsun, Vista işitme cihazı, A&M işitme cihazı, Nitro işitme cihazı, pediatrik işitme cihazı',
     image: '/local-images/pro-hero-main.webp',
   },
   '/katalog': {
