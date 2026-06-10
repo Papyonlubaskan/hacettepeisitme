@@ -4,6 +4,7 @@ import { triggerContactFallback } from '@/lib/formFallback';
 import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
 import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
+import FormHoneypot from '@/components/feature/FormHoneypot';
 
 export default function HeroFormSection() {
   const [formData, setFormData] = useState({
@@ -131,7 +132,8 @@ export default function HeroFormSection() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} data-form="landing" className="space-y-4">
+              <form onSubmit={handleSubmit} data-form="landing" className="relative space-y-4">
+                <FormHoneypot />
                 <div className="text-center mb-5">
                   <h3 className="font-serif text-xl font-bold text-brand-dark mb-1">
                     Ücretsiz Randevu Al

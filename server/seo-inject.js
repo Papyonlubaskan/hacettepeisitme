@@ -62,7 +62,7 @@ export function injectSeoIntoHtml(html, pathname, entry, siteUrl) {
   if (!entry) return ensureGa4Script(html);
 
   const canonical = `${siteUrl}${entry.path || pathname}`;
-  const ogImage = entry.image?.startsWith('http') ? entry.image : `${siteUrl}${entry.image || '/local-images/pro-hero-main.webp'}`;
+  const ogImage = entry.image?.startsWith('http') ? entry.image : `${siteUrl}${entry.image || '/local-images/home-flow/flow-reception.webp'}`;
 
   let next = html;
   next = replaceTag(next, /<title>[^<]*<\/title>/i, `<title>${escapeAttr(entry.title)}</title>`);

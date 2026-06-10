@@ -1,6 +1,5 @@
-/** Ana sayfa hariç sayfa hero ve ortak footer görselleri */
+/** Ana sayfa hariç sayfa hero görselleri */
 export const PAGE_IMAGES = {
-  footerBg: '/local-images/pages/footer-bg.webp',
   about: '/local-images/pages/hero-about.webp',
   aboutSecondary: '/local-images/pages/about-secondary.webp',
   contact: '/local-images/pages/hero-contact.webp',

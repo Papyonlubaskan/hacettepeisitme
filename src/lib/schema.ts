@@ -6,9 +6,10 @@ import {
   SITE_PHONE_E164,
 } from '@/lib/siteContact';
 import {
-  SITE_GOOGLE_MAPS_URL,
-  SITE_INSTAGRAM_URL,
+  SITE_GOOGLE_RATING,
+  SITE_GOOGLE_REVIEW_COUNT,
   SITE_NAME,
+  SITE_SAME_AS,
   defaultOgImageUrl,
 } from '@/lib/siteSeo';
 import { absoluteUrl } from '@/lib/siteUrl';
@@ -47,8 +48,17 @@ export function localBusinessJsonLd() {
     '@type': ['HearingAidStore', 'MedicalBusiness', 'LocalBusiness'],
     '@id': `${absoluteUrl('/')}#business`,
     name: SITE_NAME,
+    alternateName: [
+      'Samsun Hacettepe İşitme Merkezi',
+      'Hacettepe İşitme Merkezi',
+      'Hacettepe İşitme Cihazları Samsun',
+    ],
     url: absoluteUrl('/'),
-    image: defaultOgImageUrl(),
+    image: [
+      defaultOgImageUrl(),
+      absoluteUrl('/local-images/home-flow/flow-exterior.webp'),
+      absoluteUrl('/local-images/home-flow/flow-consultation.webp'),
+    ],
     logo: absoluteUrl('/local-images/brand-favicon.webp'),
     telephone: SITE_PHONE_E164,
     priceRange: '₺₺',
@@ -69,6 +79,7 @@ export function localBusinessJsonLd() {
       { '@type': 'AdministrativeArea', name: 'Karadeniz Bölgesi' },
     ],
     knowsAbout: [
+      'hacettepe işitme cihazları',
       'işitme cihazı',
       'odyometri',
       'işitme testi',
@@ -78,13 +89,33 @@ export function localBusinessJsonLd() {
       'Pediatrik Grup',
       'SGK işitme cihazı',
     ],
-    sameAs: [SITE_INSTAGRAM_URL, SITE_GOOGLE_MAPS_URL],
+    sameAs: [...SITE_SAME_AS],
+    parentOrganization: { '@id': `${absoluteUrl('/')}#organization` },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: String(SITE_GOOGLE_RATING),
+      reviewCount: String(SITE_GOOGLE_REVIEW_COUNT),
+      bestRating: '5',
+      worstRating: '1',
+    },
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         opens: '09:00',
         closes: '18:00',
+      },
+    ],
+    makesOffer: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Ücretsiz İşitme Testi',
+          url: absoluteUrl('/ucretsiz-isitme-testi'),
+        },
+        price: '0',
+        priceCurrency: 'TRY',
       },
     ],
   };
@@ -126,12 +157,23 @@ export function serviceJsonLd(name: string, description: string, path: string) {
     description,
     url: absoluteUrl(path),
     provider: {
-      '@type': 'HearingAidStore',
-      name: SITE_NAME,
-      url: absoluteUrl('/'),
-      telephone: SITE_PHONE_E164,
+      '@id': `${absoluteUrl('/')}#business`,
     },
     areaServed: { '@type': 'City', name: 'Samsun' },
     serviceType: name,
+  };
+}
+
+export function webPageJsonLd(title: string, description: string, path: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: absoluteUrl(path),
+    inLanguage: 'tr-TR',
+    isPartOf: { '@id': `${absoluteUrl('/')}#website` },
+    about: { '@id': `${absoluteUrl('/')}#business` },
+    primaryImageOfPage: defaultOgImageUrl(),
   };
 }

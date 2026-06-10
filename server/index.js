@@ -1455,7 +1455,6 @@ app.get('/api/health', (_req, res) => {
     instagramFeed: 'bundled-local-v5',
     instagramRateLimited: isInstagramRateLimited(),
     formMail: mail.configured ? mail.channel : mail.reason,
-    mailTo: MAIL_TO,
   });
 });
 

@@ -17,7 +17,16 @@ const { blogPosts } = importSource('../src/mocks/blog.ts');
 const { DEVICE_CATEGORIES, CATALOGS } = importSource('../src/mocks/hearingAids.ts');
 const { breadcrumbJsonLd, localBusinessJsonLd, faqPageJsonLd, SITE_FAQ, serviceJsonLd } =
   importSource('../src/lib/schema.ts');
-const { organizationJsonLd, websiteJsonLd } = importSource('../src/lib/siteSeo.ts');
+const { organizationJsonLd, websiteJsonLd, SITE_DEFAULT_OG_IMAGE } = importSource('../src/lib/siteSeo.ts');
+const { PAGE_IMAGES } = importSource('../src/lib/pageImages.ts');
+
+const DEFAULT_OG = SITE_DEFAULT_OG_IMAGE;
+const CATALOG_SEO_IMAGES = {
+  vista: '/local-images/showcase/vista-showcase.webp',
+  'a-m': '/local-images/showcase/am-showcase.webp',
+  nitro: '/local-images/showcase/nitro-showcase.webp',
+  pediatrik: '/local-images/pediatrik-isitme-cocuk.webp',
+};
 
 function absoluteUrl(path) {
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
@@ -32,7 +41,7 @@ function buildManifest() {
       title: seo.title,
       description: seo.description,
       keywords: seo.keywords,
-      image: seo.image ? absoluteUrl(seo.image) : absoluteUrl('/local-images/pro-hero-main.webp'),
+      image: seo.image ? absoluteUrl(seo.image) : absoluteUrl(DEFAULT_OG),
       type: 'website',
       priority: path === '/' ? '1.0' : path.includes('randevu') || path.includes('test') ? '0.9' : '0.8',
       changefreq: path === '/' || path.includes('blog') ? 'weekly' : 'monthly',
@@ -95,7 +104,9 @@ function buildManifest() {
       title: cat.seoTitle,
       description: cat.seoDescription,
       keywords: cat.keywords,
-      image: absoluteUrl('/local-images/pro-hero-main.webp'),
+      image: absoluteUrl(
+        cat.slug === 'cocuk-isitme-cihazlari' ? PAGE_IMAGES.hearingAids : PAGE_IMAGES.hearingAids,
+      ),
       type: 'website',
       priority: '0.75',
       changefreq: 'monthly',
@@ -110,7 +121,7 @@ function buildManifest() {
       title: catalog.seoTitle,
       description: catalog.seoDescription,
       keywords: catalog.keywords,
-      image: absoluteUrl('/local-images/pro-hero-main.webp'),
+      image: absoluteUrl(CATALOG_SEO_IMAGES[catalog.slug] || PAGE_IMAGES.catalog),
       type: 'website',
       priority: '0.75',
       changefreq: 'monthly',

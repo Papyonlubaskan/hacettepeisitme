@@ -4,6 +4,7 @@ import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking'
 import { triggerContactFallback } from '@/lib/formFallback';
 import AddressLink from '@/components/feature/AddressLink';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import FormHoneypot from '@/components/feature/FormHoneypot';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -201,8 +202,9 @@ export default function Footer() {
                   <form
                     onSubmit={handleNewsletter}
                     data-form="newsletter"
-                    className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+                    className="relative flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
                   >
+                    <FormHoneypot />
                     <input
                       type="email"
                       name="email"

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AddressLink from '@/components/feature/AddressLink';
-import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
+import { SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
+import { SITE_CANONICAL_HOST, SITE_GOOGLE_MAPS_URL, SITE_NAME } from '@/lib/siteSeo';
 
 export default function LocalSeoSection() {
   return (
@@ -16,8 +17,21 @@ export default function LocalSeoSection() {
         </p>
         <p className="mb-6">
           Samsun ve çevre ilçelerden gelen danışanlarımız için aynı gün randevu, 30 gün deneme garantisi ve ömür boyu
-          teknik destek sağlıyoruz. Merkez adresimiz: <AddressLink className="text-brand-accent hover:underline" />.
+          teknik destek sağlıyoruz. Resmi web sitemiz:{' '}
+          <a href={`https://${SITE_CANONICAL_HOST}/`} className="text-brand-accent hover:underline">
+            {SITE_CANONICAL_HOST}
+          </a>
+          . Merkez adresimiz: <AddressLink className="text-brand-accent hover:underline" />.
           Telefon: <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">{SITE_PHONE_DISPLAY}</a>.
+          {' '}Google İşletme profilimiz:{' '}
+          <a href={SITE_GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent hover:underline">
+            {SITE_NAME} Haritalar
+          </a>
+          {' '}·{' '}
+          <a href={SITE_MAP_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent hover:underline">
+            Konum
+          </a>
+          .
         </p>
         <div className="flex flex-wrap gap-3 text-sm">
           <Link to="/samsun-isitme-cihazi" className="px-4 py-2 rounded-full bg-brand-cream text-brand-dark font-medium hover:bg-brand-light">

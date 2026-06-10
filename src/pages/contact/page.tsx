@@ -6,6 +6,7 @@ import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
 import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_MAP_EMBED_URL, SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
+import FormHoneypot from '@/components/feature/FormHoneypot';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -154,8 +155,9 @@ export default function Contact() {
                 <form
                   onSubmit={handleSubmit}
                   data-form="contact"
-                  className="bg-brand-cream rounded-2xl p-8 md:p-10 space-y-5"
+                  className="relative bg-brand-cream rounded-2xl p-8 md:p-10 space-y-5"
                 >
+                  <FormHoneypot />
                   <div className="text-center mb-6">
                     <h2 className="font-serif text-2xl font-bold text-brand-dark mb-2">
                       Bize Ulaşın

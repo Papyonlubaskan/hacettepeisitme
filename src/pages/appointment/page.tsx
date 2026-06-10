@@ -7,6 +7,7 @@ import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import AddressLink from '@/components/feature/AddressLink';
 import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
+import FormHoneypot from '@/components/feature/FormHoneypot';
 
 export default function Appointment() {
   const [formData, setFormData] = useState({
@@ -141,8 +142,9 @@ export default function Appointment() {
               <form
                 onSubmit={handleSubmit}
                 data-form="appointment"
-                className="bg-brand-cream rounded-2xl p-8 md:p-10 space-y-5"
+                className="relative bg-brand-cream rounded-2xl p-8 md:p-10 space-y-5"
               >
+                <FormHoneypot />
                 <div className="text-center mb-8">
                   <h2 className="font-serif text-2xl md:text-3xl font-bold text-brand-dark mb-2">
                     Randevu Formu

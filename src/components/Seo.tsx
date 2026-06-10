@@ -4,6 +4,7 @@ import {
   SITE_NAME,
   SITE_DEFAULT_KEYWORDS,
   defaultOgImageUrl,
+  geoMetaContent,
 } from '@/lib/siteSeo';
 
 export interface SeoProps {
@@ -47,7 +48,9 @@ export default function Seo({
       <meta name="author" content={SITE_NAME} />
       <meta name="language" content="Turkish" />
       <meta name="geo.region" content="TR-55" />
-      <meta name="geo.placename" content="Samsun" />
+      <meta name="geo.placename" content="Tepecik, İlkadım, Samsun" />
+      <meta name="geo.position" content={geoMetaContent()} />
+      <meta name="ICBM" content="41.2694071, 36.297792" />
       <link rel="canonical" href={canonical} />
       <link rel="alternate" hrefLang="tr" href={canonical} />
       <link rel="alternate" hrefLang="x-default" href={canonical} />
