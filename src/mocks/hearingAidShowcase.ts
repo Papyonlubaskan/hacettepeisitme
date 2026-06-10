@@ -91,7 +91,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'IX', 'RIC'],
     image: '/local-images/readdy-products-prod2opt.webp',
-    videoId: 'j8_xPZqWq0s',
+    videoId: 'ueY61AUqCq0',
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Pure Charge&Go IX', image: '/local-images/readdy-products-prod2opt.webp' },
@@ -123,7 +123,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'DNN', 'RIC'],
     image: '/local-images/readdy-products-prod3opt.webp',
-    videoId: 'bOA9jKxqFHA',
+    videoId: 'o7jMV6fVZms',
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Oticon Real RIC', image: '/local-images/readdy-products-prod3opt.webp' },
@@ -156,7 +156,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'IP68', 'RIC'],
     image: '/local-images/readdy-products-prod1opt.webp',
-    videoId: 'WQmK7nBqJZE',
+    videoId: 'eBcN_S1I1bI',
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'OMNIA RIC modeller', image: '/local-images/readdy-products-prod1opt.webp' },
@@ -219,11 +219,11 @@ export const FIT_VIDEOS: FitVideo[] = [
   {
     title: 'Kulak İçi Cihaz Kulağımda Nasıl Görünür?',
     category: 'Kulak İçi',
-    videoId: 'j8_xPZqWq0s',
+    videoId: 'ueY61AUqCq0',
   },
   {
     title: 'Şarjlı İşitme Cihazı Bakımı',
     category: 'Bakım',
-    videoId: 'pbgpT6GZH9Q',
+    videoId: 'ZhHHxEtZSas',
   },
 ];
