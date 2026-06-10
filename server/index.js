@@ -80,7 +80,7 @@ const GOOGLE_MAPS_SCRAPE_URL =
 const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_REVIEWS_URL;
 const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 15 * 60 * 1000);
 const GOOGLE_REVIEWS_FEED_LIMIT = Math.min(
-  Math.max(Number(process.env.GOOGLE_REVIEWS_FEED_LIMIT || 12), 3),
+  Math.max(Number(process.env.GOOGLE_REVIEWS_FEED_LIMIT || 20), 3),
   30
 );
 const __filename = fileURLToPath(import.meta.url);
