@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
 import { trackCTAClick } from '@/lib/tracking';
 
@@ -10,18 +10,107 @@ function formatPostDate(timestamp?: string | null) {
   if (!timestamp) return null;
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
 }
 
-function PostSkeleton() {
+function formatCaption(title: string) {
+  return title.replace(/#\S+/g, '').replace(/\s+/g, ' ').trim() || 'Hacettepe İşitme paylaşımı';
+}
+
+function GridSkeleton() {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden animate-pulse">
-      <div className="h-64 bg-gray-200" />
-      <div className="p-4 space-y-2">
-        <div className="h-3 bg-gray-100 rounded w-1/3" />
-        <div className="h-4 bg-gray-100 rounded w-full" />
-      </div>
+    <div className="grid grid-cols-3 gap-0.5 md:gap-1">
+      {Array.from({ length: 9 }, (_, i) => (
+        <div key={`ig-skel-${i}`} className="aspect-square bg-gray-100 animate-pulse" />
+      ))}
     </div>
+  );
+}
+
+function InstagramGridTile({ post }: { post: InstagramFeedPost }) {
+  const tileRef = useRef<HTMLAnchorElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playVideo, setPlayVideo] = useState(false);
+  const isVideo = post.mediaType === 'VIDEO' && !!post.videoUrl;
+  const caption = formatCaption(post.title);
+  const postedAt = formatPostDate(post.timestamp);
+
+  useEffect(() => {
+    if (!isVideo || !tileRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setPlayVideo(entry.isIntersecting);
+      },
+      { threshold: 0.45 }
+    );
+    observer.observe(tileRef.current);
+    return () => observer.disconnect();
+  }, [isVideo]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (playVideo) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, [playVideo]);
+
+  return (
+    <a
+      ref={tileRef}
+      href={post.permalink || INSTAGRAM_PROFILE_URL}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      className="group relative aspect-square overflow-hidden bg-black"
+      onClick={() =>
+        trackCTAClick(
+          caption.slice(0, 80) || `Instagram ${post.id}`,
+          'home_instagram_feed',
+          post.permalink || INSTAGRAM_PROFILE_URL
+        )
+      }
+    >
+      {isVideo && playVideo ? (
+        <video
+          ref={videoRef}
+          src={post.videoUrl!}
+          poster={post.imageUrl}
+          className="absolute inset-0 h-full w-full object-cover"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <img
+          src={post.imageUrl}
+          alt={caption}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(e) => {
+            const img = e.currentTarget;
+            if (img.dataset.fallback === '1') return;
+            img.dataset.fallback = '1';
+            img.src = '/local-images/pro-hero-main.webp';
+          }}
+        />
+      )}
+      {isVideo ? (
+        <span className="absolute top-2 right-2 text-white drop-shadow-md">
+          <i className="ri-clapperboard-line text-lg" />
+        </span>
+      ) : null}
+      <span className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors" />
+      {postedAt ? (
+        <span className="absolute bottom-2 left-2 text-[10px] font-medium text-white/90 drop-shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+          {postedAt}
+        </span>
+      ) : null}
+    </a>
   );
 }
 
@@ -74,108 +163,103 @@ export default function InstagramFeedSection() {
   return (
     <section className="py-20 md:py-28 bg-brand-dark">
       <div className="w-full px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto mb-10">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-            <div>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Instagram &amp; Güncel Kampanyalar</h2>
-              <p className="text-white/60">
-                Güncel kampanyalar ve{' '}
-                <span className="text-brand-accent font-semibold">@{INSTAGRAM_HANDLE}</span> paylaşımları
-              </p>
-              {!loading && live && postCount != null && (
-                <p className="mt-2 text-sm text-white/50">{postCount} paylaşım gösteriliyor</p>
-              )}
-            </div>
-            <a
-              href={INSTAGRAM_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
-              onClick={() => trackCTAClick('Instagram Profili', 'home_instagram', INSTAGRAM_PROFILE_URL)}
-            >
-              <i className="ri-instagram-line text-lg" />
-              <span>Profili Aç</span>
-            </a>
-          </div>
+        <div className="max-w-md mx-auto mb-8 text-center md:max-w-2xl">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Instagram &amp; Güncel Kampanyalar</h2>
+          <p className="text-white/60">@{INSTAGRAM_HANDLE} hesabımızdaki güncel paylaşımlar</p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading
-              ? Array.from({ length: 6 }, (_, i) => <PostSkeleton key={`ig-skel-${i}`} />)
-              : posts.length > 0
-                ? posts.map((post) => {
-                    const postedAt = formatPostDate(post.timestamp);
-                    return (
-                      <a
-                        key={post.id}
-                        href={post.permalink || INSTAGRAM_PROFILE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        className="bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                        onClick={() =>
-                          trackCTAClick(
-                            post.title.slice(0, 80) || `Instagram ${post.id}`,
-                            'home_instagram_feed',
-                            post.permalink || INSTAGRAM_PROFILE_URL
-                          )
-                        }
-                      >
-                        <div className="relative h-64 overflow-hidden bg-gray-50">
-                          <img
-                            src={post.imageUrl}
-                            alt={post.title}
-                            loading="lazy"
-                            decoding="async"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                            onError={(e) => {
-                              const img = e.currentTarget;
-                              if (img.dataset.fallback === '1') return;
-                              img.dataset.fallback = '1';
-                              img.src = '/local-images/pro-hero-main.webp';
-                            }}
-                          />
-                          {post.mediaType === 'VIDEO' && (
-                            <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs font-semibold text-white">
-                              <i className="ri-play-fill" />
-                              Video
-                            </span>
-                          )}
-                        </div>
-                        <div className="p-4">
-                          <div className="flex items-center justify-between gap-2 text-xs text-gray-400 mb-2">
-                            <span className="inline-flex items-center gap-2">
-                              <i className="ri-instagram-line" />
-                              @{INSTAGRAM_HANDLE}
-                            </span>
-                            {postedAt && <time dateTime={post.timestamp || undefined}>{postedAt}</time>}
-                          </div>
-                          <p className="text-sm font-medium text-brand-dark line-clamp-2">{post.title}</p>
-                        </div>
-                      </a>
-                    );
-                  })
-                : (
-                  <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center">
-                    <p className="text-white/70">
-                      Canlı Instagram akışı şu an yüklenemedi. Güncel paylaşımlar için profili ziyaret edebilirsiniz.
-                    </p>
+        <div className="max-w-md mx-auto bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+          {/* Profil başlığı */}
+          <div className="px-4 pt-5 pb-4 border-b border-gray-100">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 shrink-0">
+                <img
+                  src="/local-images/brand-favicon.webp"
+                  alt="Hacettepe İşitme"
+                  className="w-full h-full rounded-full object-cover bg-white border-2 border-white"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-brand-dark text-sm truncate">{INSTAGRAM_HANDLE}</p>
+                <p className="text-xs text-gray-500 truncate">Hacettepe İşitme Cihazları · Samsun</p>
+                <div className="flex gap-4 mt-2 text-center">
+                  <div>
+                    <p className="font-bold text-sm text-brand-dark">{postCount ?? posts.length}</p>
+                    <p className="text-[10px] text-gray-400 uppercase">gönderi</p>
                   </div>
-                )}
-          </div>
-          <div className="text-center mt-8">
+                  <div>
+                    <p className="font-bold text-sm text-brand-dark">—</p>
+                    <p className="text-[10px] text-gray-400 uppercase">takipçi</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-brand-dark">—</p>
+                    <p className="text-[10px] text-gray-400 uppercase">takip</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-gray-600 leading-relaxed">
+              Samsun&apos;da ücretsiz işitme testi, cihaz deneme ve SGK danışmanlığı. Vista · A&amp;M · Nitro · Pediatrik Grup
+            </p>
             <a
               href={INSTAGRAM_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-brand-accent font-semibold hover:text-[#008f7f] transition-colors"
-              onClick={() => trackCTAClick('Instagramda Daha Fazla', 'home_instagram_more', INSTAGRAM_PROFILE_URL)}
+              className="mt-3 w-full inline-flex items-center justify-center gap-2 bg-brand-accent text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#008f7f] transition-colors"
+              onClick={() => trackCTAClick('Instagram Profili', 'home_instagram', INSTAGRAM_PROFILE_URL)}
             >
-              <span>Instagram&apos;da daha fazla paylaşım görüntüle</span>
-              <i className="ri-arrow-right-line" />
+              <i className="ri-instagram-line" />
+              Profili Aç
             </a>
           </div>
+
+          {/* Sekmeler */}
+          <div className="flex border-b border-gray-100 text-gray-400 text-xs">
+            <span className="flex-1 flex items-center justify-center gap-1 py-3 border-b-2 border-brand-dark text-brand-dark font-semibold">
+              <i className="ri-grid-line text-base" />
+              Gönderiler
+            </span>
+            <span className="flex-1 flex items-center justify-center gap-1 py-3">
+              <i className="ri-clapperboard-line text-base" />
+              Reels
+            </span>
+          </div>
+
+          {/* Izgara */}
+          {loading ? (
+            <GridSkeleton />
+          ) : posts.length > 0 ? (
+            <div className="grid grid-cols-3 gap-0.5 bg-gray-100">
+              {posts.map((post) => (
+                <InstagramGridTile key={post.id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <div className="px-6 py-12 text-center">
+              <p className="text-sm text-gray-500">
+                Instagram akışı yüklenemedi. Güncel paylaşımlar için profili ziyaret edin.
+              </p>
+            </div>
+          )}
+
+          {!loading && live ? (
+            <p className="px-4 py-3 text-[11px] text-gray-400 text-center border-t border-gray-100">
+              {postCount ?? posts.length} gönderi · {live ? 'canlı akış' : 'önbellek'}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="text-center mt-8">
+          <a
+            href={INSTAGRAM_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="inline-flex items-center gap-2 text-brand-accent font-semibold hover:text-[#008f7f] transition-colors"
+            onClick={() => trackCTAClick('Instagramda Daha Fazla', 'home_instagram_more', INSTAGRAM_PROFILE_URL)}
+          >
+            <span>Instagram&apos;da daha fazla paylaşım görüntüle</span>
+            <i className="ri-arrow-right-line" />
+          </a>
         </div>
       </div>
     </section>

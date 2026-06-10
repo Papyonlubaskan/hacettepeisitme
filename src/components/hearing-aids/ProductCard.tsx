@@ -11,13 +11,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="h-48 bg-brand-cream flex items-center justify-center p-6">
         <img
           src={product.image}
-          alt={`${product.brand} ${product.name}`}
+          alt={`${product.lineName} ${product.name}`}
           loading="lazy"
           className="max-h-full max-w-full object-contain"
         />
       </div>
       <div className="p-6">
-        <p className="text-xs font-semibold text-brand-accent uppercase tracking-wide mb-1">{product.brand}</p>
+        <p className="text-xs font-semibold text-brand-accent uppercase tracking-wide mb-1">{product.lineName}</p>
         <h3 className="text-lg font-bold text-brand-dark mb-1">{product.name}</h3>
         <p className="text-xs text-gray-400 mb-3">{product.type}</p>
         <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">{product.description}</p>

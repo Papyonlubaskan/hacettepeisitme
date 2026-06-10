@@ -21,7 +21,7 @@ export interface BrandGroup {
 
 export interface CatalogEntry {
   slug: string;
-  brand: string;
+  lineName: string;
   title: string;
   subtitle: string;
   summary: string;
@@ -34,7 +34,7 @@ export interface CatalogEntry {
 
 export interface HearingAidProduct {
   slug: string;
-  brand: string;
+  lineName: string;
   name: string;
   categorySlug: string;
   type: string;
@@ -51,7 +51,7 @@ export const DEVICE_CATEGORIES: DeviceCategory[] = [
     summary:
       'Güçlü amplifikasyon sunan, bakımı kolay ve uzun pil ömrüyle özellikle orta-ileri işitme kayıplarında tercih edilen modeller.',
     paragraphs: [
-      'Kulak arkası (BTE) işitme cihazları, elektronik üniteyi kulak kepçesinin arkasında taşır; ses kulak kanalına özel hortum veya kulak kalıbı ile iletilir. Hacettepe İşitme Merkezi olarak Samsun’da Phonak, Signia ve Oticon markalarının kulak arkası serilerini test ederek size en uygun modeli belirliyoruz.',
+      'Kulak arkası (BTE) işitme cihazları, elektronik üniteyi kulak kepçesinin arkasında taşır; ses kulak kanalına özel hortum veya kulak kalıbı ile iletilir. Hacettepe İşitme Merkezi olarak Samsun’da Vista, A&M ve Nitro serilerinin kulak arkası modellerini test ederek size en uygun seçeneği belirliyoruz.',
       'Yaşlı danışanlarımızda kolay tak-çıkar ergonomisi, çocuklarda ise büyüme dönemine uygun yeniden ayar imkânı nedeniyle sıkça önerdiğimiz bir form faktörüdür. Bluetooth ve şarjlı seçeneklerle günlük kullanımda konfor artırılabilir.',
     ],
     highlights: [
@@ -62,7 +62,7 @@ export const DEVICE_CATEGORIES: DeviceCategory[] = [
     ],
     seoTitle: 'Kulak Arkası İşitme Cihazları Samsun | Hacettepe İşitme',
     seoDescription:
-      'Samsun’da kulak arkası işitme cihazı modelleri, Phonak, Signia ve Oticon seçenekleri. Ücretsiz test, uyarlama ve SGK danışmanlığı.',
+      'Samsun’da kulak arkası işitme cihazı modelleri. Vista, A&M ve Nitro seçenekleri — ücretsiz test, uyarlama ve SGK danışmanlığı.',
     keywords: 'kulak arkası işitme cihazı, BTE işitme cihazı Samsun, kulak arkası cihaz fiyat',
   },
   {
@@ -209,231 +209,190 @@ export const DEVICE_CATEGORIES: DeviceCategory[] = [
     ],
     seoTitle: 'İşitme Cihazı Teknik Servis Samsun | Bakım Onarım',
     seoDescription:
-      'Samsun’da işitme cihazı teknik servis, bakım ve onarım. Phonak, Signia, Oticon ve diğer markalar için uzman servis.',
+      'Samsun’da işitme cihazı teknik servis, bakım ve onarım. Vista, A&M, Nitro ve Pediatrik Grup dahil çok serili uzman servis.',
     keywords: 'işitme cihazı tamiri Samsun, teknik servis işitme cihazı, işitme cihazı bakım',
   },
 ];
 
 export const BRAND_GROUPS: BrandGroup[] = [
   {
-    slug: 'isvicre',
-    title: 'İsviçre Markaları',
-    origin: 'İsviçre',
-    icon: 'ri-flag-line',
-    summary: 'Phonak (Sonova) liderliğinde gelişmiş ses işleme ve kablosuz ekosistem.',
+    slug: 'premium',
+    title: 'Premium Seriler',
+    origin: 'Hacettepe İşitme',
+    icon: 'ri-award-line',
+    summary: 'Vista ve A&M serileri ile gelişmiş ses işleme ve kablosuz bağlantı.',
     brands: [
-      { name: 'Phonak', note: 'Audéo, Naída ve Lumity serileri — merkezimizde aktif satış' },
+      { name: 'Vista', note: 'Şarjlı RIC ve güçlü BTE modelleri' },
+      { name: 'A&M', note: 'Kişisel ses dengeleme ve mobil kontrol' },
     ],
   },
   {
-    slug: 'almanya',
-    title: 'Almanya Markaları',
-    origin: 'Almanya',
-    icon: 'ri-building-2-line',
-    summary: 'Signia (eski Siemens) ve Audifon ile güçlü Alman mühendisliği.',
-    brands: [
-      { name: 'Signia (Siemens)', note: 'Pure, Motion ve IX platformu' },
-      { name: 'Audifon', note: 'Kanal içi ve kulak arkası çözümler' },
-    ],
+    slug: 'advanced',
+    title: 'Gelişmiş Seriler',
+    origin: 'Hacettepe İşitme',
+    icon: 'ri-bluetooth-line',
+    summary: 'Nitro serisi ile doğal ses ve yapay zeka destekli işleme.',
+    brands: [{ name: 'Nitro', note: 'RIC, BTE ve özel kalıp seçenekleri' }],
   },
   {
-    slug: 'danimarka',
-    title: 'Danimarka Markaları',
-    origin: 'Danimarka',
-    icon: 'ri-global-line',
-    summary: 'Oticon, ReSound ve Widex ile doğal ses odaklı teknolojiler.',
-    brands: [
-      { name: 'Oticon', note: 'Real ve Intent serileri — BrainHearing yaklaşımı' },
-      { name: 'ReSound', note: 'GN işitme grubu, iPhone uyumlu modeller' },
-      { name: 'Widex', note: 'Çınlama yönetimi ve doğal ses profilleri' },
-    ],
-  },
-  {
-    slug: 'amerika',
-    title: 'Amerika Markaları',
-    origin: 'Amerika Birleşik Devletleri',
-    icon: 'ri-earth-line',
-    summary: 'Starkey ve NuEar ile yapay zeka destekli ortam analizi.',
-    brands: [
-      { name: 'Starkey', note: 'Genesis AI ve Edge serileri' },
-      { name: 'NuEar', note: 'Starkey grubu, kişiselleştirilmiş deneyim' },
-    ],
+    slug: 'pediatrik',
+    title: 'Pediatrik Grup',
+    origin: 'Samsun İlkadım',
+    icon: 'ri-emotion-happy-line',
+    summary: 'Çocuklara özel dayanıklı tasarım ve aile destek programları.',
+    brands: [{ name: 'Pediatrik Grup', note: 'BTE ve güçlü pediatrik modeller' }],
   },
 ];
 
 export const CATALOGS: CatalogEntry[] = [
   {
-    slug: 'phonak',
-    brand: 'Phonak',
-    title: 'Phonak İşitme Cihazları Kataloğu',
-    subtitle: 'Sonova teknolojisi ile her ortamda net duyma',
+    slug: 'vista',
+    lineName: 'Vista',
+    title: 'Vista İşitme Cihazları Kataloğu',
+    subtitle: 'Şarjlı ve suya dayanıklı premium seri',
     summary:
-      'Phonak, dünya genelinde en çok tercih edilen işitme cihazı markalarından biridir. Hacettepe İşitme Merkezi Samsun’da Phonak Audéo, Naída ve Lumity ailelerini stoklu ve siparişle sunmaktadır.',
+      'Vista serisi, şarjlı gövde, Bluetooth bağlantı ve gürültülü ortamda konuşma netliği odaklı premium işitme çözümleri sunar.',
     intro: [
-      'Phonak cihazları AutoSense ve Dynamic Noise Cancellation gibi özelliklerle ortam değişimlerine otomatik uyum sağlar. Bluetooth bağlantı ile akıllı telefon, televizyon ve toplantı uygulamalarına doğrudan ses aktarımı mümkündür.',
-      'Merkezimizde Phonak katalog modellerini deneyebilir; işitme testi sonuçlarınıza göre en uygun seriyi uzman odyologlarımızla birlikte seçebilirsiniz.',
+      'Vista cihazları ortam değişimlerine otomatik uyum sağlar. Akıllı telefon, televizyon ve toplantı ortamları için ayrı dinleme profilleri oluşturulabilir.',
+      'Merkezimizde Vista modellerini deneyebilir; işitme testi sonuçlarınıza göre en uygun seçeneği uzman odyologlarımızla belirleyebilirsiniz.',
     ],
     series: [
-      { name: 'Phonak Audéo Lumity', description: 'Şarjlı RIC tasarım, sosyal ortamlarda konuşma netliği odaklı premium seri.' },
-      { name: 'Phonak Naída', description: 'İleri ve profund işitme kayıpları için güçlü amplifikasyon ve dayanıklı gövde.' },
-      { name: 'Phonak Virto', description: 'Kulak içi özel kalıp ile üretilen estetik modeller.' },
-      { name: 'Phonak Slim', description: 'Ultra ince kulak arkası formu ile modern ve hafif kullanım.' },
+      { name: 'Vista Premium', description: 'Şarjlı RIC, sosyal ortamlarda konuşma netliği odaklı üst segment.' },
+      { name: 'Vista Advanced', description: 'RIC ve BTE formlarında dengeli performans.' },
+      { name: 'Vista Power', description: 'İleri işitme kayıpları için güçlü amplifikasyon.' },
+      { name: 'Vista Slim', description: 'Ultra ince kulak arkası formu ile estetik kullanım.' },
     ],
-    seoTitle: 'Phonak İşitme Cihazı Kataloğu Samsun | Hacettepe İşitme',
-    seoDescription:
-      'Phonak işitme cihazı modelleri ve katalog bilgisi Samsun’da. Lumity, Audéo, Naída serileri — ücretsiz test ve deneme.',
-    keywords: 'Phonak katalog, Phonak işitme cihazı Samsun, Phonak Lumity, Phonak fiyat',
+    seoTitle: 'Vista İşitme Cihazı Kataloğu Samsun | Hacettepe İşitme',
+    seoDescription: 'Vista işitme cihazı modelleri Samsun’da. Premium RIC ve BTE serileri — ücretsiz test ve deneme.',
+    keywords: 'Vista işitme cihazı, Vista katalog Samsun, şarjlı işitme cihazı',
   },
   {
-    slug: 'signia',
-    brand: 'Signia',
-    title: 'Signia (Siemens) İşitme Cihazları Kataloğu',
-    subtitle: 'Alman mühendisliği ile net ve doğal ses',
+    slug: 'a-m',
+    lineName: 'A&M',
+    title: 'A&M İşitme Cihazları Kataloğu',
+    subtitle: 'Doğal ses ve kişisel dengeleme',
     summary:
-      'Signia, Siemens işitme mirasını taşıyan global bir markadır. Pure, Motion ve yeni nesil IX platformu ile farklı işitme profillerine özel çözümler sunar.',
+      'A&M serisi, kendi sesinizi doğal duymanızı hedefleyen gelişmiş ses işleme ve şarjlı kullanım seçenekleri sunar.',
     intro: [
-      'Signia cihazları Own Voice Processing teknolojisi ile kullanıcının kendi sesini daha doğal algılamasına yardımcı olur. Şarjlı ve pil ile çalışan geniş model yelpazesi mevcuttur.',
-      'Samsun merkezimizde Signia katalog ürünlerini işitme testi sonrası deneme imkânıyla sunuyor; SGK destekli modeller hakkında bilgi veriyoruz.',
+      'A&M cihazları gürültülü ortamda konuşma odağı ve mobil uygulama kontrolü ile günlük kullanımda konfor sağlar.',
+      'Samsun merkezimizde A&M modellerini işitme testi sonrası deneme imkânıyla sunuyoruz.',
     ],
     series: [
-      { name: 'Signia Pure Charge&Go', description: 'Şarjlı RIC, Bluetooth ve el hareketi kontrolü ile günlük kullanım.' },
-      { name: 'Signia Motion', description: 'Kulak arkası formunda güvenilir ve ekonomik çözümler.' },
-      { name: 'Signia Silk', description: 'Hazır kanal içi modeller ile hızlı uygulama.' },
-      { name: 'Signia Styletto', description: 'İnce ve şık tasarımıyla öne çıkan kulak arkası seri.' },
+      { name: 'A&M Premium', description: 'Şarjlı RIC, kişisel ses dengeleme ve Bluetooth.' },
+      { name: 'A&M Style', description: 'İnce tasarım, şarjlı kullanım.' },
+      { name: 'A&M Classic', description: 'Kulak arkası formunda güvenilir çözümler.' },
+      { name: 'A&M Canal', description: 'Hazır kanal içi hızlı uygulama modelleri.' },
     ],
-    seoTitle: 'Signia Siemens İşitme Cihazı Kataloğu Samsun',
-    seoDescription:
-      'Signia (Siemens) işitme cihazı kataloğu ve modelleri Samsun Hacettepe İşitme’de. Pure, Motion, IX serileri danışmanlığı.',
-    keywords: 'Signia katalog, Siemens işitme cihazı Samsun, Signia Pure, Signia fiyat',
+    seoTitle: 'A&M İşitme Cihazı Kataloğu Samsun',
+    seoDescription: 'A&M işitme cihazı kataloğu Samsun Hacettepe İşitme’de. RIC ve BTE modelleri danışmanlığı.',
+    keywords: 'A&M işitme cihazı, A&M katalog Samsun, şarjlı RIC',
   },
   {
-    slug: 'oticon',
-    brand: 'Oticon',
-    title: 'Oticon İşitme Cihazları Kataloğu',
-    subtitle: 'BrainHearing ile beyin odaklı işitme deneyimi',
+    slug: 'nitro',
+    lineName: 'Nitro',
+    title: 'Nitro İşitme Cihazları Kataloğu',
+    subtitle: 'Doğal ve dengeli dinleme deneyimi',
     summary:
-      'Oticon, Danimarka merkezli bir marka olarak doğal ses işlemeye odaklanır. Real ve Intent serileri merkezimizde danışmanlık ve satış kapsamındadır.',
+      'Nitro serisi, çevresel sesleri dengeleyen gelişmiş işlemci ve şarjlı seçeneklerle doğal dinleme sunar.',
     intro: [
-      'Oticon More ve Real platformları, çevredeki tüm sesleri dengeleyerek beyinin işitsel bilgiyi işlemesine destek olur. Çoklu cihaz bağlantısı ve şarjlı seçenekler sunulur.',
-      'Katalogtaki Oticon modellerini merkezimizde deneyerek günlük rutininize en uygun cihazı seçmenize yardımcı oluyoruz.',
+      'Nitro modelleri çoklu cihaz bağlantısı, tinnitus desteği ve kişiye özel kulak içi üretim seçenekleri içerir.',
+      'Katalogtaki Nitro modellerini merkezimizde deneyerek günlük rutininize en uygun cihazı seçmenize yardımcı oluyoruz.',
     ],
     series: [
-      { name: 'Oticon Real', description: 'Gürültülü ortamlarda konuşma odaklı gelişmiş ses işleme.' },
-      { name: 'Oticon Intent', description: 'Yeni nesil platform, kişiselleştirilmiş dinleme niyeti algılama.' },
-      { name: 'Oticon Own', description: 'Tamamen kişiye özel üretilen kulak içi modeller.' },
-      { name: 'Oticon Xceed', description: 'İleri derece işitme kaybı için güçlü kulak arkası çözümler.' },
+      { name: 'Nitro Elite', description: 'Gürültülü ortamda konuşma odaklı gelişmiş ses işleme.' },
+      { name: 'Nitro Plus', description: 'RIC, Bluetooth ve tinnitus desteği.' },
+      { name: 'Nitro Custom', description: 'Kişiye özel üretilen kulak içi modeller.' },
+      { name: 'Nitro Power', description: 'İleri derece işitme kaybı için güçlü BTE.' },
     ],
-    seoTitle: 'Oticon İşitme Cihazı Kataloğu Samsun | Hacettepe',
-    seoDescription:
-      'Oticon işitme cihazı modelleri Samsun’da. Real, Intent ve Xceed serileri — ücretsiz işitme testi ve uyarlama.',
-    keywords: 'Oticon katalog, Oticon işitme cihazı Samsun, Oticon Real, Oticon fiyat',
+    seoTitle: 'Nitro İşitme Cihazı Kataloğu Samsun | Hacettepe',
+    seoDescription: 'Nitro işitme cihazı modelleri Samsun’da. RIC ve güçlü BTE serileri — ücretsiz test.',
+    keywords: 'Nitro işitme cihazı, Nitro katalog Samsun, RIC işitme cihazı',
   },
   {
-    slug: 'resound',
-    brand: 'ReSound',
-    title: 'ReSound İşitme Cihazları Kataloğu',
-    subtitle: 'GN işitme teknolojisi ile bağlantılı dinleme',
+    slug: 'pediatrik',
+    lineName: 'Pediatrik Grup',
+    title: 'Pediatrik Grup İşitme Cihazları Kataloğu',
+    subtitle: 'Çocuklara özel işitme çözümleri',
     summary:
-      'ReSound (GN Hearing), iPhone ve Android uyumlu kablosuz bağlantısıyla bilinen Danimarka kökenli bir markadır. Merkezimizde ReSound modelleri için katalog danışmanlığı verilmektedir.',
+      'Pediatrik Grup serisi, çocuklarda erken müdahale, dayanıklı tasarım ve aile destek programlarıyla sunulur.',
     intro: [
-      'ReSound OMNIA ve Key serileri, konuşma anlaşılırlığını artırmaya yönelik algoritmalar içerir. Şarjlı kulak arkası ve RIC modelleri aktif yaşam tarzına uygundur.',
-      'Katalog bilgisi ve fiyat danışmanlığı için merkezimize randevu alabilirsiniz.',
+      'Renkli kabuklar, güvenli pil yuvası ve okul ortamı profilleri ile çocuk danışanlarımıza özel programlar uygulanır.',
+      'SGK süreçlerinde evrak desteği ve aile eğitimi merkezimizde sağlanır.',
     ],
     series: [
-      { name: 'ReSound OMNIA', description: 'Gürültülü ortamda konuşma netliği için geliştirilmiş flagship seri.' },
-      { name: 'ReSound Key', description: 'Erişilebilir fiyat segmentinde güvenilir performans.' },
-      { name: 'ReSound LiNX Quattro', description: 'Kablosuz streaming ve uzaktan ayar desteği.' },
-      { name: 'ReSound ENZO', description: 'Profund işitme kaybı için güçlü BTE modeller.' },
+      { name: 'Pediatrik Grup RIC', description: 'Dayanıklı pediatrik RIC, LED durum göstergesi.' },
+      { name: 'Pediatrik Grup BTE', description: 'Renkli kabuklu çocuk BTE modelleri.' },
+      { name: 'Pediatrik Grup Active', description: 'Güvenli pil yuvası ve aktif kullanım.' },
+      { name: 'Pediatrik Grup Power', description: 'İleri kayıp ve implant uyumlu güçlü modeller.' },
     ],
-    seoTitle: 'ReSound İşitme Cihazı Kataloğu Samsun',
-    seoDescription:
-      'ReSound işitme cihazı kataloğu ve modelleri Samsun Hacettepe İşitme Merkezi’nde. OMNIA, Key serileri danışmanlığı.',
-    keywords: 'ReSound katalog, ReSound işitme cihazı Samsun, GN ReSound',
-  },
-  {
-    slug: 'starkey',
-    brand: 'Starkey',
-    title: 'Starkey İşitme Cihazları Kataloğu',
-    subtitle: 'Yapay zeka destekli Amerikan teknolojisi',
-    summary:
-      'Starkey, Genesis AI platformu ile ortamı analiz eden ve dinleme deneyimini kişiselleştiren Amerikan menşeli bir markadır. NuEar markası da aynı gruba bağlıdır.',
-    intro: [
-      'Starkey cihazları sağlık takibi, düşme algılama ve gelişmiş gürültü yönetimi gibi özellikler sunabilir. Merkezimizde Starkey katalog modelleri için bilgi ve sipariş desteği sağlanır.',
-      'İşitme testi sonrası Starkey ve NuEar serilerini karşılaştırmalı olarak değerlendirebilirsiniz.',
-    ],
-    series: [
-      { name: 'Starkey Genesis AI', description: 'Yapay zeka ile ortam tanıma ve otomatik program geçişi.' },
-      { name: 'Starkey Edge', description: 'Premium kulak içi ve RIC modeller.' },
-      { name: 'NuEar Intrigue', description: 'Kişiselleştirilmiş ses profili ve şık tasarım.' },
-      { name: 'Starkey Picasso', description: 'Tamamen özel üretim kulak içi çözümler.' },
-    ],
-    seoTitle: 'Starkey İşitme Cihazı Kataloğu Samsun | NuEar',
-    seoDescription:
-      'Starkey ve NuEar işitme cihazı kataloğu Samsun’da. Genesis AI serisi danışmanlık ve deneme randevusu.',
-    keywords: 'Starkey katalog, Starkey işitme cihazı Samsun, NuEar, Genesis AI',
+    seoTitle: 'Pediatrik Grup İşitme Cihazı Kataloğu Samsun',
+    seoDescription: 'Pediatrik Grup işitme cihazları Samsun’da. Çocuk işitme cihazı danışmanlığı ve deneme.',
+    keywords: 'pediatrik işitme cihazı Samsun, çocuk işitme cihazı katalog',
   },
 ];
 
+const igImg = (code: string) => `/local-images/instagram/${code}.jpg`;
+
 export const FEATURED_PRODUCTS: HearingAidProduct[] = [
   {
-    slug: 'phonak-audeo-lumity',
-    brand: 'Phonak',
-    name: 'Audéo Lumity',
+    slug: 'vista-premium',
+    lineName: 'Vista',
+    name: 'Vista Premium',
     categorySlug: 'kulak-ici-hoparlorlu',
     type: 'Şarjlı RIC',
     description: 'Sosyal ortamlarda konuşma netliğini öne çıkaran, şarjlı ve Bluetooth destekli premium model.',
-    features: ['AutoSense OS', 'Bluetooth bağlantı', 'Şarjlı gövde', 'IP68 koruma'],
-    image: '/local-images/readdy-products-prod1opt.webp',
+    features: ['Akıllı ortam algılama', 'Bluetooth bağlantı', 'Şarjlı gövde', 'IP68 koruma'],
+    image: igImg('DWD689UjXKO'),
   },
   {
-    slug: 'signia-pure-chargego',
-    brand: 'Signia',
-    name: 'Pure Charge&Go IX',
+    slug: 'a-m-premium',
+    lineName: 'A&M',
+    name: 'A&M Premium',
     categorySlug: 'kulak-ici-hoparlorlu',
     type: 'Şarjlı RIC',
-    description: 'Kendi sesinizi doğal duymanızı hedefleyen IX platformlu Signia kulak içi hoparlörlü seri.',
-    features: ['Own Voice Processing', 'Şarj istasyonu', 'Uygulama kontrolü', 'Gürültü yönetimi'],
-    image: '/local-images/readdy-products-prod2opt.webp',
+    description: 'Kişisel ses dengeleme ve gürültü yönetimi sunan şarjlı kulak içi hoparlörlü seri.',
+    features: ['Kişisel ses dengeleme', 'Şarj istasyonu', 'Uygulama kontrolü', 'Gürültü yönetimi'],
+    image: igImg('DVo36dZjaz9'),
   },
   {
-    slug: 'oticon-real',
-    brand: 'Oticon',
-    name: 'Oticon Real',
+    slug: 'nitro-elite',
+    lineName: 'Nitro',
+    name: 'Nitro Elite',
     categorySlug: 'kulak-arkasi-cihaz',
     type: 'RIC / BTE',
-    description: 'BrainHearing yaklaşımıyla çevresel sesleri dengeleyen, doğal dinleme sunan Oticon serisi.',
-    features: ['Deep Neural Network', 'Çoklu cihaz bağlantısı', 'Şarjlı seçenek', 'Tinnitus desteği'],
-    image: '/local-images/readdy-products-prod3opt.webp',
+    description: 'Çevresel sesleri dengeleyen, doğal dinleme sunan gelişmiş işlemci serisi.',
+    features: ['Yapay zeka destekli işleme', 'Çoklu cihaz bağlantısı', 'Şarjlı seçenek', 'Tinnitus desteği'],
+    image: igImg('DVlx-9xjRAV'),
   },
   {
-    slug: 'phonak-naida',
-    brand: 'Phonak',
-    name: 'Naída Lumity',
+    slug: 'vista-power',
+    lineName: 'Vista',
+    name: 'Vista Power',
     categorySlug: 'kulak-arkasi-cihaz',
     type: 'Güçlü BTE',
     description: 'İleri ve profund işitme kayıpları için tasarlanmış yüksek güçlü kulak arkası model.',
-    features: ['Ultra güçlü amplifikasyon', 'Dayanıklı gövde', 'Roger uyumu', 'Su tozu direnci'],
-    image: '/local-images/readdy-products-prod4opt.webp',
+    features: ['Güçlü amplifikasyon', 'Dayanıklı gövde', 'Uzaktan ayar', 'Su tozu direnci'],
+    image: igImg('DVgQKkSDaAP'),
   },
   {
-    slug: 'oticon-own',
-    brand: 'Oticon',
-    name: 'Oticon Own',
+    slug: 'nitro-custom',
+    lineName: 'Nitro',
+    name: 'Nitro Custom',
     categorySlug: 'kanal-ici-cihaz',
     type: 'Özel IIC',
-    description: 'Kulak anatomisine göre 3D üretilen, neredeyse görünmez kanal içi işitme cihazı.',
-    features: ['Özel 3D kalıp', 'Minimal görünüm', 'Doğal ses', 'Mobil ayar'],
-    image: '/local-images/readdy-products-prod1opt.webp',
+    description: 'Kulak anatomisine göre üretilen, neredeyse görünmez kanal içi işitme cihazı.',
+    features: ['Özel kalıp', 'Minimal görünüm', 'Doğal ses', 'Mobil ayar'],
+    image: igImg('DVbD74JDYJd'),
   },
   {
-    slug: 'signia-motion',
-    brand: 'Signia',
-    name: 'Motion X',
-    categorySlug: 'kulak-arkasi-cihaz',
+    slug: 'pediatrik-bte',
+    lineName: 'Pediatrik Grup',
+    name: 'Pediatrik Grup BTE',
+    categorySlug: 'cocuk-isitme-cihazlari',
     type: 'BTE',
-    description: 'Günlük kullanımda güvenilir performans sunan, ekonomik segment kulak arkası model.',
-    features: ['Kolay kullanım', 'Pil ve şarjlı versiyon', 'Bluetooth opsiyon', 'SGK uyumlu seçenekler'],
-    image: '/local-images/readdy-products-prod2opt.webp',
+    description: 'Çocuklara özel dayanıklı gövde, renkli kabuk ve güvenli pil yuvası.',
+    features: ['Dayanıklı tasarım', 'Renkli kabuk', 'Aile eğitimi', 'SGK uyumlu seçenekler'],
+    image: igImg('DVibqUJjYWy'),
   },
 ];
 

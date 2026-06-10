@@ -66,19 +66,19 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
     image: '/local-images/pro-hero-main.webp',
   },
   '/katalog': {
-    title: 'İşitme Cihazı Katalogları Samsun | Phonak, Signia, Oticon',
+    title: 'İşitme Cihazı Katalogları Samsun | Vista, A&M, Nitro',
     description:
-      'Phonak, Signia, Oticon, ReSound ve Starkey işitme cihazı katalogları. Samsun Hacettepe İşitme Merkezi’nde katalog danışmanlığı ve deneme.',
+      'Vista, A&M, Nitro ve Pediatrik Grup işitme cihazı katalogları. Samsun Hacettepe İşitme Merkezi’nde danışmanlık ve deneme.',
     keywords:
-      'işitme cihazı katalog, Phonak katalog Samsun, Signia katalog, Oticon katalog',
+      'işitme cihazı katalog, Vista katalog Samsun, A&M işitme cihazı, Nitro katalog',
     image: '/local-images/pro-hero-main.webp',
   },
   '/isitme-cihazi-fiyatlari': {
-    title: 'İşitme Cihazı Fiyatları 2025 | Samsun — Phonak, Siemens, Oticon',
+    title: 'İşitme Cihazı Fiyatları 2025 | Samsun — Vista, A&M, Nitro',
     description:
-      'İşitme cihazı fiyatlarını etkileyen faktörler, Phonak, Siemens, Oticon modelleri ve SGK ödeme desteği. Samsun merkezimizde ücretsiz fiyat danışmanlığı.',
+      'İşitme cihazı fiyatlarını etkileyen faktörler, Vista, A&M, Nitro ve Pediatrik Grup modelleri ile SGK ödeme desteği. Ücretsiz fiyat danışmanlığı.',
     keywords:
-      'işitme cihazı fiyatları, işitme cihazı fiyat Samsun, SGK işitme cihazı fiyat, Phonak fiyat, Siemens işitme cihazı fiyat',
+      'işitme cihazı fiyatları, işitme cihazı fiyat Samsun, SGK işitme cihazı fiyat, Vista fiyat, Nitro işitme cihazı fiyat',
     image: '/local-images/pro-hero-main.webp',
   },
   '/samsun-isitme-cihazi': {

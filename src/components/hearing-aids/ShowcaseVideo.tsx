@@ -5,12 +5,21 @@ interface ShowcaseVideoProps {
   poster?: string;
   title: string;
   className?: string;
+  /** Instagram reel varsayılanı 9:16; metadata yüklenince otomatik güncellenir */
+  aspectRatio?: string;
 }
 
-export default function ShowcaseVideo({ src, poster, title, className = '' }: ShowcaseVideoProps) {
+export default function ShowcaseVideo({
+  src,
+  poster,
+  title,
+  className = '',
+  aspectRatio = '9 / 16',
+}: ShowcaseVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
+  const [ratio, setRatio] = useState(aspectRatio);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -35,10 +44,17 @@ export default function ShowcaseVideo({ src, poster, title, className = '' }: Sh
     videoRef.current.play().catch(() => {});
   }, [active]);
 
+  const handleMetadata = () => {
+    const video = videoRef.current;
+    if (!video?.videoWidth || !video?.videoHeight) return;
+    setRatio(`${video.videoWidth} / ${video.videoHeight}`);
+  };
+
   return (
     <div
       ref={containerRef}
-      className={`relative rounded-2xl overflow-hidden bg-brand-dark shadow-xl aspect-video ${className}`}
+      className={`relative mx-auto w-full max-w-md rounded-2xl overflow-hidden bg-black shadow-xl ${className}`}
+      style={{ aspectRatio: ratio }}
     >
       {active ? (
         <video
@@ -46,17 +62,18 @@ export default function ShowcaseVideo({ src, poster, title, className = '' }: Sh
           src={src}
           poster={poster}
           title={title}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain bg-black"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          onLoadedMetadata={handleMetadata}
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-brand-dark/90" aria-hidden>
+        <div className="absolute inset-0 flex items-center justify-center bg-black" aria-hidden>
           {poster ? (
-            <img src={poster} alt="" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+            <img src={poster} alt="" className="absolute inset-0 w-full h-full object-contain opacity-60" />
           ) : null}
           <span className="relative w-10 h-10 border-2 border-white/20 border-t-brand-accent rounded-full animate-spin" />
         </div>

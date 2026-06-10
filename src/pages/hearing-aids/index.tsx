@@ -150,11 +150,14 @@ export default function HearingAidsIndexPage() {
                       className={isPediatric ? 'w-full h-64 md:h-80 object-cover' : 'max-h-48 md:max-h-56 object-contain mx-auto'}
                     />
                   </div>
-                  <ShowcaseVideo
-                    src={series.videoSrc}
-                    poster={series.videoPoster}
-                    title={`${series.seriesName} tanıtım videosu`}
-                  />
+                  <div className="flex justify-center">
+                    <ShowcaseVideo
+                      src={series.videoSrc}
+                      poster={series.videoPoster}
+                      title={`${series.seriesName} tanıtım videosu`}
+                      className="w-full"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -218,12 +221,12 @@ export default function HearingAidsIndexPage() {
             Kulak içi, kulak arkası ve şarjlı modellerin takım ve bakım videoları — Hacettepe İşitme Instagram
             paylaşımları
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {FIT_VIDEOS.map((fv) => (
-              <div key={fv.title}>
-                <p className="text-brand-accent text-xs font-bold uppercase mb-2">{fv.category}</p>
-                <p className="text-white font-semibold mb-3 text-sm">{fv.title}</p>
-                <ShowcaseVideo src={fv.videoSrc} poster={fv.videoPoster} title={fv.title} />
+              <div key={fv.title} className="flex flex-col items-center">
+                <p className="text-brand-accent text-xs font-bold uppercase mb-2 self-start w-full max-w-md">{fv.category}</p>
+                <p className="text-white font-semibold mb-3 text-sm self-start w-full max-w-md">{fv.title}</p>
+                <ShowcaseVideo src={fv.videoSrc} poster={fv.videoPoster} title={fv.title} className="w-full" />
               </div>
             ))}
           </div>

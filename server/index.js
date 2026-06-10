@@ -329,11 +329,14 @@ function proxifyInstagramImageUrl(imageUrl) {
   return `/api/instagram/media?src=${encodeURIComponent(imageUrl)}`;
 }
 
-function mapInstagramFeedPost({ id, imageUrl, permalink, title, mediaType, timestamp }) {
+function mapInstagramFeedPost({ id, imageUrl, videoUrl, permalink, title, mediaType, timestamp }) {
   if (!imageUrl || !permalink) return null;
+  const localVideo =
+    typeof videoUrl === 'string' && videoUrl.startsWith('/local-images/') ? videoUrl : null;
   return {
     id: String(id),
     imageUrl: proxifyInstagramImageUrl(imageUrl),
+    videoUrl: localVideo,
     permalink,
     title: captionToTitle(title),
     mediaType: mediaType || 'IMAGE',
@@ -388,9 +391,12 @@ function mapInstagramUserFeedItem(item) {
   const timestamp = item.taken_at
     ? new Date(Number(item.taken_at) * 1000).toISOString()
     : null;
+  const remoteVideo =
+    mediaTypeNum === 2 && Array.isArray(item.video_versions) ? item.video_versions[0]?.url : '';
   return mapInstagramFeedPost({
     id: item.pk || item.id || code,
     imageUrl,
+    videoUrl: remoteVideo || null,
     permalink: instagramPermalinkForCode(code, item.product_type, mediaTypeNum),
     title: item.caption?.text || '',
     mediaType,

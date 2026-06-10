@@ -17,7 +17,7 @@ export default function HearingAidsSection() {
               Satışını Yaptığımız Cihazlar
             </h2>
             <p className="text-gray-500 max-w-xl">
-              Phonak, Signia ve Oticon başta olmak üzere dünya markalarının güncel modellerini merkezimizde deneyebilirsiniz.
+              Vista, A&M, Nitro ve Pediatrik Grup serilerinin güncel modellerini merkezimizde deneyebilirsiniz.
             </p>
           </div>
           <Link
@@ -46,7 +46,7 @@ export default function HearingAidsSection() {
             className="inline-flex items-center gap-2 border border-brand-accent/30 text-sm text-brand-accent px-4 py-2 rounded-full hover:bg-brand-light transition-colors"
           >
             <i className="ri-book-open-line" />
-            Marka Katalogları
+            Ürün Katalogları
           </Link>
         </div>
 
