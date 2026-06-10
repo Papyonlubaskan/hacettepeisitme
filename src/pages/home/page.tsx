@@ -261,15 +261,11 @@ function BlogSection() {
 function CTASection() {
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src="/local-images/readdy-home-cta-cta2024v2b.webp"
-          alt=""
-          loading="lazy"
-          className="w-full h-full object-cover object-top"
-        />
-        <div className="absolute inset-0 bg-brand-dark/40" />
-      </div>
+      <ImageFlowBackground
+        slides={HOME_FLOW_SLIDES}
+        intervalMs={8000}
+        overlayClassName="bg-brand-dark/55"
+      />
 
       <div className="relative z-10 w-full px-6 lg:px-12 text-center">
         <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">

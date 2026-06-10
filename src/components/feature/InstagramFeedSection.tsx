@@ -166,7 +166,7 @@ export default function InstagramFeedSection() {
                                 const img = e.currentTarget;
                                 if (img.dataset.fallback === '1') return;
                                 img.dataset.fallback = '1';
-                                img.src = '/local-images/pro-hero-main.webp';
+                                img.src = '/local-images/home-flow/flow-reception.webp';
                               }}
                             />
                           )}
