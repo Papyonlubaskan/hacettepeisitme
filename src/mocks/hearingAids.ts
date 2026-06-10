@@ -332,11 +332,11 @@ export const CATALOGS: CatalogEntry[] = [
 ];
 
 const CATALOG_IMG = {
-  vistaPremium: '/local-images/showcase/vista-showcase.png',
-  amPremium: '/local-images/showcase/am-showcase.png',
-  nitroElite: '/local-images/showcase/nitro-showcase.png',
-  vistaPower: '/local-images/showcase/catalog-vista-power.png',
-  nitroCustom: '/local-images/showcase/catalog-nitro-custom.png',
+  vistaPremium: '/local-images/showcase/vista-showcase.webp',
+  amPremium: '/local-images/showcase/am-showcase.webp',
+  nitroElite: '/local-images/showcase/nitro-showcase.webp',
+  vistaPower: '/local-images/showcase/catalog-vista-power.webp',
+  nitroCustom: '/local-images/showcase/catalog-nitro-custom.webp',
   pediatrik: '/local-images/pediatrik-isitme-cocuk.webp',
 } as const;
 

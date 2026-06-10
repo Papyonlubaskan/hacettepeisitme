@@ -219,8 +219,8 @@ export default function HearingAidsIndexPage() {
             Cihazlar Kulağımda Nasıl Görünür?
           </h2>
           <p className="text-white/60 text-center mb-12 max-w-2xl mx-auto">
-            Kulak içi, kulak arkası ve şarjlı modellerin takım ve bakım videoları — Hacettepe İşitme Instagram
-            paylaşımları
+            Kulak içi, kulak arkası ve şarjlı modellerin takım ve bakım videoları — Hacettepe İşitme uzman
+            rehberleri
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {FIT_VIDEOS.map((fv) => (

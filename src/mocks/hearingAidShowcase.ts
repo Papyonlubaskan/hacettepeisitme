@@ -39,19 +39,25 @@ export interface FitVideo {
   videoPoster: string;
 }
 
-const ig = (code: string) => ({
-  image: `/local-images/instagram/${code}.jpg`,
-  video: `/local-images/instagram/${code}.mp4`,
-});
-
 const SHOWCASE_IMG = {
-  vista: '/local-images/showcase/vista-showcase.png',
-  am: '/local-images/showcase/am-showcase.png',
-  nitro: '/local-images/showcase/nitro-showcase.png',
+  vista: '/local-images/showcase/vista-showcase.webp',
+  am: '/local-images/showcase/am-showcase.webp',
+  nitro: '/local-images/showcase/nitro-showcase.webp',
   pediatrik: '/local-images/pediatrik-isitme-cocuk.webp',
-  ric: '/local-images/showcase/device-ric-thumb.png',
-  bte: '/local-images/showcase/device-bte-thumb.png',
-  ite: '/local-images/showcase/device-ite-thumb.png',
+  ric: '/local-images/showcase/device-ric-thumb.webp',
+  bte: '/local-images/showcase/device-bte-thumb.webp',
+  ite: '/local-images/showcase/device-ite-thumb.webp',
+} as const;
+
+const SHOWCASE_VIDEO = {
+  vista: '/local-images/showcase/videos/vista.mp4',
+  am: '/local-images/showcase/videos/am.mp4',
+  nitro: '/local-images/showcase/videos/nitro.mp4',
+  pediatrik: '/local-images/showcase/videos/pediatrik.mp4',
+  fitRic: '/local-images/showcase/videos/fit-ric.mp4',
+  fitBte: '/local-images/showcase/videos/fit-bte.mp4',
+  fitIte: '/local-images/showcase/videos/fit-ite.mp4',
+  fitCharge: '/local-images/showcase/videos/fit-charge.mp4',
 } as const;
 
 export const SHOWCASE_SERIES: ShowcaseSeries[] = [
@@ -73,10 +79,8 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'IP68', 'RIC'],
     image: SHOWCASE_IMG.vista,
-    ...(() => {
-      const m = ig('DWD689UjXKO');
-      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.vista };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.vista,
+    videoPoster: SHOWCASE_IMG.vista,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Vista RIC serisi', image: SHOWCASE_IMG.ric },
@@ -106,10 +110,8 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
     image: SHOWCASE_IMG.am,
-    ...(() => {
-      const m = ig('DVo36dZjaz9');
-      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.am };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.am,
+    videoPoster: SHOWCASE_IMG.am,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'A&M şarjlı RIC', image: SHOWCASE_IMG.ric },
@@ -139,10 +141,8 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
     image: SHOWCASE_IMG.nitro,
-    ...(() => {
-      const m = ig('DVlx-9xjRAV');
-      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.nitro };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.nitro,
+    videoPoster: SHOWCASE_IMG.nitro,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Nitro RIC modeller', image: SHOWCASE_IMG.ric },
@@ -173,10 +173,8 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     ],
     badges: ['Pediatrik', 'SGK', 'Aile Desteği', 'BTE'],
     image: SHOWCASE_IMG.pediatrik,
-    ...(() => {
-      const m = ig('DVibqUJjYWy');
-      return { videoSrc: m.video, videoPoster: SHOWCASE_IMG.pediatrik };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.pediatrik,
+    videoPoster: SHOWCASE_IMG.pediatrik,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK ARKASI', sublabel: 'Pediatrik BTE modeller', image: SHOWCASE_IMG.bte },
@@ -195,33 +193,25 @@ export const FIT_VIDEOS: FitVideo[] = [
   {
     title: 'Kulak İçi Hoparlörlü Cihaz Nasıl Takılır?',
     category: 'Kulak İçi Hoparlörlü',
-    ...(() => {
-      const m = ig('DVgQKkSDaAP');
-      return { videoSrc: m.video, videoPoster: m.image };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.fitRic,
+    videoPoster: SHOWCASE_IMG.ric,
   },
   {
     title: 'Kulak Arkası Cihaz Nasıl Kullanılır?',
     category: 'Kulak Arkası',
-    ...(() => {
-      const m = ig('DVdethoDS03');
-      return { videoSrc: m.video, videoPoster: m.image };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.fitBte,
+    videoPoster: SHOWCASE_IMG.bte,
   },
   {
     title: 'Kulak İçi Cihaz Kulağımda Nasıl Görünür?',
     category: 'Kulak İçi',
-    ...(() => {
-      const m = ig('DVbD74JDYJd');
-      return { videoSrc: m.video, videoPoster: m.image };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.fitIte,
+    videoPoster: SHOWCASE_IMG.ite,
   },
   {
     title: 'Şarjlı İşitme Cihazı Bakımı',
     category: 'Bakım',
-    ...(() => {
-      const m = ig('DVbD0iUjQaA');
-      return { videoSrc: m.video, videoPoster: m.image };
-    })(),
+    videoSrc: SHOWCASE_VIDEO.fitCharge,
+    videoPoster: SHOWCASE_IMG.am,
   },
 ];

@@ -6,7 +6,7 @@ interface ShowcaseVideoProps {
   title: string;
   className?: string;
   aspectRatio?: string;
-  /** Alt banttaki site URL watermark'ını kırpar */
+  /** Eski Instagram watermark kırpma — yerel videolarda kapalı */
   cropWatermark?: boolean;
 }
 
@@ -16,7 +16,7 @@ export default function ShowcaseVideo({
   title,
   className = '',
   aspectRatio = '9 / 16',
-  cropWatermark = true,
+  cropWatermark = false,
 }: ShowcaseVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
