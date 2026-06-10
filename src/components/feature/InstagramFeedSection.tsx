@@ -77,10 +77,10 @@ export default function InstagramFeedSection() {
         <div className="max-w-6xl mx-auto mb-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
             <div>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Instagram Akışı</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2">Instagram &amp; Güncel Kampanyalar</h2>
               <p className="text-white/60">
-                <span className="text-brand-accent font-semibold">@{INSTAGRAM_HANDLE}</span> hesabından canlı
-                paylaşımlar
+                Güncel kampanyalar ve{' '}
+                <span className="text-brand-accent font-semibold">@{INSTAGRAM_HANDLE}</span> paylaşımları
               </p>
               {!loading && live && postCount != null && (
                 <p className="mt-2 text-sm text-white/50">{postCount} paylaşım gösteriliyor</p>
