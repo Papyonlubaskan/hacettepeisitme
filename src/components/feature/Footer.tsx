@@ -4,6 +4,7 @@ import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking'
 import { triggerContactFallback } from '@/lib/formFallback';
 import AddressLink from '@/components/feature/AddressLink';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -62,7 +63,7 @@ export default function Footer() {
     <footer className="relative bg-brand-dark text-white overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="/local-images/readdy-footer-bg-footernew2024i.webp"
+          src={PAGE_IMAGES.footerBg}
           alt=""
           loading="lazy"
           className="w-full h-full object-cover object-top opacity-20"

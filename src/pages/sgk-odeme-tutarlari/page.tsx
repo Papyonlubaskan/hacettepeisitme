@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { trackCTAClick, trackPageView } from '@/lib/tracking';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_WA } from '@/lib/siteContact';
 
 const sgkRows = [
@@ -77,35 +79,22 @@ export default function SgkOdemeTutarlariPage() {
     <div className="pt-[72px] animate-fadeInUp">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-15">
-          <img
-            src="/local-images/readdy-appointment-app2024v2g.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
+      <PageHeroBanner
+        title="İşitme Cihazları İçin SGK Ödeme Tutarları ve Şartları (17.01.2026)"
+        subtitle="2026 güncel SUT verilerine göre SGK destek tutarları, yaş grupları ve çalışma durumuna göre ödeme detayları."
+        imageSrc={PAGE_IMAGES.sgk}
+      >
+        <div className="mt-5 flex flex-wrap items-center justify-center md:justify-start gap-2">
+          <span className="inline-flex items-center gap-1 bg-white/15 border border-white/25 rounded-full px-3 py-1 text-xs text-white">
+            <i className="ri-time-line" />
+            Son güncelleme: 17.01.2026
+          </span>
+          <span className="inline-flex items-center gap-1 bg-white/15 border border-white/25 rounded-full px-3 py-1 text-xs text-white">
+            <i className="ri-file-list-3-line" />
+            Kaynak: SUT
+          </span>
         </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            İşitme Cihazları İçin SGK Ödeme Tutarları ve Şartları (17.01.2026)
-          </h1>
-          <p className="text-white/75 max-w-3xl mx-auto">
-            2026 güncel SUT verilerine göre SGK destek tutarları, yaş grupları ve çalışma durumuna
-            göre ödeme detayları.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            <span className="inline-flex items-center gap-1 bg-white/15 border border-white/25 rounded-full px-3 py-1 text-xs text-white">
-              <i className="ri-time-line" />
-              Son güncelleme: 17.01.2026
-            </span>
-            <span className="inline-flex items-center gap-1 bg-white/15 border border-white/25 rounded-full px-3 py-1 text-xs text-white">
-              <i className="ri-file-list-3-line" />
-              Kaynak: SUT
-            </span>
-          </div>
-        </div>
-      </section>
+      </PageHeroBanner>
 
       <section className="py-14 md:py-20 bg-white">
         <div className="w-full px-6 lg:px-12">

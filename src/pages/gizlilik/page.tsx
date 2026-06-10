@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { trackPageView } from '@/lib/tracking';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import AddressLink from '@/components/feature/AddressLink';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function PrivacyPolicy() {
@@ -10,25 +12,11 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      {/* Hero Banner */}
-      <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-15">
-          <img
-            src="/local-images/readdy-privacy-privacy2024v2j.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            Gizlilik Politikası
-          </h1>
-          <p className="text-white/70 max-w-xl mx-auto">
-            Kişisel verilerinizin korunması ve güvenliği en öncelikli konumuzdur.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="Gizlilik Politikası"
+        subtitle="Kişisel verilerinizin korunması ve güvenliği en öncelikli konumuzdur."
+        imageSrc={PAGE_IMAGES.privacy}
+      />
 
       {/* Content */}
       <section className="py-16 md:py-24 bg-white">

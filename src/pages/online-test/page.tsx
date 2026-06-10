@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackPageView, trackCTAClick } from '@/lib/tracking';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import HearingTest from './components/HearingTest';
 import TestResults from './components/TestResults';
 
@@ -44,7 +45,7 @@ export default function OnlineHearingTest() {
       <section className="relative bg-brand-dark py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="/local-images/readdy-onlinetest-onlinetest2024v2d.webp"
+            src={PAGE_IMAGES.onlineTest}
             alt="Online İşitme Testi"
             className="w-full h-full object-cover object-top opacity-30"
           />

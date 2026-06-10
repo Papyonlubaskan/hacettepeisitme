@@ -1,26 +1,25 @@
 import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 
 interface HearingAidShellProps {
   title: string;
   subtitle?: string;
+  heroImage?: string;
   children: ReactNode;
 }
 
 export default function HearingAidShell({
   title,
   subtitle,
+  heroImage = PAGE_IMAGES.catalog,
   children,
 }: HearingAidShellProps) {
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
-      <section className="py-16 md:py-20 bg-brand-dark text-white">
-        <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto">
-          <h1 className="font-serif text-3xl md:text-5xl font-bold mb-4">{title}</h1>
-          {subtitle ? <p className="text-white/80 text-lg max-w-3xl">{subtitle}</p> : null}
-        </div>
-      </section>
+      <PageHeroBanner title={title} subtitle={subtitle} imageSrc={heroImage} align="left" />
       <section className="py-12 md:py-16">
         <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto">{children}</div>
       </section>

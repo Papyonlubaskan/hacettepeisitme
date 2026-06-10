@@ -1,0 +1,20 @@
+/** Ana sayfa hariç sayfa hero ve ortak footer görselleri */
+export const PAGE_IMAGES = {
+  footerBg: '/local-images/pages/footer-bg.webp',
+  about: '/local-images/pages/hero-about.webp',
+  aboutSecondary: '/local-images/pages/about-secondary.webp',
+  contact: '/local-images/pages/hero-contact.webp',
+  appointment: '/local-images/pages/hero-appointment.webp',
+  landing: '/local-images/pages/hero-landing.webp',
+  onlineTest: '/local-images/pages/hero-online-test.webp',
+  privacy: '/local-images/pages/hero-privacy.webp',
+  terms: '/local-images/pages/hero-terms.webp',
+  kvkk: '/local-images/pages/hero-kvkk.webp',
+  sgk: '/local-images/pages/hero-sgk.webp',
+  blog: '/local-images/pages/hero-blog.webp',
+  catalog: '/local-images/pages/hero-catalog.webp',
+  hearingAids: '/local-images/showcase/hearing-aids-hero.webp',
+  pricing: '/local-images/pages/hero-pricing.webp',
+  samsunDevice: '/local-images/pages/hero-samsun-device.webp',
+  samsunTest: '/local-images/pages/hero-samsun-test.webp',
+} as const;

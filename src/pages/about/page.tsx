@@ -1,27 +1,15 @@
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_FAQ } from '@/lib/schema';
 
 export default function About() {
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      {/* Hero Banner */}
-      <section className="relative py-20 md:py-28 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="/local-images/readdy-about-about2024v2e.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            Hakkımızda
-          </h1>
-          <p className="text-white/70 max-w-xl mx-auto">
-            Samsun&apos;da işitme sağlığı alanında 15 yılı aşkın süredir hizmet veren güvenilir adresiniz.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="Hakkımızda"
+        subtitle="Samsun'da işitme sağlığı alanında 15 yılı aşkın süredir hizmet veren güvenilir adresiniz."
+        imageSrc={PAGE_IMAGES.about}
+      />
 
       {/* Story Section */}
       <section className="py-20 md:py-28 bg-white">
@@ -70,7 +58,7 @@ export default function About() {
 
             <div className="relative">
               <img
-                src="/local-images/pro-about-secondary.webp"
+                src={PAGE_IMAGES.aboutSecondary}
                 alt="Hacettepe İşitme Ekibi"
                 loading="lazy"
                 className="w-full h-[500px] md:h-[560px] object-cover object-top rounded-2xl"

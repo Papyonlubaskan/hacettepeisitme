@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { trackPageView } from '@/lib/tracking';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import AddressLink from '@/components/feature/AddressLink';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function KvkkNotice() {
@@ -10,25 +12,11 @@ export default function KvkkNotice() {
 
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      {/* Hero Banner */}
-      <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-15">
-          <img
-            src="/local-images/readdy-kvkk-kvkk2024v2l.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            KVKK Aydınlatma Metni
-          </h1>
-          <p className="text-white/70 max-w-xl mx-auto">
-            6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma yükümlülüğümüz.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="KVKK Aydınlatma Metni"
+        subtitle="6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma yükümlülüğümüz."
+        imageSrc={PAGE_IMAGES.kvkk}
+      />
 
       {/* Content */}
       <section className="py-16 md:py-24 bg-white">

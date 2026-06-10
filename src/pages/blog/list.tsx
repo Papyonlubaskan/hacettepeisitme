@@ -1,21 +1,17 @@
 import { Link } from 'react-router-dom';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { blogPosts } from '../../mocks/blog';
 import { trackCTAClick } from '@/lib/tracking';
 
 export default function BlogListPage() {
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      <section className="bg-brand-dark py-16 md:py-20">
-        <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto text-center">
-          <p className="text-brand-accent text-sm font-semibold tracking-wide uppercase mb-3">Blog</p>
-          <h1 className="font-serif text-3xl md:text-4xl font-bold text-white mb-4">
-            İşitme Sağlığı ve Cihaz Rehberleri
-          </h1>
-          <p className="text-white/70 max-w-2xl mx-auto">
-            İşitme kaybı, cihaz seçimi, bakım ve SGK süreçleri hakkında uzman içerikler.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="İşitme Sağlığı ve Cihaz Rehberleri"
+        subtitle="İşitme kaybı, cihaz seçimi, bakım ve SGK süreçleri hakkında uzman içerikler."
+        imageSrc={PAGE_IMAGES.blog}
+      />
 
       <section className="py-14 md:py-20 bg-brand-cream">
         <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">

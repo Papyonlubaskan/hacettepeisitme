@@ -5,6 +5,7 @@ import SeoBreadcrumbJsonLd from '@/components/SeoBreadcrumbJsonLd';
 import HearingAidShell from '@/components/hearing-aids/HearingAidShell';
 import { getBreadcrumbs } from '@/lib/breadcrumbs';
 import ProductCard from '@/components/hearing-aids/ProductCard';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { getDeviceCategory, getProductsByCategory } from '@/mocks/hearingAids';
 
 export default function HearingAidCategoryPage() {
@@ -27,7 +28,7 @@ export default function HearingAidCategoryPage() {
         keywords={category.keywords}
       />
       <SeoBreadcrumbJsonLd items={getBreadcrumbs(path, category.title)} />
-      <HearingAidShell title={category.title} subtitle={category.summary}>
+      <HearingAidShell title={category.title} subtitle={category.summary} heroImage={PAGE_IMAGES.hearingAids}>
         <div className="space-y-8 text-gray-600 leading-relaxed">
           <Link to="/isitme-cihazlari" className="inline-flex items-center gap-1 text-sm text-brand-accent font-medium">
             <i className="ri-arrow-left-line" />

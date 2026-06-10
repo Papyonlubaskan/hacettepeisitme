@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AddressLink from '@/components/feature/AddressLink';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import AdaptiveImage from '@/components/hearing-aids/AdaptiveImage';
 import ShowcaseVideo from '@/components/hearing-aids/ShowcaseVideo';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { FIT_VIDEOS, SHOWCASE_SERIES } from '@/mocks/hearingAidShowcase';
 import { serviceJsonLd } from '@/lib/schema';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
@@ -39,58 +41,41 @@ export default function HearingAidsIndexPage() {
     <div className="pt-[72px] animate-fadeInUp">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <section className="relative min-h-[520px] md:min-h-[600px] overflow-hidden text-white flex items-center">
-        <div className="absolute inset-0">
-          <img
-            src="/local-images/showcase/hearing-aids-hero.webp"
-            alt="Samsun Hacettepe İşitme Merkezi — işitme cihazı danışmanlığı"
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/92 via-brand-dark/75 to-brand-dark/45" />
-        </div>
-
-        <div className="relative z-10 w-full px-6 lg:px-12 py-16 md:py-24">
-          <div className="max-w-6xl mx-auto text-center md:text-left">
-            <img
-              src="/local-images/brand-logo-navbar.webp"
-              alt="Hacettepe İşitme Cihazları"
-              className="h-11 md:h-14 mx-auto md:mx-0 mb-6"
-            />
-            <p className="inline-block bg-brand-accent/25 text-brand-accent text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4">
-              Hacettepe İşitme · Samsun
-            </p>
-            <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              İşitme Cihazları
-            </h1>
-            <p className="text-white/80 max-w-2xl mx-auto md:mx-0 mb-10 text-sm md:text-lg leading-relaxed">
-              Vista, A&M, Nitro ve Pediatrik Grup işitme cihazlarını merkezimizde deneyin. Uzman odyolog eşliğinde
-              ücretsiz test ve 30 gün deneme imkânı.
-            </p>
-
-            <div className="flex flex-wrap justify-center md:justify-start gap-3 max-w-3xl mx-auto md:mx-0">
-              {SHOWCASE_SERIES.map((series) => (
-                <button
-                  key={series.id}
-                  type="button"
-                  onClick={() => scrollToSeries(series.id)}
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-                    activeNav === series.id
-                      ? 'bg-white text-brand-accent shadow-lg scale-105'
-                      : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                  }`}
-                >
-                  {series.badge ? (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] text-brand-accent font-serif italic whitespace-nowrap">
-                      {series.badge}
-                    </span>
-                  ) : null}
-                  {series.navLabel}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="İşitme Cihazları"
+        subtitle="Vista, A&M, Nitro ve Pediatrik Grup işitme cihazlarını merkezimizde deneyin. Uzman odyolog eşliğinde ücretsiz test ve 30 gün deneme imkânı."
+        imageSrc={PAGE_IMAGES.hearingAids}
+        imageAlt="Samsun Hacettepe İşitme Merkezi — işitme cihazı danışmanlığı"
+        align="left"
+        minHeight="min-h-[480px] md:min-h-[560px]"
+      prepend={
+        <p className="inline-block bg-brand-accent/25 text-brand-accent text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4">
+          Hacettepe İşitme · Samsun
+        </p>
+      }
+    >
+      <div className="flex flex-wrap justify-center md:justify-start gap-3 max-w-3xl mt-6">
+        {SHOWCASE_SERIES.map((series) => (
+          <button
+            key={series.id}
+            type="button"
+            onClick={() => scrollToSeries(series.id)}
+            className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+              activeNav === series.id
+                ? 'bg-white text-brand-accent shadow-lg scale-105'
+                : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+            }`}
+          >
+            {series.badge ? (
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] text-brand-accent font-serif italic whitespace-nowrap">
+                {series.badge}
+              </span>
+            ) : null}
+            {series.navLabel}
+          </button>
+        ))}
+      </div>
+    </PageHeroBanner>
 
       {SHOWCASE_SERIES.map((series, index) => {
         const bgClass = index % 2 === 0 ? 'bg-gradient-to-br from-cyan-50 via-teal-50/80 to-white' : 'bg-white';

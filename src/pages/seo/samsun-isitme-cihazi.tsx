@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import AddressLink from '@/components/feature/AddressLink';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { faqPageJsonLd, serviceJsonLd } from '@/lib/schema';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
@@ -38,15 +40,12 @@ export default function SamsunIsitmeCihaziPage() {
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="py-16 md:py-24 bg-brand-dark text-white">
-        <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Samsun İşitme Cihazı</h1>
-          <p className="text-white/80 text-lg max-w-3xl">
-            İlkadım Tepecik&apos;te 15 yıllık deneyimle işitme cihazı satışı, ücretsiz işitme testi ve kişiye özel
-            cihaz uyarlama. Vista, A&M ve Nitro serileri ile uzman danışmanlık.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="Samsun İşitme Cihazı"
+        subtitle="İlkadım Tepecik'te 15 yıllık deneyimle işitme cihazı satışı, ücretsiz işitme testi ve kişiye özel cihaz uyarlama. Vista, A&M ve Nitro serileri ile uzman danışmanlık."
+        imageSrc={PAGE_IMAGES.samsunDevice}
+        align="left"
+      />
 
       <section className="py-12 md:py-16">
         <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto space-y-6 text-gray-600 leading-relaxed">

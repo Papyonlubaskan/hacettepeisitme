@@ -3,6 +3,8 @@ import AddressLink from '@/components/feature/AddressLink';
 import { trackCTAClick, trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
 import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_MAP_EMBED_URL, SITE_MAP_URL, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Contact() {
@@ -45,25 +47,11 @@ export default function Contact() {
 
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      {/* Hero Banner */}
-      <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="/local-images/readdy-contact-contact2024v2h.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            İletişim
-          </h1>
-          <p className="text-white/70 max-w-xl mx-auto">
-            Her türlü soru ve talebiniz için bize ulaşabilirsiniz.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="İletişim"
+        subtitle="Her türlü soru ve talebiniz için bize ulaşabilirsiniz."
+        imageSrc={PAGE_IMAGES.contact}
+      />
 
       {/* Contact Info Cards */}
       <section className="py-16 bg-brand-cream">

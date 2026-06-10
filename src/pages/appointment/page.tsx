@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { trackFormSubmit, trackPhoneClick } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
 import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import AddressLink from '@/components/feature/AddressLink';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '@/lib/siteContact';
 
 export default function Appointment() {
@@ -61,25 +63,11 @@ export default function Appointment() {
 
   return (
     <div className="pt-[72px] animate-fadeInUp">
-      {/* Hero Banner */}
-      <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="/local-images/readdy-appointment-app2024v2g.webp"
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-        <div className="relative z-10 w-full px-6 lg:px-12 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            Randevu Al
-          </h1>
-          <p className="text-white/70 max-w-xl mx-auto">
-            Ücretsiz işitme testi ve danışmanlık için randevunuzu oluşturun.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="Randevu Al"
+        subtitle="Ücretsiz işitme testi ve danışmanlık için randevunuzu oluşturun."
+        imageSrc={PAGE_IMAGES.appointment}
+      />
 
       {/* Contact Info Bar */}
       <section className="bg-brand-cream py-6">

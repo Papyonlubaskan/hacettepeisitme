@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { trackFormSubmit, trackLead } from '@/lib/tracking';
 import { triggerContactFallback } from '@/lib/formFallback';
 import { getFormErrorMessage, submitForm } from '@/lib/formSubmit';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
 export default function HeroFormSection() {
@@ -52,7 +53,7 @@ export default function HeroFormSection() {
     <section id="form" className="relative min-h-[680px] md:min-h-[720px] flex items-center overflow-hidden bg-brand-dark">
       <div className="absolute inset-0">
         <img
-          src="/local-images/readdy-landing-landhero2024v2c.webp"
+          src={PAGE_IMAGES.landing}
           alt="Ücretsiz İşitme Testi Samsun"
           loading="eager"
           className="w-full h-full object-cover object-top opacity-40"

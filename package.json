@@ -19,6 +19,8 @@
     "showcase:videos": "node scripts/build-showcase-videos.mjs",
     "showcase:webp": "node scripts/convert-showcase-webp.mjs",
     "google-reviews:refresh": "node scripts/build-google-reviews-bundled.mjs",
+    "pages:webp": "node scripts/convert-page-images-webp.mjs",
+    "blog:images": "node scripts/build-blog-images.mjs",
     "deploy:push": "git push papyon main"
   },
   "dependencies": {

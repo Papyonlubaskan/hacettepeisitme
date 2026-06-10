@@ -22,19 +22,19 @@ const FONT = 'C\\\\:/Windows/Fonts/segoeui.ttf';
 const VIDEO_JOBS = [
   {
     id: 'vista',
-    input: path.join(SHOWCASE, 'vista-showcase.png'),
+    input: path.join(SHOWCASE, 'vista-showcase.webp'),
     line1: 'Hacettepe İşitme',
     line2: 'Vista Serisi · Samsun',
   },
   {
     id: 'am',
-    input: path.join(SHOWCASE, 'am-showcase.png'),
+    input: path.join(SHOWCASE, 'am-showcase.webp'),
     line1: 'Hacettepe İşitme',
     line2: 'A&M Serisi · Şarjlı Teknoloji',
   },
   {
     id: 'nitro',
-    input: path.join(SHOWCASE, 'nitro-showcase.png'),
+    input: path.join(SHOWCASE, 'nitro-showcase.webp'),
     line1: 'Hacettepe İşitme',
     line2: 'Nitro Serisi · Akıllı Dinleme',
   },
@@ -106,9 +106,9 @@ function buildVideo(job) {
   const line2 = escapeDrawtext(job.line2);
 
   const vf = [
-    'scale=1080:1920:force_original_aspect_ratio=increase',
-    'crop=1080:1920',
-    "zoompan=z='min(zoom+0.0009,1.07)':d=180:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30",
+    'scale=1080:1920:force_original_aspect_ratio=decrease',
+    'pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0x071525',
+    'fps=30',
     'format=yuv420p',
     `drawtext=fontfile=${FONT}:text='${line1}':fontsize=52:fontcolor=white:x=(w-text_w)/2:y=h-220:shadowcolor=0x1a2e44@0.65:shadowx=2:shadowy=2`,
     `drawtext=fontfile=${FONT}:text='${line2}':fontsize=34:fontcolor=0x00E5CC:x=(w-text_w)/2:y=h-150:shadowcolor=0x1a2e44@0.65:shadowx=2:shadowy=2`,

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { serviceJsonLd } from '@/lib/schema';
 
 const PRICE_LINES = [
@@ -30,15 +32,12 @@ export default function IsitmeCihaziFiyatlariPage() {
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="py-16 md:py-24 bg-brand-dark text-white">
-        <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">İşitme Cihazı Fiyatları Samsun</h1>
-          <p className="text-white/80">
-            Fiyatlar cihaz teknolojisi, kanal sayısı, bağlantı özellikleri ve kişiye özel ayarlara göre değişir.
-            Ücretsiz test ile sizin için en uygun seçeneği belirliyoruz.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="İşitme Cihazı Fiyatları Samsun"
+        subtitle="Fiyatlar cihaz teknolojisi, kanal sayısı, bağlantı özellikleri ve kişiye özel ayarlara göre değişir. Ücretsiz test ile sizin için en uygun seçeneği belirliyoruz."
+        imageSrc={PAGE_IMAGES.pricing}
+        align="left"
+      />
       <section className="py-12 md:py-16">
         <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto space-y-8">
           <p className="text-gray-600">

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
+import PageHeroBanner from '@/components/feature/PageHeroBanner';
+import { PAGE_IMAGES } from '@/lib/pageImages';
 import { faqPageJsonLd, serviceJsonLd } from '@/lib/schema';
 
 const PAGE_FAQ = [
@@ -33,15 +35,12 @@ export default function SamsunIsitmeTestiPage() {
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="py-16 md:py-24 bg-brand-dark text-white">
-        <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Samsun İşitme Testi</h1>
-          <p className="text-white/80 text-lg">
-            Uzman odyometristler tarafından uygulanan kapsamlı işitme testi ile işitme profiliniz detaylı şekilde
-            analiz edilir. İlkadım Tepecik merkez — ücretsiz test.
-          </p>
-        </div>
-      </section>
+      <PageHeroBanner
+        title="Samsun İşitme Testi"
+        subtitle="Uzman odyometristler tarafından uygulanan kapsamlı işitme testi ile işitme profiliniz detaylı şekilde analiz edilir. İlkadım Tepecik merkez — ücretsiz test."
+        imageSrc={PAGE_IMAGES.samsunTest}
+        align="left"
+      />
       <section className="py-12 md:py-16">
         <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto space-y-6 text-gray-600 leading-relaxed">
           <h2 className="font-serif text-2xl font-bold text-brand-dark">Ücretsiz Odyometri ve İşitme Değerlendirmesi</h2>

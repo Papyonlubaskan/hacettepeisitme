@@ -33,10 +33,8 @@ export const blogPosts = [
     date: '2024-03-15',
     author: 'Dr. Hakan Demir',
     authorTitle: 'Klinik Odyolog',
-    image:
-      '/local-images/readdy-blog-blog1new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog1og.webp',
+    image: '/local-images/blog/blog-1-card.webp',
+    ogImage: '/local-images/blog/blog-1-og.webp',
     metaDescription: 'İşitme kaybının 7 erken belirtisi, televizyon sesini yükseltmek, kalabalık ortamlarda zorlanmak ve kulak çınlaması. Samsun Hacettepe İşitme Merkezi ücretsiz işitme testi.',
     keywords: 'işitme kaybı belirtileri, işitme testi Samsun, erken teşhis işitme, kulak çınlaması',
   },
@@ -88,10 +86,8 @@ export const blogPosts = [
     date: '2024-02-28',
     author: 'Okan Demir',
     authorTitle: 'İşitme Cihazı Teknik Uzmanı',
-    image:
-      '/local-images/readdy-blog-blog2new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog2og.webp',
+    image: '/local-images/blog/blog-2-card.webp',
+    ogImage: '/local-images/blog/blog-2-og.webp',
     metaDescription: '2024 işitme cihazı teknolojisi rehberi. Bluetooth, yapay zeka gürültü filtreleme, şarj edilebilir batarya ve telehealth özellikleri. Hacettepe İşitme Cihazları Samsun.',
     keywords: '2024 işitme cihazı teknolojisi, bluetooth işitme cihazı, şarj edilebilir işitme cihazı, yapay zeka işitme',
   },
@@ -142,10 +138,8 @@ export const blogPosts = [
     date: '2024-02-10',
     author: 'Ayşe Yılmaz',
     authorTitle: 'İşitme Cihazı Bakım Uzmanı',
-    image:
-      '/local-images/readdy-blog-blog3new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog3og.webp',
+    image: '/local-images/blog/blog-3-card.webp',
+    ogImage: '/local-images/blog/blog-3-og.webp',
     metaDescription: 'İşitme cihazı temizlik ve bakım rehberi. Günlük, haftalık ve yıllık bakım adımları. Nem önleyici kutu, wax filtresi değişimi ve profesyonel servis bakımı.',
     keywords: 'işitme cihazı temizliği, işitme cihazı bakımı, wax filtresi, işitme cihazı nem önleyici kutu',
   },
@@ -224,10 +218,8 @@ export const blogPosts = [
     date: '2024-01-22',
     author: 'Dr. Hakan Demir',
     authorTitle: 'Klinik Odyolog',
-    image:
-      '/local-images/readdy-blog-blog4new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog4og.webp',
+    image: '/local-images/blog/blog-4-card.webp',
+    ogImage: '/local-images/blog/blog-4-og.webp',
     metaDescription: 'Kulak içi (ITE), kulak arkası (BTE), RIC ve CIC işitme cihazı karşılaştırması. İşitme kaybı derecesine göre en uygun cihaz seçimi rehberi.',
     keywords: 'işitme cihazı seçimi, BTE işitme cihazı, CIC işitme cihazı, kulak içi işitme cihazı, RIC işitme',
   },
@@ -276,10 +268,8 @@ export const blogPosts = [
     date: '2024-01-08',
     author: 'Okan Demir',
     authorTitle: 'İşitme Cihazı Teknik Uzmanı',
-    image:
-      '/local-images/readdy-blog-blog5new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog5og.webp',
+    image: '/local-images/blog/blog-5-card.webp',
+    ogImage: '/local-images/blog/blog-5-og.webp',
     metaDescription: 'İşitme kaybı sadece yaşlılarda mı görülür? Presbiakuzi, gençlerde işitme kaybı nedenleri, gürültü maruziyeti ve alınabilecek önlemler.',
     keywords: 'işitme kaybı yaş grupları, presbiakuzi, gençlerde işitme kaybı, gürültü işitme kaybı, çocuklarda işitme testi',
   },
@@ -357,10 +347,8 @@ export const blogPosts = [
     date: '2024-03-01',
     author: 'Ayşe Yılmaz',
     authorTitle: 'İşitme Cihazı Bakım Uzmanı',
-    image:
-      '/local-images/readdy-blog-blog6new.webp',
-    ogImage:
-      '/local-images/readdy-blog-blog6og.webp',
+    image: '/local-images/blog/blog-6-card.webp',
+    ogImage: '/local-images/blog/blog-6-og.webp',
     metaDescription: 'Samsun Hacettepe İşitme Cihazları ücretsiz işitme testi. Randevu oluşturarak 20 dakikada sonuç alabilirsiniz. İlkadım Tepecik merkez adres ve iletişim bilgileri.',
     keywords: 'ücretsiz işitme testi Samsun, işitme testi İlkadım, odyometri testi, Samsun işitme merkezi',
   },
