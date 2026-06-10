@@ -39,6 +39,8 @@ function HeroSection() {
       {/* Background */}
       <ImageFlowBackground
         slides={HOME_FLOW_SLIDES}
+        intervalMs={6000}
+        eagerLoad
         overlayClassName="bg-gradient-to-r from-brand-dark/88 via-brand-dark/62 to-brand-dark/25"
       />
 
