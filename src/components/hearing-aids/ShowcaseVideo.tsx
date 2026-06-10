@@ -5,14 +5,7 @@ interface ShowcaseVideoProps {
   poster?: string;
   title: string;
   className?: string;
-  aspectRatio?: string;
-  cropWatermark?: boolean;
-}
-
-function parseAspectRatio(ratio: string): number {
-  const [w, h] = ratio.split('/').map((part) => Number(part.trim()));
-  if (!w || !h) return 9 / 16;
-  return w / h;
+  maxWidthClass?: string;
 }
 
 export default function ShowcaseVideo({
@@ -20,16 +13,23 @@ export default function ShowcaseVideo({
   poster,
   title,
   className = '',
-  aspectRatio = '9 / 16',
-  cropWatermark = false,
+  maxWidthClass = 'max-w-md',
 }: ShowcaseVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
-  const [ratio, setRatio] = useState(aspectRatio);
+  const [ratio, setRatio] = useState<string | null>(null);
 
-  const aspect = parseAspectRatio(ratio);
-  const isPortrait = aspect < 0.95;
+  useEffect(() => {
+    if (!poster) return;
+    const img = new Image();
+    img.onload = () => {
+      if (img.naturalWidth && img.naturalHeight) {
+        setRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
+      }
+    };
+    img.src = poster;
+  }, [poster]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -39,10 +39,11 @@ export default function ShowcaseVideo({
       ([entry]) => {
         if (entry.isIntersecting) {
           setActive(true);
-          observer.disconnect();
+        } else if (videoRef.current) {
+          videoRef.current.pause();
         }
       },
-      { rootMargin: '200px', threshold: 0.2 }
+      { rootMargin: '120px', threshold: 0.15 }
     );
 
     observer.observe(el);
@@ -50,8 +51,9 @@ export default function ShowcaseVideo({
   }, []);
 
   useEffect(() => {
-    if (!active || !videoRef.current) return;
-    videoRef.current.play().catch(() => {});
+    const video = videoRef.current;
+    if (!active || !video) return;
+    video.play().catch(() => {});
   }, [active]);
 
   const handleMetadata = () => {
@@ -60,27 +62,15 @@ export default function ShowcaseVideo({
     setRatio(`${video.videoWidth} / ${video.videoHeight}`);
   };
 
-  const videoClass = cropWatermark
-    ? 'absolute left-1/2 top-1/2 min-h-[112%] min-w-[112%] -translate-x-1/2 -translate-y-[46%] object-cover'
-    : 'absolute inset-0 h-full w-full object-contain';
-
-  const frameStyle = isPortrait
-    ? {
-        aspectRatio: ratio,
-        width: `min(100%, calc(min(72vh, 560px) * ${aspect}))`,
-        maxHeight: 'min(72vh, 560px)',
-      }
-    : {
-        aspectRatio: ratio,
-        width: '100%',
-        maxWidth: '42rem',
-      };
+  const frameStyle = ratio
+    ? { aspectRatio: ratio }
+    : { aspectRatio: '4 / 3' as const };
 
   return (
     <div className={`flex w-full justify-center ${className}`}>
       <div
         ref={containerRef}
-        className="relative overflow-hidden rounded-2xl bg-[#071525] shadow-xl"
+        className={`relative mx-auto w-full overflow-hidden rounded-2xl bg-gray-100 shadow-xl ${maxWidthClass}`}
         style={frameStyle}
       >
         {active ? (
@@ -89,20 +79,20 @@ export default function ShowcaseVideo({
             src={src}
             poster={poster}
             title={title}
-            className={videoClass}
+            className="absolute inset-0 h-full w-full object-contain"
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             onLoadedMetadata={handleMetadata}
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#071525]" aria-hidden>
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100" aria-hidden>
             {poster ? (
-              <img src={poster} alt="" className="absolute inset-0 h-full w-full object-contain opacity-60" />
+              <img src={poster} alt="" className="absolute inset-0 h-full w-full object-contain" loading="lazy" />
             ) : null}
-            <span className="relative h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-brand-accent" />
+            <span className="relative h-9 w-9 animate-spin rounded-full border-2 border-gray-200 border-t-brand-accent" />
           </div>
         )}
       </div>

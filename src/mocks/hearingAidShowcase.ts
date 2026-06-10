@@ -60,6 +60,17 @@ const SHOWCASE_VIDEO = {
   fitCharge: '/local-images/showcase/videos/fit-charge.mp4',
 } as const;
 
+const SHOWCASE_POSTER = {
+  vista: '/local-images/showcase/videos/vista-poster.jpg',
+  am: '/local-images/showcase/videos/am-poster.jpg',
+  nitro: '/local-images/showcase/videos/nitro-poster.jpg',
+  pediatrik: '/local-images/showcase/videos/pediatrik-poster.jpg',
+  fitRic: '/local-images/showcase/videos/fit-ric-poster.jpg',
+  fitBte: '/local-images/showcase/videos/fit-bte-poster.jpg',
+  fitIte: '/local-images/showcase/videos/fit-ite-poster.jpg',
+  fitCharge: '/local-images/showcase/videos/fit-charge-poster.jpg',
+} as const;
+
 export const SHOWCASE_SERIES: ShowcaseSeries[] = [
   {
     id: 'vista',
@@ -80,7 +91,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     badges: ['Bluetooth', 'Şarjlı', 'IP68', 'RIC'],
     image: SHOWCASE_IMG.vista,
     videoSrc: SHOWCASE_VIDEO.vista,
-    videoPoster: SHOWCASE_IMG.vista,
+    videoPoster: SHOWCASE_POSTER.vista,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Vista RIC serisi', image: SHOWCASE_IMG.ric },
@@ -111,7 +122,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
     image: SHOWCASE_IMG.am,
     videoSrc: SHOWCASE_VIDEO.am,
-    videoPoster: SHOWCASE_IMG.am,
+    videoPoster: SHOWCASE_POSTER.am,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'A&M şarjlı RIC', image: SHOWCASE_IMG.ric },
@@ -142,7 +153,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     badges: ['Bluetooth', 'Şarjlı', 'RIC'],
     image: SHOWCASE_IMG.nitro,
     videoSrc: SHOWCASE_VIDEO.nitro,
-    videoPoster: SHOWCASE_IMG.nitro,
+    videoPoster: SHOWCASE_POSTER.nitro,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK İÇİ HOPARLÖRLÜ', sublabel: 'Nitro RIC modeller', image: SHOWCASE_IMG.ric },
@@ -174,7 +185,7 @@ export const SHOWCASE_SERIES: ShowcaseSeries[] = [
     badges: ['Pediatrik', 'SGK', 'Aile Desteği', 'BTE'],
     image: SHOWCASE_IMG.pediatrik,
     videoSrc: SHOWCASE_VIDEO.pediatrik,
-    videoPoster: SHOWCASE_IMG.pediatrik,
+    videoPoster: SHOWCASE_POSTER.pediatrik,
     warranty: '2 Yıl Garanti',
     modelTypes: [
       { label: 'KULAK ARKASI', sublabel: 'Pediatrik BTE modeller', image: SHOWCASE_IMG.bte },
@@ -194,24 +205,24 @@ export const FIT_VIDEOS: FitVideo[] = [
     title: 'Kulak İçi Hoparlörlü Cihaz Nasıl Takılır?',
     category: 'Kulak İçi Hoparlörlü',
     videoSrc: SHOWCASE_VIDEO.fitRic,
-    videoPoster: SHOWCASE_IMG.ric,
+    videoPoster: SHOWCASE_POSTER.fitRic,
   },
   {
     title: 'Kulak Arkası Cihaz Nasıl Kullanılır?',
     category: 'Kulak Arkası',
     videoSrc: SHOWCASE_VIDEO.fitBte,
-    videoPoster: SHOWCASE_IMG.bte,
+    videoPoster: SHOWCASE_POSTER.fitBte,
   },
   {
     title: 'Kulak İçi Cihaz Kulağımda Nasıl Görünür?',
     category: 'Kulak İçi',
     videoSrc: SHOWCASE_VIDEO.fitIte,
-    videoPoster: SHOWCASE_IMG.ite,
+    videoPoster: SHOWCASE_POSTER.fitIte,
   },
   {
     title: 'Şarjlı İşitme Cihazı Bakımı',
     category: 'Bakım',
     videoSrc: SHOWCASE_VIDEO.fitCharge,
-    videoPoster: SHOWCASE_IMG.am,
+    videoPoster: SHOWCASE_POSTER.fitCharge,
   },
 ];

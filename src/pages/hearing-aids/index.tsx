@@ -120,21 +120,14 @@ export default function HearingAidsIndexPage() {
                   ) : null}
                 </div>
 
-                <div className="space-y-5">
-                  <AdaptiveImage
-                    src={series.image}
-                    alt={`${series.seriesName} işitme cihazı`}
-                    className="shadow-xl"
+                <div className="flex justify-center lg:justify-end">
+                  <ShowcaseVideo
+                    src={series.videoSrc}
+                    poster={series.videoPoster}
+                    title={`${series.seriesName} tanıtım videosu`}
+                    className="w-full"
                     maxWidthClass="max-w-sm"
                   />
-                  <div className="flex justify-center">
-                    <ShowcaseVideo
-                      src={series.videoSrc}
-                      poster={series.videoPoster}
-                      title={`${series.seriesName} tanıtım videosu`}
-                      className="w-full"
-                    />
-                  </div>
                 </div>
               </div>
 
@@ -249,7 +242,7 @@ export default function HearingAidsIndexPage() {
 
       <p className="text-center text-xs text-gray-400 px-6 py-8 max-w-3xl mx-auto">
         * Özellikler modele göre değişebilir. Kesin bilgi ve fiyat için merkezimizde ücretsiz işitme testi sonrası
-        uzman danışmanlığı alınız. Video ve görseller Hacettepe İşitme Instagram hesabından alınmıştır.
+        uzman danışmanlığı alınız.
       </p>
     </div>
   );
