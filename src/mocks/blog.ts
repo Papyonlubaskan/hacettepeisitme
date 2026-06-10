@@ -1,3 +1,11 @@
+import {
+  BLOG_AUTHOR,
+  BLOG_AUTHOR_ODYOLOG,
+  BLOG_AUTHOR_TITLE_ODYOLOG,
+  BLOG_AUTHOR_TITLE_SERVICE,
+  BLOG_AUTHOR_TITLE_TECH,
+} from '@/lib/blogAuthors';
+
 export const blogPosts = [
   {
     id: 1,
@@ -30,9 +38,9 @@ export const blogPosts = [
 <p>Test yaklaşık 15-20 dakika sürer ve sonuçlar uzman odyologlarımız tarafından aynı gün değerlendirilir. Size özel çözüm önerileri için bizimle iletişime geçebilirsiniz.</p>`,
     category: 'İşitme Sağlığı',
     readTime: '4 dk',
-    date: '2024-03-15',
-    author: 'Dr. Hakan Demir',
-    authorTitle: 'Klinik Odyolog',
+    date: '2025-11-12',
+    author: BLOG_AUTHOR_ODYOLOG,
+    authorTitle: BLOG_AUTHOR_TITLE_ODYOLOG,
     image: '/local-images/blog/blog-1-card.webp',
     ogImage: '/local-images/blog/blog-1-og.webp',
     metaDescription: 'İşitme kaybının 7 erken belirtisi, televizyon sesini yükseltmek, kalabalık ortamlarda zorlanmak ve kulak çınlaması. Samsun Hacettepe İşitme Merkezi ücretsiz işitme testi.',
@@ -41,7 +49,7 @@ export const blogPosts = [
   {
     id: 2,
     slug: '2024-isitme-cihazi-teknolojisi-rehberi',
-    title: '2024 İşitme Cihazı Teknolojisi Rehberi',
+    title: '2025 İşitme Cihazı Teknolojisi Rehberi',
     excerpt:
       'Günümüz işitme cihazları artık sadece ses yükseltmiyor. Bluetooth bağlantısı ile telefon görüşmeleri yapabilir, yapay zeka destekli gürültü filtreleme ile restoranda bile net duyabilirsiniz. Şarj edilebilir bataryalar ise pila değiştirme derdini ortadan kaldırıyor.',
     content: `<p>2024 yılı işitme cihazı teknolojisinde devrim niteliğinde yeniliklerin yılı oldu. Artık işitme cihazları sadece sesi yükselten basit elektronik cihazlar değil; akıllı telefonlarla entegre çalışan, yapay zeka destekli, kişiselleştirilebilen mini bilgisayarlara dönüştü. Bu rehberde, 2024'ün en önemli işitme cihazı teknolojilerini ve bunların günlük yaşamınıza nasıl katkı sağladığını detaylıca ele alacağız.</p>
@@ -83,13 +91,13 @@ export const blogPosts = [
 <p>Merkezimizde Vista, A&M, Nitro ve Pediatrik Grup serilerinin en güncel modelleri mevcuttur. Size en uygun cihazı seçmek ve tüm teknolojik özellikleri en verimli şekilde kullanabilmeniz için ücretsiz danışmanlık hizmetimizden yararlanabilirsiniz.</p>`,
     category: 'Teknoloji',
     readTime: '6 dk',
-    date: '2024-02-28',
-    author: 'Okan Demir',
-    authorTitle: 'İşitme Cihazı Teknik Uzmanı',
+    date: '2025-10-08',
+    author: BLOG_AUTHOR,
+    authorTitle: BLOG_AUTHOR_TITLE_TECH,
     image: '/local-images/blog/blog-2-card.webp',
     ogImage: '/local-images/blog/blog-2-og.webp',
-    metaDescription: '2024 işitme cihazı teknolojisi rehberi. Bluetooth, yapay zeka gürültü filtreleme, şarj edilebilir batarya ve telehealth özellikleri. Hacettepe İşitme Cihazları Samsun.',
-    keywords: '2024 işitme cihazı teknolojisi, bluetooth işitme cihazı, şarj edilebilir işitme cihazı, yapay zeka işitme',
+    metaDescription: '2025 işitme cihazı teknolojisi rehberi. Bluetooth, yapay zeka gürültü filtreleme, şarj edilebilir batarya ve telehealth özellikleri. Hacettepe İşitme Cihazları Samsun.',
+    keywords: '2025 işitme cihazı teknolojisi, bluetooth işitme cihazı, şarj edilebilir işitme cihazı, yapay zeka işitme',
   },
   {
     id: 3,
@@ -135,9 +143,9 @@ export const blogPosts = [
 <p>Hacettepe İşitme Cihazları olarak Samsun'daki merkezimizde tüm seri ve model cihazlar için profesyonel bakım ve onarım hizmeti sunmaktayız. Ücretsiz ilk kontrol ve bakım randevunuz için bizimle iletişime geçebilirsiniz.</p>`,
     category: 'Bakım',
     readTime: '5 dk',
-    date: '2024-02-10',
-    author: 'Ayşe Yılmaz',
-    authorTitle: 'İşitme Cihazı Bakım Uzmanı',
+    date: '2025-09-20',
+    author: BLOG_AUTHOR,
+    authorTitle: BLOG_AUTHOR_TITLE_SERVICE,
     image: '/local-images/blog/blog-3-card.webp',
     ogImage: '/local-images/blog/blog-3-og.webp',
     metaDescription: 'İşitme cihazı temizlik ve bakım rehberi. Günlük, haftalık ve yıllık bakım adımları. Nem önleyici kutu, wax filtresi değişimi ve profesyonel servis bakımı.',
@@ -215,9 +223,9 @@ export const blogPosts = [
 <p>Karar vermeden önce bir odyolog ile ücretsiz işitme testi ve danışmanlık randevusu oluşturmanızı öneririz. Hacettepe İşitme Cihazları olarak Samsun'daki merkezimizde farklı cihaz tiplerini deneyimleyebileceğiniz ücretsiz danışmanlık hizmetimiz bulunmaktadır.</p>`,
     category: 'Rehber',
     readTime: '5 dk',
-    date: '2024-01-22',
-    author: 'Dr. Hakan Demir',
-    authorTitle: 'Klinik Odyolog',
+    date: '2025-08-15',
+    author: BLOG_AUTHOR_ODYOLOG,
+    authorTitle: BLOG_AUTHOR_TITLE_ODYOLOG,
     image: '/local-images/blog/blog-4-card.webp',
     ogImage: '/local-images/blog/blog-4-og.webp',
     metaDescription: 'Kulak içi (ITE), kulak arkası (BTE), RIC ve CIC işitme cihazı karşılaştırması. İşitme kaybı derecesine göre en uygun cihaz seçimi rehberi.',
@@ -265,9 +273,9 @@ export const blogPosts = [
 <p>Merkezimizde bebeklerden yaşlılara kadar her yaş grubuna uygun işitme testi, işitme cihazı danışmanlığı ve takip hizmeti sunmaktayız. Çocuklar için oyun temelli işitme testleri, yetişkinler için kapsamlı odyolojik değerlendirmeler ve yaşlılar için ev ziyaretleri ile kapsamlı bir hizmet yelpazemiz bulunmaktadır.</p>`,
     category: 'İşitme Sağlığı',
     readTime: '4 dk',
-    date: '2024-01-08',
-    author: 'Okan Demir',
-    authorTitle: 'İşitme Cihazı Teknik Uzmanı',
+    date: '2025-07-02',
+    author: BLOG_AUTHOR,
+    authorTitle: BLOG_AUTHOR_TITLE_TECH,
     image: '/local-images/blog/blog-5-card.webp',
     ogImage: '/local-images/blog/blog-5-og.webp',
     metaDescription: 'İşitme kaybı sadece yaşlılarda mı görülür? Presbiakuzi, gençlerde işitme kaybı nedenleri, gürültü maruziyeti ve alınabilecek önlemler.',
@@ -283,7 +291,7 @@ export const blogPosts = [
 
 <h3>1. Randevu Alma veya Randevusuz Ziyaret</h3>
 
-<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (+90 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi 09:00-18:00, cumartesi 10:00-16:00 saatleri arasında hizmet vermektedir.</p>
+<p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (+90 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi ve cumartesi 09:00-18:00 saatleri arasında hizmet vermektedir.</p>
 
 <h3>2. Karşılama ve Ön Görüşme</h3>
 
@@ -344,9 +352,9 @@ export const blogPosts = [
 <p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>+90 533 474 58 06</strong> numarasından bize ulaşabilirsiniz.</p>`,
     category: 'Hizmetler',
     readTime: '3 dk',
-    date: '2024-03-01',
-    author: 'Ayşe Yılmaz',
-    authorTitle: 'İşitme Cihazı Bakım Uzmanı',
+    date: '2026-01-14',
+    author: BLOG_AUTHOR,
+    authorTitle: BLOG_AUTHOR_TITLE_ODYOLOG,
     image: '/local-images/blog/blog-6-card.webp',
     ogImage: '/local-images/blog/blog-6-og.webp',
     metaDescription: 'Samsun Hacettepe İşitme Cihazları ücretsiz işitme testi. Randevu oluşturarak 20 dakikada sonuç alabilirsiniz. İlkadım Tepecik merkez adres ve iletişim bilgileri.',

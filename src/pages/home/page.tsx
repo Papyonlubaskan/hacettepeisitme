@@ -206,24 +206,28 @@ function ServicesSection() {
 function BlogSection() {
   return (
     <section className="py-20 md:py-28 bg-white">
-      <div className="w-full px-6 lg:px-12">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-14">
+      <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
+            <div className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 mb-4">
+              <i className="ri-article-line text-brand-accent" />
+              <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">Blog</span>
+            </div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-2">
               İşitme Sağlığı Blog
             </h2>
-            <p className="text-gray-500">Uzman görüşleri ve faydalı bilgiler</p>
+            <p className="text-gray-500 max-w-xl">Uzman görüşleri ve faydalı bilgiler</p>
           </div>
           <Link
             to="/blog"
-            className="text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+            className="text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors shrink-0"
             onClick={() => trackCTAClick('Tüm Blog Yazıları', 'home_blog_all', '/blog')}
           >
             Tüm Yazılar →
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogPosts.slice(0, 6).map((post) => (
             <Link
               key={post.id}

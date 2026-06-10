@@ -124,7 +124,44 @@ app.use((req, res, next) => {
 });
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://www.googletagmanager.com',
+          'https://www.google-analytics.com',
+          'https://connect.facebook.net',
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com', 'data:'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://lh3.googleusercontent.com',
+          'https://*.googleusercontent.com',
+          'https://www.facebook.com',
+          'https://www.google-analytics.com',
+          'https://www.googletagmanager.com',
+        ],
+        connectSrc: [
+          "'self'",
+          'https://www.google-analytics.com',
+          'https://www.googletagmanager.com',
+          'https://graph.facebook.com',
+          'https://connect.facebook.net',
+        ],
+        frameSrc: ["'self'", 'https://www.google.com', 'https://www.facebook.com'],
+        mediaSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'self'"],
+        upgradeInsecureRequests: [],
+      },
+    },
     crossOriginEmbedderPolicy: false,
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
   })
@@ -1200,7 +1237,7 @@ function getSmtpStatus() {
   if (isInvalidSmtpPass(pass)) {
     return { configured: false, reason: 'invalid_placeholder' };
   }
-  return { configured: true, mailTo: MAIL_TO };
+  return { configured: true };
 }
 
 function hasSmtpConfigured() {
@@ -1217,11 +1254,11 @@ function hasFormMailConfigured() {
 
 function getFormMailStatus() {
   if (hasResendConfigured()) {
-    return { configured: true, channel: 'resend', mailTo: MAIL_TO };
+    return { configured: true, channel: 'resend' };
   }
   const smtp = getSmtpStatus();
   if (smtp.configured) {
-    return { configured: true, channel: 'gmail_smtp', mailTo: MAIL_TO };
+    return { configured: true, channel: 'gmail_smtp' };
   }
   return { configured: false, channel: 'none', reason: smtp.reason };
 }
