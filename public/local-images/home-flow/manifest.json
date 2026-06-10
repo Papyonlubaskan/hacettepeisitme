@@ -1,17 +1,21 @@
 {
-  "builtAt": "2026-06-10T19:01:54.120Z",
+  "builtAt": "2026-06-10T19:07:45.760Z",
   "slides": [
     {
       "src": "/local-images/home-flow/flow-reception.webp",
-      "alt": "Merkez iç mekan — resepsiyon"
+      "alt": "Hacettepe İşitme Cihazları Samsun — merkez iç mekan"
     },
     {
       "src": "/local-images/home-flow/flow-exterior.webp",
-      "alt": "Dış cephe — Tepecik merkez"
+      "alt": "Hacettepe İşitme Cihazları Samsun — dış cephe ve konum"
     },
     {
       "src": "/local-images/home-flow/flow-consultation.webp",
-      "alt": "Danışmanlık ve test odası"
+      "alt": "Hacettepe İşitme Cihazları Samsun — merkez görünümü"
+    },
+    {
+      "src": "/local-images/home-flow/flow-interior-2.webp",
+      "alt": "Hacettepe İşitme Cihazları Samsun — iç mekan"
     }
   ]
 }

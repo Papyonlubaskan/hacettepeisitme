@@ -21,7 +21,7 @@
     "google-reviews:refresh": "node scripts/build-google-reviews-bundled.mjs",
     "pages:webp": "node scripts/convert-page-images-webp.mjs",
     "blog:images": "node scripts/build-blog-images.mjs",
-    "home-flow:build": "node scripts/build-home-flow-images.mjs",
+    "home-flow:build": "node scripts/fetch-google-place-photos-from-links.mjs",
     "google-place:photos": "node scripts/fetch-google-place-photos-browser.mjs",
     "deploy:push": "git push papyon main"
   },

@@ -3,18 +3,22 @@ export interface HomeFlowSlide {
   alt: string;
 }
 
-/** Ana sayfa hero ve footer akış görselleri — merkez iç/dış mekan */
+/** Ana sayfa hero ve footer — Google İşletme fotoğrafları (maps.app.goo.gl) */
 export const HOME_FLOW_SLIDES: HomeFlowSlide[] = [
   {
     src: '/local-images/home-flow/flow-reception.webp',
-    alt: 'Hacettepe İşitme Merkezi Samsun — resepsiyon ve ürün vitrini',
+    alt: 'Hacettepe İşitme Cihazları Samsun — merkez iç mekan',
   },
   {
     src: '/local-images/home-flow/flow-exterior.webp',
-    alt: 'Hacettepe İşitme Merkezi Samsun — Tepecik dış cephe ve giriş',
+    alt: 'Hacettepe İşitme Cihazları Samsun — dış cephe ve konum',
   },
   {
     src: '/local-images/home-flow/flow-consultation.webp',
-    alt: 'Hacettepe İşitme Merkezi — ücretsiz işitme testi danışmanlık odası',
+    alt: 'Hacettepe İşitme Cihazları Samsun — merkez görünümü',
+  },
+  {
+    src: '/local-images/home-flow/flow-interior-2.webp',
+    alt: 'Hacettepe İşitme Cihazları Samsun — iç mekan',
   },
 ];
