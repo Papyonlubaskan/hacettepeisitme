@@ -1,0 +1,17 @@
+{
+  "builtAt": "2026-06-10T19:01:54.120Z",
+  "slides": [
+    {
+      "src": "/local-images/home-flow/flow-reception.webp",
+      "alt": "Merkez iç mekan — resepsiyon"
+    },
+    {
+      "src": "/local-images/home-flow/flow-exterior.webp",
+      "alt": "Dış cephe — Tepecik merkez"
+    },
+    {
+      "src": "/local-images/home-flow/flow-consultation.webp",
+      "alt": "Danışmanlık ve test odası"
+    }
+  ]
+}

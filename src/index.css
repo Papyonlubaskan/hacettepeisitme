@@ -30,6 +30,19 @@
     }
   }
 
+  .ken-burns-active {
+    animation: kenBurns 14s ease-out forwards;
+  }
+
+  @keyframes kenBurns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+
   /* Blog content styles - replaces @tailwindcss/typography */
   .blog-content {
     font-size: 1.125rem;

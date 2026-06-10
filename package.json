@@ -21,6 +21,8 @@
     "google-reviews:refresh": "node scripts/build-google-reviews-bundled.mjs",
     "pages:webp": "node scripts/convert-page-images-webp.mjs",
     "blog:images": "node scripts/build-blog-images.mjs",
+    "home-flow:build": "node scripts/build-home-flow-images.mjs",
+    "google-place:photos": "node scripts/fetch-google-place-photos-browser.mjs",
     "deploy:push": "git push papyon main"
   },
   "dependencies": {
@@ -53,6 +55,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "jiti": "^2.6.1",
+    "playwright": "^1.60.0",
     "postcss": "^8.5.6",
     "source-map": "^0.7.6",
     "tailwindcss": "^3.4.17",

@@ -8,7 +8,7 @@ export const SITE_LANGUAGE = 'tr-TR';
 export const SITE_DEFAULT_KEYWORDS =
   'işitme cihazı Samsun, işitme testi Samsun, ücretsiz işitme testi, Vista, A&M, Nitro, SGK işitme cihazı, Hacettepe İşitme';
 
-export const SITE_DEFAULT_OG_IMAGE = '/local-images/pro-hero-main.webp';
+export const SITE_DEFAULT_OG_IMAGE = '/local-images/home-flow/flow-reception.webp';
 
 export const SITE_INSTAGRAM_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55/';
 export const SITE_GOOGLE_MAPS_URL =

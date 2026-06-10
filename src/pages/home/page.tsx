@@ -15,6 +15,8 @@ import LocalSeoSection from '@/components/feature/LocalSeoSection';
 import HearingAidsSection from '@/components/feature/HearingAidsSection';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import MapDirectionsCTA from '@/components/feature/MapDirectionsCTA';
+import ImageFlowBackground from '@/components/feature/ImageFlowBackground';
+import { HOME_FLOW_SLIDES } from '@/lib/homeFlowImages';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
 function HeroSection() {
@@ -35,14 +37,10 @@ function HeroSection() {
   return (
     <section className="relative min-h-[600px] md:min-h-[720px] flex items-center overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0">
-        <img
-          src="/local-images/pro-hero-main.webp"
-          alt="Samsun işitme cihazı uzman uygulaması — Hacettepe İşitme Merkezi"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/85 via-brand-dark/60 to-transparent" />
-      </div>
+      <ImageFlowBackground
+        slides={HOME_FLOW_SLIDES}
+        overlayClassName="bg-gradient-to-r from-brand-dark/88 via-brand-dark/62 to-brand-dark/25"
+      />
 
       <div className="relative z-10 w-full px-6 lg:px-12 py-24 pt-32">
         <div className="max-w-2xl">

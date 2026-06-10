@@ -15,7 +15,7 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
       "Samsun İlkadım'da işitme cihazı satışı ve ücretsiz işitme testi. Vista, A&M, Nitro serileri, SGK desteği, 30 gün deneme. Tepecik merkez — aynı gün randevu: +90 533 474 58 06.",
     keywords:
       'işitme cihazı Samsun, Samsun işitme cihazı, Samsun işitme merkezi, ücretsiz işitme testi Samsun, işitme testi Samsun, Vista işitme cihazı Samsun, İlkadım işitme merkezi',
-    image: '/local-images/pro-hero-main.webp',
+    image: '/local-images/home-flow/flow-reception.webp',
   },
   '/hakkimizda': {
     title: 'Hakkımızda | Hacettepe İşitme Cihazları Samsun',
