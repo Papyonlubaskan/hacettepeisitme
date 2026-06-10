@@ -4,8 +4,6 @@ import { trackFormSubmit, trackCTAClick, trackPhoneClick } from '@/lib/tracking'
 import { triggerContactFallback } from '@/lib/formFallback';
 import AddressLink from '@/components/feature/AddressLink';
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
-import ImageFlowBackground from '@/components/feature/ImageFlowBackground';
-import { HOME_FLOW_SLIDES } from '@/lib/homeFlowImages';
 
 const quickLinks = [
   { label: 'Ana Sayfa', to: '/' },
@@ -61,15 +59,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-brand-dark text-white overflow-hidden">
-      <ImageFlowBackground
-        slides={[...HOME_FLOW_SLIDES].reverse()}
-        intervalMs={9000}
-        imageClassName="object-cover object-center opacity-35"
-        overlayClassName="bg-brand-dark/88"
-      />
-
-      <div className="relative z-10">
+    <footer className="bg-brand-dark text-white">
+      <div>
         <div className="w-full px-6 lg:px-12 pt-20 pb-12">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
