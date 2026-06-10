@@ -18,6 +18,7 @@
     "instagram:refresh": "node scripts/seed-instagram-permalinks.mjs && node scripts/build-instagram-bundled.mjs",
     "showcase:videos": "node scripts/build-showcase-videos.mjs",
     "showcase:webp": "node scripts/convert-showcase-webp.mjs",
+    "google-reviews:refresh": "node scripts/build-google-reviews-bundled.mjs",
     "deploy:push": "git push papyon main"
   },
   "dependencies": {

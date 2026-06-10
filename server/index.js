@@ -50,9 +50,12 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.G
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
   process.env.GOOGLE_PLACES_TEXT_QUERY || 'Samsun Hacettepe İşitme Merkezi';
+/** Google işletme konum grubu — tüm şubelerin yorumları için rldimm parametresi */
+const GOOGLE_LOCATION_GROUP_ID = process.env.GOOGLE_LOCATION_GROUP_ID || '5393707080';
+/** Maps scraper için ludocid (gruplu yorumların çekildiği kimlik) */
 const GOOGLE_LOCAL_POI_LUDOCID = process.env.GOOGLE_LOCAL_POI_LUDOCID || '1920926731407487161';
 const GOOGLE_BUSINESS_STORE_CODE = process.env.GOOGLE_BUSINESS_STORE_CODE || '09459172262012022668';
-const GOOGLE_MAPS_SCRAPE_PAGES = Math.min(Math.max(Number(process.env.GOOGLE_MAPS_SCRAPE_PAGES || 4), 1), 5);
+const GOOGLE_MAPS_SCRAPE_PAGES = Math.min(Math.max(Number(process.env.GOOGLE_MAPS_SCRAPE_PAGES || 5), 1), 8);
 
 function buildGoogleMapsScrapeUrl(ludocid) {
   const ludHex = BigInt(String(ludocid).replace(/\D/g, '') || '0').toString(16);
@@ -64,21 +67,26 @@ function buildGoogleMapsScrapeUrl(ludocid) {
   );
 }
 
-const DEFAULT_GOOGLE_MAPS_REVIEWS_URL =
-  'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar' +
-  `&rflfq=1&num=20&rldimm=${GOOGLE_LOCAL_POI_LUDOCID}&tbm=lcl&hl=tr#lkt=LocalPoiReviews`;
-const DEFAULT_GOOGLE_MAPS_SECONDARY_SCRAPE_URL =
-  'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/' +
-  '@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x4088778ce7e06485:0xe66522cc0e3bc661' +
-  '!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_?hl=tr';
+function buildGoogleMapsReviewsUrl(groupId = GOOGLE_LOCATION_GROUP_ID) {
+  return (
+    'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar' +
+    `&rflfq=1&num=20&rldimm=${groupId}&tbm=lcl&hl=tr#lkt=LocalPoiReviews`
+  );
+}
+
+const DEFAULT_GOOGLE_MAPS_REVIEWS_URL = buildGoogleMapsReviewsUrl(GOOGLE_LOCATION_GROUP_ID);
 const GOOGLE_MAPS_SCRAPE_URL =
   process.env.GOOGLE_MAPS_SCRAPE_URL || buildGoogleMapsScrapeUrl(GOOGLE_LOCAL_POI_LUDOCID);
 const GOOGLE_MAPS_REVIEWS_URL = process.env.GOOGLE_MAPS_REVIEWS_URL || DEFAULT_GOOGLE_MAPS_REVIEWS_URL;
 const GOOGLE_REVIEWS_CACHE_MS = Number(process.env.GOOGLE_REVIEWS_CACHE_MS || 15 * 60 * 1000);
-const GOOGLE_REVIEWS_FEED_LIMIT = 5;
+const GOOGLE_REVIEWS_FEED_LIMIT = Math.min(
+  Math.max(Number(process.env.GOOGLE_REVIEWS_FEED_LIMIT || 12), 3),
+  30
+);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
+const GOOGLE_REVIEWS_BUNDLED_FILE = path.join(DATA_DIR, 'google-reviews-bundled.json');
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, 'newsletter-subscribers.json');
 const FORM_REQUESTS_LOG_FILE = path.join(DATA_DIR, 'form-requests.log');
 const FORM_SUBMISSIONS_LOG_FILE = path.join(DATA_DIR, 'form-submissions.jsonl');
@@ -502,7 +510,25 @@ function resolveGoogleReviewScrapeUrls() {
     .map((value) => value.trim())
     .filter(Boolean);
   if (configured.length) return configured;
-  return [GOOGLE_MAPS_SCRAPE_URL, DEFAULT_GOOGLE_MAPS_SECONDARY_SCRAPE_URL];
+  return [GOOGLE_MAPS_SCRAPE_URL];
+}
+
+function loadBundledGoogleReviews() {
+  try {
+    const raw = fsSync.readFileSync(GOOGLE_REVIEWS_BUNDLED_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data.reviews) || data.reviews.length === 0) return null;
+    return {
+      rating: typeof data.rating === 'number' ? data.rating : undefined,
+      reviewCount: typeof data.reviewCount === 'number' ? data.reviewCount : data.reviews.length,
+      mapsUrl: data.mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
+      reviews: data.reviews,
+      bundled: true,
+    };
+  } catch (error) {
+    console.warn('[google-reviews] bundled feed missing:', error.message);
+    return null;
+  }
 }
 
 function summarizeGoogleReviews(reviews, mapsUrl, ratingOverride, reviewCountOverride) {
@@ -677,24 +703,44 @@ async function fetchGoogleReviewsFromPlaces() {
 }
 
 async function fetchGoogleReviews() {
-  const [fromPlaces, fromScraper] = await Promise.all([
+  const [fromPlaces, fromScraper, fromBundled] = await Promise.all([
     fetchGoogleReviewsFromPlaces(),
     fetchGoogleReviewsFromScraper(),
+    Promise.resolve(loadBundledGoogleReviews()),
   ]);
-  const merged = mergeGoogleReviews([fromPlaces?.reviews || [], fromScraper?.reviews || []]);
+
+  const scraperCount = fromScraper?.reviews?.length || 0;
+  const placesCount = fromPlaces?.reviews?.length || 0;
+  const bundledCount = fromBundled?.reviews?.length || 0;
+
+  const primary =
+    scraperCount >= placesCount && scraperCount >= bundledCount
+      ? fromScraper
+      : bundledCount >= placesCount
+        ? fromBundled
+        : fromPlaces;
+
+  const merged = mergeGoogleReviews([
+    primary?.reviews || [],
+    fromScraper?.reviews || [],
+    fromBundled?.reviews || [],
+    fromPlaces?.reviews || [],
+  ]);
   if (!merged.length) return null;
+
   const ratings = merged.map((review) => review.rating).filter((value) => value > 0);
   const rating = ratings.length
     ? ratings.reduce((sum, value) => sum + value, 0) / ratings.length
-    : fromScraper?.rating ?? fromPlaces?.rating;
+    : primary?.rating ?? fromScraper?.rating ?? fromBundled?.rating ?? fromPlaces?.rating;
   const reviewCount = Math.max(
     fromScraper?.reviewCount || 0,
+    fromBundled?.reviewCount || 0,
     fromPlaces?.reviewCount || 0,
     merged.length
   );
   return summarizeGoogleReviews(
     merged,
-    fromScraper?.mapsUrl || fromPlaces?.mapsUrl || GOOGLE_MAPS_REVIEWS_URL,
+    GOOGLE_MAPS_REVIEWS_URL,
     rating,
     reviewCount
   );

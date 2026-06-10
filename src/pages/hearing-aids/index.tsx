@@ -35,46 +35,39 @@ export default function HearingAidsIndexPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const heroImage = SHOWCASE_SERIES[0].image;
-
   return (
     <div className="pt-[72px] animate-fadeInUp">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <section className="relative overflow-hidden bg-[#071525] text-white">
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-brand-accent/30 blur-3xl" />
-          <div className="absolute top-10 right-0 w-[400px] h-[400px] rounded-full bg-red-500/20 blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 w-[600px] h-[300px] rounded-full bg-cyan-400/10 blur-3xl" />
+      <section className="relative min-h-[520px] md:min-h-[600px] overflow-hidden text-white flex items-center">
+        <div className="absolute inset-0">
+          <img
+            src="/local-images/showcase/hearing-aids-hero.webp"
+            alt="Samsun Hacettepe İşitme Merkezi — işitme cihazı danışmanlığı"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/92 via-brand-dark/75 to-brand-dark/45" />
         </div>
 
-        <div className="relative z-10 w-full px-6 lg:px-12 py-14 md:py-20">
-          <div className="max-w-6xl mx-auto text-center">
+        <div className="relative z-10 w-full px-6 lg:px-12 py-16 md:py-24">
+          <div className="max-w-6xl mx-auto text-center md:text-left">
             <img
               src="/local-images/brand-logo-navbar.webp"
               alt="Hacettepe İşitme Cihazları"
-              className="h-12 md:h-14 mx-auto mb-8"
+              className="h-11 md:h-14 mx-auto md:mx-0 mb-6"
             />
-            <p className="inline-block bg-brand-accent/20 text-brand-accent text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4">
+            <p className="inline-block bg-brand-accent/25 text-brand-accent text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4">
               Hacettepe İşitme · Samsun
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 leading-tight">
               İşitme Cihazları
             </h1>
-            <p className="text-white/70 max-w-2xl mx-auto mb-10 text-sm md:text-base">
+            <p className="text-white/80 max-w-2xl mx-auto md:mx-0 mb-10 text-sm md:text-lg leading-relaxed">
               Vista, A&M, Nitro ve Pediatrik Grup işitme cihazlarını merkezimizde deneyin. Uzman odyolog eşliğinde
               ücretsiz test ve 30 gün deneme imkânı.
             </p>
 
-            <div className="flex justify-center mb-10">
-              <img
-                src={heroImage}
-                alt="Premium işitme cihazı"
-                className="h-28 md:h-40 object-contain drop-shadow-2xl rounded-xl"
-              />
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+            <div className="flex flex-wrap justify-center md:justify-start gap-3 max-w-3xl mx-auto md:mx-0">
               {SHOWCASE_SERIES.map((series) => (
                 <button
                   key={series.id}

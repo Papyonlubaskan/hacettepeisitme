@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { GoogleReview, GoogleReviewsResponse } from '@/types/googleReviews';
 
-const FEED_CARD_COUNT = 5;
+const FEED_CARD_COUNT = 6;
 const REVIEW_REFRESH_MS = 15 * 60 * 1000;
 
 type Props = {
