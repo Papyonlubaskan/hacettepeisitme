@@ -35,12 +35,14 @@ export const SITE_GOOGLE_CID = '3773788576008759636';
 
 const MAP_COORDS = `${SITE_MAP_LAT},${SITE_MAP_LNG}`;
 
-/** Google Haritalar — doğrulanmış işletme konumu */
+/** Google Haritalar — doğrulanmış işletme konumu (Şok Market Tepecik CID) */
 export const SITE_MAP_URL = `https://www.google.com/maps?cid=${SITE_GOOGLE_CID}`;
 
-/** Yol tarifi — Google Maps doğrulanmış pin (41.2695067, 36.2974595) */
-export const SITE_MAP_DIRECTIONS_URL =
-  `https://www.google.com/maps/dir/?api=1&destination=${MAP_COORDS}&travelmode=driving`;
+/**
+ * Yol tarifi / Konuma git — CID ile açılır.
+ * /dir/?destination=koordinat eski dükkan→yeni dükkan rotası üretebiliyor; CID güvenilir.
+ */
+export const SITE_MAP_DIRECTIONS_URL = SITE_MAP_URL;
 
 /** Embed harita */
 export const SITE_MAP_EMBED_URL =
