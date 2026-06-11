@@ -58,8 +58,9 @@ const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
   process.env.GOOGLE_PLACES_TEXT_QUERY ||
   'Eğitim Araştırma Karşısı Şok Market Üstü Tepecik 1537. Sokak 1B İlkadım Samsun';
-const SITE_MAP_LAT = 41.2693501;
-const SITE_MAP_LNG = 36.2966171;
+const SITE_MAP_LAT = 41.2695067;
+const SITE_MAP_LNG = 36.2974595;
+const SITE_GOOGLE_CID = '3773788576008759636';
 /** Google işletme konum grubu — tüm şubelerin yorumları için rldimm parametresi */
 const GOOGLE_LOCATION_GROUP_ID = process.env.GOOGLE_LOCATION_GROUP_ID || '5393707080';
 /** Maps scraper için ludocid (gruplu yorumların çekildiği kimlik) */
@@ -67,14 +68,8 @@ const GOOGLE_LOCAL_POI_LUDOCID = process.env.GOOGLE_LOCAL_POI_LUDOCID || '192092
 const GOOGLE_BUSINESS_STORE_CODE = process.env.GOOGLE_BUSINESS_STORE_CODE || '09459172262012022668';
 const GOOGLE_MAPS_SCRAPE_PAGES = Math.min(Math.max(Number(process.env.GOOGLE_MAPS_SCRAPE_PAGES || 5), 1), 8);
 
-function buildGoogleMapsScrapeUrl(ludocid) {
-  const ludHex = BigInt(String(ludocid).replace(/\D/g, '') || '0').toString(16);
-  return (
-    'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/' +
-    `@${SITE_MAP_LAT},${SITE_MAP_LNG},17z/data=!4m6!3m5!1s0x0:0x` +
-    ludHex +
-    `!8m2!3d${SITE_MAP_LAT}!4d${SITE_MAP_LNG}!16s%2Fg%2F11xw6t44j_?hl=tr`
-  );
+function buildGoogleMapsScrapeUrl() {
+  return `https://www.google.com/maps?cid=${SITE_GOOGLE_CID}`;
 }
 
 function buildGoogleMapsReviewsUrl(groupId = GOOGLE_LOCATION_GROUP_ID) {

@@ -20,25 +20,31 @@ export const SITE_ADDRESS_SCHEMA = {
 } as const;
 
 /**
- * 1537. Sokak 1B Tepecik — OpenStreetMap geocode (eski işletme pininden ayrı).
- * Harita linkleri koordinat yerine tam adres kullanır; yanlış POI'ye gitmeyi önler.
+ * Google Haritalar yol tarifi hedefi — Şok Market Tepecik (1537. Sokak).
+ * Doğrulanmış pin: 41.2695067, 36.2974595
  */
-export const SITE_MAP_LAT = 41.2693501;
-export const SITE_MAP_LNG = 36.2966171;
+export const SITE_MAP_LAT = 41.2695067;
+export const SITE_MAP_LNG = 36.2974595;
 
-const MAP_QUERY = encodeURIComponent(SITE_ADDRESS_SINGLE);
+/** Google Maps landmark etiketi (yol tarifi ekranında görünür) */
+export const SITE_MAP_PLACE_LABEL =
+  'Şok Market, Tepecik Mahallesi 1537 Sokak No 3, İlkadım/Samsun';
 
-/** Google Haritalar — işletme konumu (tam adres araması) */
-export const SITE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
+/** Google Maps place CID — Şok Market Tepecik */
+export const SITE_GOOGLE_CID = '3773788576008759636';
 
-/** Google Haritalar yol tarifi (doğrudan navigasyon) */
-export const SITE_MAP_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${MAP_QUERY}&travelmode=driving`;
+const MAP_COORDS = `${SITE_MAP_LAT},${SITE_MAP_LNG}`;
 
-/** Embed: tam adres (API anahtarı gerektirmez) */
-export const SITE_MAP_EMBED_URL = `https://www.google.com/maps?q=${MAP_QUERY}&hl=tr&z=17&output=embed`;
+/** Google Haritalar — doğrulanmış işletme konumu */
+export const SITE_MAP_URL = `https://www.google.com/maps?cid=${SITE_GOOGLE_CID}`;
 
-/** Google İşletme profili — Tepecik merkez (Hacettepe İşitme Cihazları) */
-export const SITE_GOOGLE_CID = '16601713861178672737';
+/** Yol tarifi — Google Maps doğrulanmış pin (41.2695067, 36.2974595) */
+export const SITE_MAP_DIRECTIONS_URL =
+  `https://www.google.com/maps/dir/?api=1&destination=${MAP_COORDS}&travelmode=driving`;
 
-/** Doğrudan Google İşletme kaydına gider (eski Gebi Cad. kaydına değil) */
-export const SITE_GOOGLE_BUSINESS_URL = `https://www.google.com/maps?cid=${SITE_GOOGLE_CID}`;
+/** Embed harita */
+export const SITE_MAP_EMBED_URL =
+  `https://www.google.com/maps?q=${MAP_COORDS}&hl=tr&z=19&output=embed`;
+
+/** @deprecated SITE_MAP_URL ile aynı — schema sameAs uyumu */
+export const SITE_GOOGLE_BUSINESS_URL = SITE_MAP_URL;
