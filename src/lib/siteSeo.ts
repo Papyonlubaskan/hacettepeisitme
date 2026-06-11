@@ -1,4 +1,9 @@
-import { SITE_MAP_LAT, SITE_MAP_LNG } from '@/lib/siteContact';
+import {
+  SITE_GOOGLE_BUSINESS_URL,
+  SITE_MAP_LAT,
+  SITE_MAP_LNG,
+  SITE_MAP_URL,
+} from '@/lib/siteContact';
 import { absoluteUrl } from '@/lib/siteUrl';
 
 export const SITE_NAME = 'Hacettepe İşitme Cihazları';
@@ -13,10 +18,10 @@ export const SITE_DEFAULT_KEYWORDS =
 export const SITE_DEFAULT_OG_IMAGE = '/local-images/home-flow/flow-reception.webp';
 
 export const SITE_INSTAGRAM_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55/';
-export const SITE_GOOGLE_MAPS_URL =
-  'https://www.google.com/maps/place/Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi/@41.2694071,36.297792,17z';
-export const SITE_GOOGLE_MAPS_URL_ALT =
-  'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/@41.2694071,36.297792,17z';
+/** Tam adres araması — yol tarifi ve konum için birincil link */
+export const SITE_GOOGLE_MAPS_URL = SITE_MAP_URL;
+/** Google İşletme profili (Tepecik CID) */
+export const SITE_GOOGLE_MAPS_URL_ALT = SITE_GOOGLE_BUSINESS_URL;
 export const SITE_GOOGLE_REVIEWS_URL =
   'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar&hl=tr';
 

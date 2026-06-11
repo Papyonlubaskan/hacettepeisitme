@@ -56,7 +56,10 @@ const WHATSAPP_NOTIFY_API_KEY = process.env.WHATSAPP_NOTIFY_API_KEY || '';
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '';
 const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID || '';
 const GOOGLE_PLACES_TEXT_QUERY =
-  process.env.GOOGLE_PLACES_TEXT_QUERY || 'Samsun Hacettepe İşitme Merkezi';
+  process.env.GOOGLE_PLACES_TEXT_QUERY ||
+  'Eğitim Araştırma Karşısı Şok Market Üstü Tepecik 1537. Sokak 1B İlkadım Samsun';
+const SITE_MAP_LAT = 41.2693501;
+const SITE_MAP_LNG = 36.2966171;
 /** Google işletme konum grubu — tüm şubelerin yorumları için rldimm parametresi */
 const GOOGLE_LOCATION_GROUP_ID = process.env.GOOGLE_LOCATION_GROUP_ID || '5393707080';
 /** Maps scraper için ludocid (gruplu yorumların çekildiği kimlik) */
@@ -67,10 +70,10 @@ const GOOGLE_MAPS_SCRAPE_PAGES = Math.min(Math.max(Number(process.env.GOOGLE_MAP
 function buildGoogleMapsScrapeUrl(ludocid) {
   const ludHex = BigInt(String(ludocid).replace(/\D/g, '') || '0').toString(16);
   return (
-    'https://www.google.com/maps/place/Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi/' +
-    '@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x0:0x' +
+    'https://www.google.com/maps/place/Hacettepe+%C4%B0%C5%9Fitme+Cihazlar%C4%B1/' +
+    `@${SITE_MAP_LAT},${SITE_MAP_LNG},17z/data=!4m6!3m5!1s0x0:0x` +
     ludHex +
-    '!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_?hl=tr'
+    `!8m2!3d${SITE_MAP_LAT}!4d${SITE_MAP_LNG}!16s%2Fg%2F11xw6t44j_?hl=tr`
   );
 }
 
@@ -237,6 +240,7 @@ let instagramRefreshInFlight = false;
 
 function shouldAttemptLiveInstagram() {
   if (!INSTAGRAM_LIVE_REFRESH) return false;
+  if (!HAS_INSTAGRAM_CREDENTIALS) return false;
   if (isInstagramRateLimited()) return false;
   return true;
 }
@@ -620,7 +624,7 @@ async function resolveGooglePlaceId() {
   });
   const rawText = await res.text();
   if (!res.ok) {
-    console.error('[google-reviews] place search HTTP error:', res.status, rawText.slice(0, 500));
+    console.warn('[google-reviews] place search HTTP error:', res.status);
     return null;
   }
   let data;
@@ -708,15 +712,20 @@ async function fetchGoogleReviewsFromPlacesLegacy(placeId) {
 
 async function scrapeGoogleReviewsFromMapsUrl(url) {
   if (!url.includes('google.com/maps')) return [];
-  const raw = await scrapeGoogleMapsReviews(url, {
-    sort_type: 'newest',
-    pages: GOOGLE_MAPS_SCRAPE_PAGES,
-    clean: true,
-  });
-  if (!Array.isArray(raw) || raw.length === 0) return [];
-  return raw
-    .map((review, index) => mapScrapedGoogleReview(review, index, { requireText: false }))
-    .filter(Boolean);
+  try {
+    const raw = await scrapeGoogleMapsReviews(url, {
+      sort_type: 'newest',
+      pages: GOOGLE_MAPS_SCRAPE_PAGES,
+      clean: true,
+    });
+    if (!Array.isArray(raw) || raw.length === 0) return [];
+    return raw
+      .map((review, index) => mapScrapedGoogleReview(review, index, { requireText: false }))
+      .filter(Boolean);
+  } catch (error) {
+    console.warn('[google-reviews] scraper skipped:', error.message);
+    return [];
+  }
 }
 
 async function fetchGoogleReviewsFromScraper() {
@@ -871,7 +880,6 @@ async function fetchInstagramMediaFromUserFeedOnce() {
   });
   if (!pageRes.ok) {
     if (pageRes.status === 429) {
-      console.warn('[instagram] user feed bootstrap rate limited (429), using bundled feed');
       markInstagramRateLimited();
     } else {
       console.warn('[instagram] user feed bootstrap HTTP error:', pageRes.status);
@@ -902,11 +910,10 @@ async function fetchInstagramMediaFromUserFeedOnce() {
   });
   const rawText = await feedRes.text();
   if (feedRes.status === 429) {
-    console.warn('[instagram] user feed rate limited (429)');
     return { posts: null, rateLimited: true };
   }
   if (!feedRes.ok) {
-    console.error('[instagram] user feed API HTTP error:', feedRes.status, rawText.slice(0, 300));
+    console.warn('[instagram] user feed API HTTP error:', feedRes.status);
     return { posts: null, rateLimited: false };
   }
   let data;
@@ -1633,9 +1640,17 @@ app.get('/api/instagram/feed', instagramFeedLimiter, async (req, res) => {
 
     if (!forceFresh && instagramFeedCache && instagramFeedCache.expiresAt > now) {
       res.json(instagramFeedCache.payload);
-      if (instagramFeedCache.expiresAt - now < INSTAGRAM_FEED_CACHE_MS / 2) {
+      if (
+        shouldAttemptLiveInstagram() &&
+        instagramFeedCache.expiresAt - now < INSTAGRAM_FEED_CACHE_MS / 2
+      ) {
         void refreshInstagramFeedCache();
       }
+      return;
+    }
+
+    if (!shouldAttemptLiveInstagram() && instagramFeedCache?.payload) {
+      res.json(instagramFeedCache.payload);
       return;
     }
 

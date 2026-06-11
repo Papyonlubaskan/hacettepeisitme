@@ -50,7 +50,7 @@ export default function Seo({
       <meta name="geo.region" content="TR-55" />
       <meta name="geo.placename" content="Tepecik, İlkadım, Samsun" />
       <meta name="geo.position" content={geoMetaContent()} />
-      <meta name="ICBM" content="41.2694071, 36.297792" />
+      <meta name="ICBM" content={`${geoMetaContent().replace(';', ', ')}`} />
       <link rel="canonical" href={canonical} />
       <link rel="alternate" hrefLang="tr" href={canonical} />
       <link rel="alternate" hrefLang="x-default" href={canonical} />
