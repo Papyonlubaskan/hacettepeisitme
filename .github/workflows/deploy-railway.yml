@@ -17,16 +17,50 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      VITE_GTM_ID: ${{ secrets.VITE_GTM_ID }}
+      VITE_META_PIXEL_ID: ${{ secrets.VITE_META_PIXEL_ID }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Railway build env (GTM / Pixel — secret varsa)
+        run: |
+          if [ -n "${VITE_GTM_ID}" ]; then
+            railway variables --set "VITE_GTM_ID=${VITE_GTM_ID}" \
+              --project "${RAILWAY_PROJECT_ID}" \
+              --environment "${RAILWAY_ENVIRONMENT_ID}" \
+              --service "${RAILWAY_SERVICE_ID}"
+            echo "VITE_GTM_ID ayarlandı"
+          else
+            echo "VITE_GTM_ID secret yok — atlandı"
+          fi
+          if [ -n "${VITE_META_PIXEL_ID}" ]; then
+            railway variables --set "VITE_META_PIXEL_ID=${VITE_META_PIXEL_ID}" \
+              --project "${RAILWAY_PROJECT_ID}" \
+              --environment "${RAILWAY_ENVIRONMENT_ID}" \
+              --service "${RAILWAY_SERVICE_ID}"
+            echo "VITE_META_PIXEL_ID ayarlandı"
+          else
+            echo "VITE_META_PIXEL_ID secret yok — atlandı"
+          fi
+
       - name: Deploy to Railway (hacettepeisitme-web-production)
         run: |
           if [ -z "${RAILWAY_TOKEN}" ]; then
-            echo "::error::RAILWAY_TOKEN yok — deploy atlandı. GitHub repo Secrets'a ekleyin veya Railway panelden Redeploy yapın."
-            echo "Railway → Proje → Settings → Tokens → Create → GitHub: Papyonlubaskan/hacettepeisitme → Secrets → RAILWAY_TOKEN"
+            echo "::error::RAILWAY_TOKEN yok"
             exit 1
           fi
           railway up --detach \
             --project "${RAILWAY_PROJECT_ID}" \
             --environment "${RAILWAY_ENVIRONMENT_ID}" \
             --service "${RAILWAY_SERVICE_ID}"
+
+  seo-ping:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ping search engines (Yandex + IndexNow)
+        run: node scripts/ping-search-engines.mjs

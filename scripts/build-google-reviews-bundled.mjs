@@ -9,16 +9,11 @@ const OUT = path.join(__dirname, '..', 'server', 'data', 'google-reviews-bundled
 
 const GOOGLE_LOCAL_POI_LUDOCID = process.env.GOOGLE_LOCAL_POI_LUDOCID || '1920926731407487161';
 const GOOGLE_LOCATION_GROUP_ID = process.env.GOOGLE_LOCATION_GROUP_ID || '5393707080';
+const SITE_GOOGLE_CID = process.env.SITE_GOOGLE_CID || '3773788576008759636';
 const PAGES = Number(process.env.GOOGLE_MAPS_SCRAPE_PAGES || 5);
 
-function buildScrapeUrl(ludocid) {
-  const ludHex = BigInt(String(ludocid).replace(/\D/g, '') || '0').toString(16);
-  return (
-    'https://www.google.com/maps/place/Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi/' +
-    '@41.2694071,36.297792,17z/data=!4m6!3m5!1s0x0:0x' +
-    ludHex +
-    '!8m2!3d41.2694071!4d36.297792!16s%2Fg%2F11xw6t44j_?hl=tr'
-  );
+function buildScrapeUrl() {
+  return `https://www.google.com/maps?cid=${SITE_GOOGLE_CID}`;
 }
 
 function buildMapsReviewsUrl(groupId) {
@@ -58,10 +53,21 @@ function dedupe(reviews) {
   return out;
 }
 
-const scrapeUrl = buildScrapeUrl(GOOGLE_LOCAL_POI_LUDOCID);
+const scrapeUrl = buildScrapeUrl();
 console.log('[google-reviews] scraping:', scrapeUrl);
-const raw = await scraper(scrapeUrl, { sort_type: 'newest', pages: PAGES, clean: true });
+let raw;
+try {
+  raw = await scraper(scrapeUrl, { sort_type: 'newest', pages: PAGES, clean: true });
+} catch (error) {
+  console.warn('[google-reviews] scraper error:', error.message);
+  raw = [];
+}
+
 if (!Array.isArray(raw) || raw.length === 0) {
+  if (fs.existsSync(OUT)) {
+    console.warn('[google-reviews] scrape bos — mevcut bundled dosya korunuyor');
+    process.exit(0);
+  }
   console.error('[google-reviews] scrape returned no reviews');
   process.exit(1);
 }
