@@ -1,7 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { blogPosts } from '../../mocks/blog';
 import NotFound from '../NotFound';
-import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
+import { trackCTAClick, trackPageView, trackWhatsAppClick } from '@/lib/tracking';
 import { SITE_PHONE_E164, SITE_PHONE_WA } from '@/lib/siteContact';
 import { absoluteUrl } from '@/lib/siteUrl';
 import Seo from '@/components/Seo';
@@ -11,6 +12,12 @@ import { getBreadcrumbs } from '@/lib/breadcrumbs';
 function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((p) => p.slug === slug);
+
+  useEffect(() => {
+    if (!post) return;
+    const postPath = `/blog/${post.slug}`;
+    trackPageView(`${post.title} | Hacettepe İşitme Cihazları Blog`, postPath);
+  }, [post]);
 
   if (!post) {
     return <NotFound />;

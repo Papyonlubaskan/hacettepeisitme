@@ -92,7 +92,7 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
       'işitme cihazı katalog, Vista katalog Samsun, A&M işitme cihazı, Nitro katalog',
   }),
   '/isitme-cihazi-fiyatlari': withImage('/isitme-cihazi-fiyatlari', {
-    title: 'İşitme Cihazı Fiyatları 2025 | Samsun — Vista, A&M, Nitro',
+    title: 'İşitme Cihazı Fiyatları 2026 | Samsun — Vista, A&M, Nitro',
     description:
       'İşitme cihazı fiyatlarını etkileyen faktörler, Vista, A&M, Nitro ve Pediatrik Grup modelleri ile SGK ödeme desteği. Ücretsiz fiyat danışmanlığı.',
     keywords:
@@ -113,7 +113,7 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
       'Samsun işitme testi, işitme testi Samsun ücretsiz, Samsun odyoloji, Samsun işitme merkezi, odyometri Samsun',
   }),
   '/sgk-odeme-tutarlari': withImage('/sgk-odeme-tutarlari', {
-    title: 'SGK İşitme Cihazı Ödeme Tutarları 2025 | Samsun',
+    title: 'SGK İşitme Cihazı Ödeme Tutarları 2026 | Samsun',
     description:
       "SGK işitme cihazı ödeme tutarları, başvuru belgeleri ve süreç. Samsun Hacettepe İşitme Merkezi'nde SGK danışmanlığı ve cihaz uygulaması.",
     keywords:

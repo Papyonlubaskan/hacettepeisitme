@@ -11,6 +11,7 @@ import {
   SITE_NAME,
   SITE_SAME_AS,
   defaultOgImageUrl,
+  localBusinessNapDescription,
 } from '@/lib/siteSeo';
 import { absoluteUrl } from '@/lib/siteUrl';
 
@@ -62,8 +63,7 @@ export function localBusinessJsonLd() {
     logo: absoluteUrl('/local-images/brand-favicon.webp'),
     telephone: SITE_PHONE_E164,
     priceRange: '₺₺',
-    description:
-      "Samsun İlkadım'da ücretsiz işitme testi, Vista, A&M ve Nitro işitme cihazları satışı, SGK danışmanlığı ve 30 gün deneme garantisi.",
+    description: localBusinessNapDescription(),
     hasMap: SITE_MAP_URL,
     geo: {
       '@type': 'GeoCoordinates',

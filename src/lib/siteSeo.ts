@@ -1,9 +1,11 @@
 import {
-  SITE_GOOGLE_BUSINESS_URL,
+  SITE_ADDRESS_SCHEMA,
+  SITE_ADDRESS_SINGLE,
   SITE_MAP_LAT,
   SITE_MAP_LNG,
   SITE_MAP_URL,
 } from '@/lib/siteContact';
+import { SITE_GOOGLE_RATING, SITE_GOOGLE_REVIEW_COUNT } from '@/lib/googleReviewsSeo';
 import { absoluteUrl } from '@/lib/siteUrl';
 
 export const SITE_NAME = 'Hacettepe İşitme Cihazları';
@@ -18,10 +20,7 @@ export const SITE_DEFAULT_KEYWORDS =
 export const SITE_DEFAULT_OG_IMAGE = '/local-images/home-flow/flow-reception.webp';
 
 export const SITE_INSTAGRAM_URL = 'https://www.instagram.com/hacettepeisitmecihazlari55/';
-/** Tam adres araması — yol tarifi ve konum için birincil link */
 export const SITE_GOOGLE_MAPS_URL = SITE_MAP_URL;
-/** Google İşletme profili (Tepecik CID) */
-export const SITE_GOOGLE_MAPS_URL_ALT = SITE_GOOGLE_BUSINESS_URL;
 export const SITE_GOOGLE_REVIEWS_URL =
   'https://www.google.com/search?q=Samsun+Hacettepe+%C4%B0%C5%9Fitme+Merkezi+Yorumlar&hl=tr';
 
@@ -29,13 +28,11 @@ export const SITE_GOOGLE_REVIEWS_URL =
 export const SITE_SAME_AS = [
   absoluteUrl('/'),
   SITE_GOOGLE_MAPS_URL,
-  SITE_GOOGLE_MAPS_URL_ALT,
   SITE_GOOGLE_REVIEWS_URL,
   SITE_INSTAGRAM_URL,
 ] as const;
 
-export const SITE_GOOGLE_RATING = 4.9;
-export const SITE_GOOGLE_REVIEW_COUNT = 37;
+export { SITE_GOOGLE_RATING, SITE_GOOGLE_REVIEW_COUNT };
 
 export function defaultOgImageUrl(): string {
   return absoluteUrl(SITE_DEFAULT_OG_IMAGE);
@@ -58,11 +55,7 @@ export function organizationJsonLd() {
     telephone: '+905334745806',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Eğitim Araştırma Karşısı Şok Market Üstü, Tepecik, 1537. Sokak 1B/b',
-      postalCode: '55020',
-      addressLocality: 'İlkadım',
-      addressRegion: 'Samsun',
-      addressCountry: 'TR',
+      ...SITE_ADDRESS_SCHEMA,
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -90,14 +83,6 @@ export function websiteJsonLd() {
     about: { '@id': `${absoluteUrl('/')}#business` },
     potentialAction: [
       {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: `${absoluteUrl('/blog')}?q={search_term_string}`,
-        },
-        'query-input': 'required name=search_term_string',
-      },
-      {
         '@type': 'ReserveAction',
         target: {
           '@type': 'EntryPoint',
@@ -115,4 +100,8 @@ export function websiteJsonLd() {
 
 export function geoMetaContent(): string {
   return `${SITE_MAP_LAT};${SITE_MAP_LNG}`;
+}
+
+export function localBusinessNapDescription(): string {
+  return `${SITE_ADDRESS_SINGLE}. Google Haritalar konum işareti: Tepecik Şok Market (1537. Sokak).`;
 }
