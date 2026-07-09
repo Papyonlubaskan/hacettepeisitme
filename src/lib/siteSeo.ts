@@ -15,7 +15,7 @@ export const SITE_LANGUAGE = 'tr-TR';
 export const SITE_CANONICAL_HOST = 'hacettepeisitme.com.tr';
 
 export const SITE_DEFAULT_KEYWORDS =
-  'hacettepe işitme cihazları, işitme cihazı Samsun, işitme testi Samsun, ücretsiz işitme testi, Vista, A&M, Nitro, SGK işitme cihazı, Hacettepe İşitme, Samsun Hacettepe İşitme Merkezi';
+  'Samsun işitme cihazları, samsun işitme cihazları, işitme cihazı Samsun, Samsun\'da işitme cihazı, samsunda işitme cihazı, hacettepe işitme cihazları, işitme testi Samsun, ücretsiz işitme testi, Vista, A&M, Nitro, SGK işitme cihazı, Hacettepe İşitme, Samsun Hacettepe İşitme Merkezi';
 
 export const SITE_DEFAULT_OG_IMAGE = '/local-images/home-flow/flow-reception.webp';
 
@@ -78,7 +78,7 @@ export function websiteJsonLd() {
     url: absoluteUrl('/'),
     inLanguage: SITE_LANGUAGE,
     description:
-      "Samsun'da ücretsiz işitme testi, işitme cihazı satışı ve SGK danışmanlığı. Vista, A&M ve Nitro serileri ile uzman danışmanlık.",
+      "Samsun işitme cihazları satışı, Samsun'da ücretsiz işitme testi ve SGK danışmanlığı. Vista, A&M ve Nitro serileri ile uzman danışmanlık.",
     publisher: { '@id': `${absoluteUrl('/')}#organization` },
     about: { '@id': `${absoluteUrl('/')}#business` },
     potentialAction: [
@@ -103,5 +103,5 @@ export function geoMetaContent(): string {
 }
 
 export function localBusinessNapDescription(): string {
-  return `${SITE_ADDRESS_SINGLE}. Google Haritalar konum işareti: Tepecik Şok Market (1537. Sokak).`;
+  return `${SITE_NAME} — Samsun işitme cihazları ve Samsun'da işitme cihazı satışı. ${SITE_ADDRESS_SINGLE}. Google Haritalar: Tepecik Şok Market (1537. Sokak).`;
 }

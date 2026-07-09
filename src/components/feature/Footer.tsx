@@ -15,6 +15,7 @@ const quickLinks = [
   { label: 'İşitme Cihazları', to: '/isitme-cihazlari' },
   { label: 'Marka Katalogları', to: '/katalog' },
   { label: 'İşitme Cihazı Fiyatları', to: '/isitme-cihazi-fiyatlari' },
+  { label: 'Samsun İşitme Cihazları', to: '/samsun-isitme-cihazlari' },
   { label: 'Samsun İşitme Cihazı', to: '/samsun-isitme-cihazi' },
   { label: 'Samsun İşitme Testi', to: '/samsun-isitme-testi' },
   { label: 'SGK Ödeme Tutarları', to: '/sgk-odeme-tutarlari' },

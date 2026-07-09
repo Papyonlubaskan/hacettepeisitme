@@ -16,6 +16,7 @@ const BlogDetail = lazy(() => import("../pages/blog/page"));
 const IsitmeCihaziFiyatlariPage = lazy(() => import("../pages/seo/isime-cihazi-fiyatlari"));
 const SamsunIsitmeTestiPage = lazy(() => import("../pages/seo/samsun-isitme-testi"));
 const SamsunIsitmeCihaziPage = lazy(() => import("../pages/seo/samsun-isitme-cihazi"));
+const SamsunIsitmeCihazlariPage = lazy(() => import("../pages/seo/samsun-isitme-cihazlari"));
 const SgkOdemeTutarlariPage = lazy(() => import("../pages/sgk-odeme-tutarlari/page"));
 const HearingAidsIndex = lazy(() => import("../pages/hearing-aids/index"));
 const HearingAidCategory = lazy(() => import("../pages/hearing-aids/category"));
@@ -124,6 +125,14 @@ const routes: RouteObject[] = [
     element: (
       <Suspense fallback={null}>
         <SamsunIsitmeCihaziPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/samsun-isitme-cihazlari",
+    element: (
+      <Suspense fallback={null}>
+        <SamsunIsitmeCihazlariPage />
       </Suspense>
     ),
   },

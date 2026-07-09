@@ -8,12 +8,13 @@ export default function LocalSeoSection() {
     <section className="py-16 md:py-20 bg-white border-t border-gray-100">
       <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto text-gray-600 leading-relaxed">
         <h2 className="font-serif text-2xl md:text-3xl font-bold text-brand-dark mb-4">
-          Samsun&apos;da İşitme Cihazı ve Ücretsiz İşitme Testi
+          Samsun İşitme Cihazları ve Samsun&apos;da İşitme Cihazı
         </h2>
         <p className="mb-4">
-          <strong>Hacettepe İşitme Cihazları</strong>, Samsun İlkadım Tepecik&apos;te işitme sağlığı alanında 15 yılı
-          aşkın deneyimle hizmet veren yerel bir işitme merkezidir. Ücretsiz işitme testi, odyometri değerlendirmesi,
-          Vista, A&M ve Nitro serileri ile SGK süreç danışmanlığı tek çatı altında sunulur.
+          <strong>Hacettepe İşitme Cihazları</strong>, Samsun İlkadım Tepecik&apos;te{' '}
+          <strong>Samsun işitme cihazları</strong> satışı ve ücretsiz işitme testi sunan yerel bir işitme merkezidir.
+          Samsun&apos;da işitme cihazı arayanlar için Vista, A&amp;M ve Nitro serileri, SGK süreç danışmanlığı ve 30
+          gün deneme garantisi tek çatı altında sunulur.
         </p>
         <p className="mb-6">
           Samsun ve çevre ilçelerden gelen danışanlarımız için aynı gün randevu, 30 gün deneme garantisi ve ömür boyu
@@ -34,6 +35,9 @@ export default function LocalSeoSection() {
           .
         </p>
         <div className="flex flex-wrap gap-3 text-sm">
+          <Link to="/samsun-isitme-cihazlari" className="px-4 py-2 rounded-full bg-brand-accent text-white font-medium hover:bg-[#008f7f]">
+            Samsun İşitme Cihazları
+          </Link>
           <Link to="/samsun-isitme-cihazi" className="px-4 py-2 rounded-full bg-brand-cream text-brand-dark font-medium hover:bg-brand-light">
             Samsun İşitme Cihazı
           </Link>

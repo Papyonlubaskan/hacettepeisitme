@@ -77,6 +77,25 @@ function buildManifest() {
       entry.priority = '0.95';
     }
 
+    if (path === '/samsun-isitme-cihazlari') {
+      entry.jsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          serviceJsonLd(
+            'Samsun İşitme Cihazları Satışı',
+            "Samsun'da işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı.",
+            path,
+          ),
+          breadcrumbJsonLd([
+            { name: 'Ana Sayfa', path: '/' },
+            { name: 'Samsun İşitme Cihazları', path },
+          ]),
+        ],
+      };
+      entry.priority = '0.98';
+      entry.changefreq = 'weekly';
+    }
+
     if (path === '/isitme-cihazlari') {
       entry.priority = '0.9';
       entry.jsonLd = serviceJsonLd(

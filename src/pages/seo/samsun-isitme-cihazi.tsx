@@ -102,6 +102,9 @@ export default function SamsunIsitmeCihaziPage() {
             <Link to="/isitme-cihazi-fiyatlari" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
               Fiyat Bilgisi →
             </Link>
+            <Link to="/samsun-isitme-cihazlari" className="inline-flex justify-center text-gray-500 text-sm px-6 py-3">
+              Samsun işitme cihazları →
+            </Link>
           </div>
         </div>
       </section>

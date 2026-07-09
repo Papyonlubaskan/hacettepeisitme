@@ -17,6 +17,21 @@ import { absoluteUrl } from '@/lib/siteUrl';
 
 export const SITE_FAQ = [
   {
+    question: 'Samsun işitme cihazları nereden alınır?',
+    answer:
+      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Samsun işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır. Adres: Eğitim Araştırma karşısı Şok Market üstü, 1537. Sokak 1B/b.',
+  },
+  {
+    question: "Samsun'da işitme cihazı fiyatları ne kadar?",
+    answer:
+      'Fiyatlar marka ve modele göre değişir. Merkezimizde ücretsiz test sonrası bütçenize uygun işitme cihazı seçenekleri ve SGK ödeme bilgisi verilir.',
+  },
+  {
+    question: 'Samsun\'da en iyi işitme merkezi hangisi?',
+    answer:
+      'Hacettepe İşitme Cihazları 15 yılı aşkın deneyim, Google\'da 4.9 puan, ücretsiz test, 30 gün deneme ve ömür boyu teknik destek ile Samsun\'da güvenilir bir işitme merkezidir.',
+  },
+  {
     question: 'İşitme testi gerçekten ücretsiz mi?',
     answer:
       'Evet, kliniğimizde yapılan ilk işitme testi ve danışmanlık hizmeti tamamen ücretsizdir. Hiçbir gizli ücret talep edilmez.',
@@ -79,6 +94,9 @@ export function localBusinessJsonLd() {
       { '@type': 'AdministrativeArea', name: 'Karadeniz Bölgesi' },
     ],
     knowsAbout: [
+      'Samsun işitme cihazları',
+      'işitme cihazı Samsun',
+      "Samsun'da işitme cihazı",
       'hacettepe işitme cihazları',
       'işitme cihazı',
       'odyometri',

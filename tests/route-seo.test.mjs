@@ -15,9 +15,10 @@ test('routeSeo blog listesi meta tanımı içerir', () => {
   assert.match(routeSeo, /withImage\('\/blog',\s*\{/);
 });
 
-test('routeSeo ana sayfa yerel anahtar kelime içerir', () => {
-  assert.match(routeSeo, /hacettepe işitme cihazları/i);
-  assert.match(routeSeo, /keywords/);
+test('routeSeo yerel anahtar kelime landing sayfaları içerir', () => {
+  assert.match(routeSeo, /\/samsun-isitme-cihazlari/);
+  assert.match(routeSeo, /Samsun işitme cihazları/i);
+  assert.match(routeSeo, /samsunda işitme cihazı/i);
 });
 
 test('routeSeo pro-hero-main referansı içermez', () => {

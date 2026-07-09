@@ -22,6 +22,7 @@ const ROUTE_IMAGES: Record<string, string> = {
   '/katalog': PAGE_IMAGES.catalog,
   '/isitme-cihazi-fiyatlari': PAGE_IMAGES.pricing,
   '/samsun-isitme-cihazi': PAGE_IMAGES.samsunDevice,
+  '/samsun-isitme-cihazlari': PAGE_IMAGES.samsunDevice,
   '/samsun-isitme-testi': PAGE_IMAGES.samsunTest,
   '/sgk-odeme-tutarlari': PAGE_IMAGES.sgk,
   '/blog': PAGE_IMAGES.blog,
@@ -36,11 +37,11 @@ function withImage(path: string, seo: Omit<RouteSeo, 'image'>): RouteSeo {
 
 export const ROUTE_SEO: Record<string, RouteSeo> = {
   '/': withImage('/', {
-    title: 'Samsun İşitme Cihazları | Ücretsiz Test — Hacettepe İşitme Merkezi',
+    title: 'Samsun İşitme Cihazları | Samsun\'da İşitme Cihazı — Hacettepe',
     description:
-      "Samsun İlkadım'da işitme cihazı satışı ve ücretsiz işitme testi. Vista, A&M, Nitro serileri, SGK desteği, 30 gün deneme. Tepecik merkez — aynı gün randevu: +90 533 474 58 06.",
+      "Samsun işitme cihazları satışı ve Samsun'da ücretsiz işitme testi. İlkadım Tepecik merkez — Vista, A&M, Nitro, SGK desteği, 30 gün deneme. Aynı gün randevu: +90 533 474 58 06.",
     keywords:
-      'hacettepe işitme cihazları, işitme cihazı Samsun, Samsun işitme cihazı, Samsun işitme merkezi, ücretsiz işitme testi Samsun, işitme testi Samsun, Vista işitme cihazı Samsun, İlkadım işitme merkezi, Hacettepe İşitme Merkezi',
+      'Samsun işitme cihazları, samsun işitme cihazları, işitme cihazı Samsun, Samsun\'da işitme cihazı, samsunda işitme cihazı, hacettepe işitme cihazları, Samsun işitme merkezi, ücretsiz işitme testi Samsun, Vista işitme cihazı Samsun, İlkadım işitme merkezi',
   }),
   '/hakkimizda': withImage('/hakkimizda', {
     title: 'Hakkımızda | Hacettepe İşitme Cihazları Samsun',
@@ -103,7 +104,14 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
     description:
       "Samsun'da işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı. İlkadım Tepecik merkez, Vista, A&M, Nitro serileri, 30 gün deneme garantisi.",
     keywords:
-      'Samsun işitme cihazı, işitme cihazı Samsun, işitme merkezi Samsun, Vista Samsun, Nitro işitme cihazı Samsun, hacettepe işitme cihazları',
+      'Samsun işitme cihazı, samsunda işitme cihazı, işitme cihazı Samsun, işitme merkezi Samsun, Vista Samsun, Nitro işitme cihazı Samsun, hacettepe işitme cihazları',
+  }),
+  '/samsun-isitme-cihazlari': withImage('/samsun-isitme-cihazlari', {
+    title: 'Samsun İşitme Cihazları | Vista, A&M, Nitro — Hacettepe İşitme',
+    description:
+      "Samsun işitme cihazları satışı ve Samsun'da ücretsiz işitme testi. İlkadım Tepecik — Vista, A&M, Nitro, Pediatrik Grup, SGK danışmanlığı, 30 gün deneme. Randevu: +90 533 474 58 06.",
+    keywords:
+      'Samsun işitme cihazları, samsun işitme cihazları, samsunda işitme cihazı, işitme cihazı Samsun, Samsun\'da işitme cihazı, işitme merkezi Samsun, Vista Samsun, hacettepe işitme cihazları',
   }),
   '/samsun-isitme-testi': withImage('/samsun-isitme-testi', {
     title: 'Samsun İşitme Testi | Ücretsiz Odyometri — Hacettepe İşitme',
