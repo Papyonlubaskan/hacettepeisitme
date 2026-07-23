@@ -49,10 +49,23 @@ jobs:
             echo "::error::RAILWAY_TOKEN yok"
             exit 1
           fi
-          railway up --detach \
-            --project "${RAILWAY_PROJECT_ID}" \
-            --environment "${RAILWAY_ENVIRONMENT_ID}" \
-            --service "${RAILWAY_SERVICE_ID}"
+          attempt=1
+          max=5
+          while [ "$attempt" -le "$max" ]; do
+            echo "Railway deploy denemesi $attempt/$max"
+            if railway up --detach \
+              --project "${RAILWAY_PROJECT_ID}" \
+              --environment "${RAILWAY_ENVIRONMENT_ID}" \
+              --service "${RAILWAY_SERVICE_ID}"; then
+              echo "Deploy başarılı"
+              exit 0
+            fi
+            echo "Deploy başarısız — 20s bekleniyor"
+            sleep 20
+            attempt=$((attempt + 1))
+          done
+          echo "::error::Railway deploy $max denemede başarısız"
+          exit 1
 
   seo-ping:
     needs: deploy
