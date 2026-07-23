@@ -53,15 +53,19 @@ function HeroSection() {
           </div>
 
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
-            Samsun İşitme Cihazları
+            Hacettepe İşitme Merkezi
             <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold text-white/95 mt-2">
-              Hayatınızı <em className="text-brand-accent not-italic">Yeniden Duyun</em>
+              Samsun&apos;da <em className="text-brand-accent not-italic">yeniden duyun</em>
             </span>
           </h1>
 
           <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-lg">
-            Samsun&apos;da işitme cihazı arayanlar için İlkadım Tepecik merkezimizde ücretsiz işitme testi, Vista,
-            A&amp;M ve Nitro serileri ile 30 gün deneme garantisi.
+            İlkadım Tepecik merkezimizde ücretsiz işitme testi, Vista, A&amp;M ve Nitro serileri ile 30 gün deneme
+            garantisi.{' '}
+            <Link to="/samsun-isitme-cihazlari" className="underline underline-offset-2 hover:text-brand-accent">
+              Samsun işitme cihazları
+            </Link>{' '}
+            için uzman danışmanlık.
           </p>
 
           <div className="flex flex-col sm:flex-row flex-wrap gap-4">

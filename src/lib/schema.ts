@@ -15,21 +15,12 @@ import {
 } from '@/lib/siteSeo';
 import { absoluteUrl } from '@/lib/siteUrl';
 
+/** Ana sayfa FAQ — marka/hizmet odaklı (landing keyword FAQ ile ayrıştırıldı) */
 export const SITE_FAQ = [
   {
-    question: 'Samsun işitme cihazları nereden alınır?',
+    question: 'Hacettepe İşitme Merkezi nerede?',
     answer:
-      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Samsun işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır. Adres: Eğitim Araştırma karşısı Şok Market üstü, 1537. Sokak 1B/b.',
-  },
-  {
-    question: "Samsun'da işitme cihazı fiyatları ne kadar?",
-    answer:
-      'Fiyatlar marka ve modele göre değişir. Merkezimizde ücretsiz test sonrası bütçenize uygun işitme cihazı seçenekleri ve SGK ödeme bilgisi verilir.',
-  },
-  {
-    question: 'Samsun\'da en iyi işitme merkezi hangisi?',
-    answer:
-      'Hacettepe İşitme Cihazları 15 yılı aşkın deneyim, Google\'da 4.9 puan, ücretsiz test, 30 gün deneme ve ömür boyu teknik destek ile Samsun\'da güvenilir bir işitme merkezidir.',
+      'Samsun İlkadım Tepecik’te, Eğitim Araştırma karşısı Şok Market üstü, 1537. Sokak 1B/b adresindeyiz. Google Haritalar’dan yol tarifi alabilirsiniz.',
   },
   {
     question: 'İşitme testi gerçekten ücretsiz mi?',
@@ -55,6 +46,63 @@ export const SITE_FAQ = [
     question: 'Kaç yılda bir cihaz değiştirmeliyim?',
     answer:
       'İşitme cihazlarının ortalama ömrü 5-7 yıldır. Ancak işitme kaybınızdaki değişim, teknolojik gelişmeler ve cihazın durumu değiştirme kararını etkileyebilir.',
+  },
+] as const;
+
+/** Landing FAQ — ana sayfa SITE_FAQ ile örtüşmez (cannibalization / duplicate FAQ önleme) */
+export const SAMSUN_CIHAZLARI_FAQ = [
+  {
+    question: 'Samsun işitme cihazları nereden alınır?',
+    answer:
+      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Vista, A&M, Nitro ve Pediatrik Grup işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır. Eğitim Araştırma karşısı Şok Market üstü, 1537. Sokak 1B/b.',
+  },
+  {
+    question: "Samsun'da işitme cihazı fiyatları ne kadar?",
+    answer:
+      'Fiyatlar modele ve teknolojiye göre değişir. Merkezimizde ücretsiz test sonrası bütçenize uygun Samsun işitme cihazları seçenekleri ve SGK ödeme bilgisi verilir.',
+  },
+  {
+    question: 'Samsun işitme cihazları için SGK desteği var mı?',
+    answer:
+      'Evet. SGK raporu ve gerekli belgelerle başvuruda SGK ödeme tutarları uygulanır. Merkezimizde süreç danışmanlığı ücretsizdir.',
+  },
+  {
+    question: "Samsun'da ücretsiz işitme testi yapılıyor mu?",
+    answer:
+      'Evet. İlk işitme testi ve danışmanlık ücretsizdir. Randevu: +90 533 474 58 06 veya web sitesi formu.',
+  },
+] as const;
+
+export const SAMSUN_CIHAZI_FAQ = [
+  {
+    question: 'Samsun’da işitme cihazı nereden alınır?',
+    answer:
+      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Vista, A&M ve Nitro serileri satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır.',
+  },
+  {
+    question: 'Samsun’da ücretsiz işitme testi var mı?',
+    answer:
+      'Evet. Merkezimizde ilk işitme testi ve danışmanlık ücretsizdir. Randevu için web sitemizden form bırakabilir veya telefonla arayabilirsiniz.',
+  },
+  {
+    question: 'SGK işitme cihazı Samsun’da nasıl alınır?',
+    answer:
+      'SGK raporu ve gerekli belgelerle başvuru yapılır. Merkezimizde SGK ödeme tutarları ve süreç hakkında ücretsiz danışmanlık verilmektedir.',
+  },
+] as const;
+
+export const SAMSUN_TESTI_FAQ = [
+  {
+    question: 'Samsun’da işitme testi ücretsiz mi?',
+    answer: 'Evet, Hacettepe İşitme Merkezi’nde ilk işitme testi ve danışmanlık ücretsizdir.',
+  },
+  {
+    question: 'İşitme testi ne kadar sürer?',
+    answer: 'Odyometri testi ortalama 20-45 dakika sürer; sonuçlar aynı gün değerlendirilir.',
+  },
+  {
+    question: 'Samsun’da işitme testi için randevu gerekli mi?',
+    answer: 'Randevu ile beklemeden hizmet alabilirsiniz; müsaitlik durumunda randevusuz da kabul edilir.',
   },
 ] as const;
 

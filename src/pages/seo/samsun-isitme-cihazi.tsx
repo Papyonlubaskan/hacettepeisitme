@@ -3,43 +3,12 @@ import AddressLink from '@/components/feature/AddressLink';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import { PAGE_IMAGES } from '@/lib/pageImages';
-import { faqPageJsonLd, serviceJsonLd } from '@/lib/schema';
+import { SAMSUN_CIHAZI_FAQ } from '@/lib/schema';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
-const PAGE_FAQ = [
-  {
-    question: 'Samsun’da işitme cihazı nereden alınır?',
-    answer:
-      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Vista, A&M ve Nitro serileri satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır.',
-  },
-  {
-    question: 'Samsun’da ücretsiz işitme testi var mı?',
-    answer:
-      'Evet. Merkezimizde ilk işitme testi ve danışmanlık ücretsizdir. Randevu için web sitemizden form bırakabilir veya telefonla arayabilirsiniz.',
-  },
-  {
-    question: 'SGK işitme cihazı Samsun’da nasıl alınır?',
-    answer:
-      'SGK raporu ve gerekli belgelerle başvuru yapılır. Merkezimizde SGK ödeme tutarları ve süreç hakkında ücretsiz danışmanlık verilmektedir.',
-  },
-];
-
 export default function SamsunIsitmeCihaziPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      serviceJsonLd(
-        'Samsun İşitme Cihazı Satışı',
-        'Samsun İlkadım merkezinde işitme cihazı satışı, ücretsiz odyometri, cihaz uyarlama ve SGK danışmanlığı.',
-        '/samsun-isitme-cihazi',
-      ),
-      faqPageJsonLd(PAGE_FAQ),
-    ],
-  };
-
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHeroBanner
         title="Samsun İşitme Cihazı"
         subtitle="İlkadım Tepecik'te 15 yıllık deneyimle işitme cihazı satışı, ücretsiz işitme testi ve kişiye özel cihaz uyarlama. Vista, A&M ve Nitro serileri ile uzman danışmanlık."
@@ -69,7 +38,7 @@ export default function SamsunIsitmeCihaziPage() {
           <p>İlkadım, Atakum, Canik, Tekkeköy ve Samsun genelinde danışanlarımıza hizmet veriyoruz.</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Ücretsiz işitme testi ve odyometri</li>
-            <li>Vista, A&M, Nitro ve Pediatrik Grup işitme cihazı satışı</li>
+            <li>Vista, A&amp;M, Nitro ve Pediatrik Grup işitme cihazı satışı</li>
             <li>SGK işitme cihazı danışmanlığı</li>
             <li>30 gün deneme ve ömür boyu teknik destek</li>
           </ul>
@@ -78,7 +47,7 @@ export default function SamsunIsitmeCihaziPage() {
             Sıkça Sorulan Sorular
           </h2>
           <div className="space-y-4">
-            {PAGE_FAQ.map((item) => (
+            {SAMSUN_CIHAZI_FAQ.map((item) => (
               <div key={item.question} className="bg-brand-cream rounded-2xl p-5">
                 <h3 className="font-bold text-brand-dark mb-2">{item.question}</h3>
                 <p className="text-sm">{item.answer}</p>

@@ -1773,7 +1773,20 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
     seoManifest = JSON.parse(fsSync.readFileSync(manifestPath, 'utf8'));
   }
 
-  app.use(express.static(FRONTEND_DIST_DIR));
+  // index:false — aksi halde GET / statik index.html döner, SEO inject atlanır (LocalBusiness/FAQ kaybolur)
+  app.use(express.static(FRONTEND_DIST_DIR, { index: false, fallthrough: true }));
+
+  // Eski Unicode blog slug → ASCII (indeks/crawl güvenliği)
+  app.get(
+    [
+      '/blog/isitme-kaybının-erken-belirtileri',
+      '/blog/isitme-kayb%C4%B1n%C4%B1n-erken-belirtileri',
+    ],
+    (_req, res) => {
+      res.redirect(301, '/blog/isitme-kaybinin-erken-belirtileri');
+    },
+  );
+
   app.get(/^\/(?!api).*/, (req, res) => {
     const pathname = req.path === '' ? '/' : req.path;
     const entry = resolveSeoEntry(seoManifest, pathname);

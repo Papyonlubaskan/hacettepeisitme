@@ -15,7 +15,7 @@ const importSource = jiti(import.meta.url, {
 const { ROUTE_SEO } = importSource('../src/lib/routeSeo.ts');
 const { blogPosts } = importSource('../src/mocks/blog.ts');
 const { DEVICE_CATEGORIES, CATALOGS } = importSource('../src/mocks/hearingAids.ts');
-const { breadcrumbJsonLd, localBusinessJsonLd, faqPageJsonLd, SITE_FAQ, serviceJsonLd } =
+const { breadcrumbJsonLd, localBusinessJsonLd, faqPageJsonLd, SITE_FAQ, SAMSUN_CIHAZLARI_FAQ, SAMSUN_CIHAZI_FAQ, SAMSUN_TESTI_FAQ, serviceJsonLd, webPageJsonLd } =
   importSource('../src/lib/schema.ts');
 const { organizationJsonLd, websiteJsonLd, SITE_DEFAULT_OG_IMAGE } = importSource('../src/lib/siteSeo.ts');
 const { PAGE_IMAGES } = importSource('../src/lib/pageImages.ts');
@@ -43,7 +43,14 @@ function buildManifest() {
       keywords: seo.keywords,
       image: seo.image ? absoluteUrl(seo.image) : absoluteUrl(DEFAULT_OG),
       type: 'website',
-      priority: path === '/' ? '1.0' : path.includes('randevu') || path.includes('test') ? '0.9' : '0.8',
+      priority:
+        path === '/'
+          ? '1.0'
+          : path.includes('gizlilik') || path.includes('kullanim') || path.includes('kvkk')
+            ? '0.3'
+            : path.includes('randevu') || path.includes('test')
+              ? '0.9'
+              : '0.8',
       changefreq: path === '/' || path.includes('blog') ? 'weekly' : 'monthly',
       lastmod: today,
     };
@@ -61,26 +68,62 @@ function buildManifest() {
     }
 
     if (path === '/samsun-isitme-testi') {
-      entry.jsonLd = serviceJsonLd(
-        'Samsun İşitme Testi',
-        'Samsun İlkadım merkezimizde ücretsiz odyometri ve işitme testi hizmeti.',
-        path,
-      );
+      entry.jsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          webPageJsonLd(
+            'Samsun İşitme Testi',
+            'Samsun İlkadım merkezimizde ücretsiz odyometri ve işitme testi hizmeti.',
+            path,
+          ),
+          serviceJsonLd(
+            'Samsun İşitme Testi',
+            'Samsun İlkadım merkezimizde ücretsiz odyometri ve işitme testi hizmeti.',
+            path,
+          ),
+          breadcrumbJsonLd([
+            { name: 'Ana Sayfa', path: '/' },
+            { name: 'Samsun İşitme Testi', path },
+          ]),
+          faqPageJsonLd(SAMSUN_TESTI_FAQ),
+        ],
+      };
+      entry.priority = '0.9';
     }
 
     if (path === '/samsun-isitme-cihazi') {
-      entry.jsonLd = serviceJsonLd(
-        'Samsun İşitme Cihazı Satışı',
-        'Samsun İlkadım merkezinde işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı.',
-        path,
-      );
-      entry.priority = '0.95';
+      entry.jsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          webPageJsonLd(
+            'Samsun İşitme Cihazı',
+            'Samsun İlkadım merkezinde işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı.',
+            path,
+          ),
+          serviceJsonLd(
+            'Samsun İşitme Cihazı Satışı',
+            'Samsun İlkadım merkezinde işitme cihazı satışı, ücretsiz test ve SGK danışmanlığı.',
+            path,
+          ),
+          breadcrumbJsonLd([
+            { name: 'Ana Sayfa', path: '/' },
+            { name: 'Samsun İşitme Cihazı', path },
+          ]),
+          faqPageJsonLd(SAMSUN_CIHAZI_FAQ),
+        ],
+      };
+      entry.priority = '0.9';
     }
 
     if (path === '/samsun-isitme-cihazlari') {
       entry.jsonLd = {
         '@context': 'https://schema.org',
         '@graph': [
+          webPageJsonLd(
+            'Samsun İşitme Cihazları',
+            "Samsun'da işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı.",
+            path,
+          ),
           serviceJsonLd(
             'Samsun İşitme Cihazları Satışı',
             "Samsun'da işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı.",
@@ -90,6 +133,7 @@ function buildManifest() {
             { name: 'Ana Sayfa', path: '/' },
             { name: 'Samsun İşitme Cihazları', path },
           ]),
+          faqPageJsonLd(SAMSUN_CIHAZLARI_FAQ),
         ],
       };
       entry.priority = '0.98';
@@ -157,9 +201,9 @@ function buildManifest() {
       keywords: post.keywords,
       image: absoluteUrl(post.ogImage),
       type: 'article',
-      priority: '0.7',
-      changefreq: 'yearly',
-      lastmod: post.date,
+      priority: '0.85',
+      changefreq: 'weekly',
+      lastmod: today,
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',

@@ -4,6 +4,7 @@ import {
   SITE_MAP_LAT,
   SITE_MAP_LNG,
   SITE_MAP_URL,
+  SITE_PHONE_E164,
 } from '@/lib/siteContact';
 import { SITE_GOOGLE_RATING, SITE_GOOGLE_REVIEW_COUNT } from '@/lib/googleReviewsSeo';
 import { absoluteUrl } from '@/lib/siteUrl';
@@ -15,7 +16,7 @@ export const SITE_LANGUAGE = 'tr-TR';
 export const SITE_CANONICAL_HOST = 'hacettepeisitme.com.tr';
 
 export const SITE_DEFAULT_KEYWORDS =
-  'Samsun işitme cihazları, samsun işitme cihazları, işitme cihazı Samsun, Samsun\'da işitme cihazı, samsunda işitme cihazı, hacettepe işitme cihazları, işitme testi Samsun, ücretsiz işitme testi, Vista, A&M, Nitro, SGK işitme cihazı, Hacettepe İşitme, Samsun Hacettepe İşitme Merkezi';
+  'Hacettepe İşitme Merkezi, Hacettepe İşitme Samsun, ücretsiz işitme testi Samsun, işitme testi Samsun, Samsun işitme cihazları, işitme cihazı Samsun, Vista, A&M, Nitro, SGK işitme cihazı';
 
 export const SITE_DEFAULT_OG_IMAGE = '/local-images/home-flow/flow-reception.webp';
 
@@ -52,14 +53,14 @@ export function organizationJsonLd() {
     url: absoluteUrl('/'),
     logo: absoluteUrl('/local-images/brand-favicon.webp'),
     image: defaultOgImageUrl(),
-    telephone: '+905334745806',
+    telephone: SITE_PHONE_E164,
     address: {
       '@type': 'PostalAddress',
       ...SITE_ADDRESS_SCHEMA,
     },
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+905334745806',
+      telephone: SITE_PHONE_E164,
       contactType: 'customer service',
       areaServed: 'TR',
       availableLanguage: ['Turkish'],

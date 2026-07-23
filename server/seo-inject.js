@@ -22,7 +22,14 @@ function upsertMeta(html, attr, key, content) {
 }
 
 function upsertLink(html, rel, href, extra = '') {
-  const pattern = new RegExp(`<link\\s+rel=["']${rel}["'][^>]*>`, 'i');
+  const hreflangMatch = /hreflang=["']([^"']+)["']/i.exec(extra);
+  const hreflang = hreflangMatch?.[1];
+  const pattern = hreflang
+    ? new RegExp(
+        `<link\\s+[^>]*rel=["']${rel}["'][^>]*hreflang=["']${hreflang}["'][^>]*>|<link\\s+[^>]*hreflang=["']${hreflang}["'][^>]*rel=["']${rel}["'][^>]*>`,
+        'i',
+      )
+    : new RegExp(`<link\\s+rel=["']${rel}["'](?![^>]*hreflang)[^>]*>`, 'i');
   const tag = `<link rel="${rel}" href="${escapeAttr(href)}"${extra ? ` ${extra}` : ''} />`;
   if (pattern.test(html)) {
     return html.replace(pattern, tag);
@@ -62,15 +69,25 @@ export function injectSeoIntoHtml(html, pathname, entry, siteUrl) {
   if (!entry) return ensureGa4Script(html);
 
   const canonical = `${siteUrl}${entry.path || pathname}`;
-  const ogImage = entry.image?.startsWith('http') ? entry.image : `${siteUrl}${entry.image || '/local-images/home-flow/flow-reception.webp'}`;
+  const ogImage = entry.image?.startsWith('http')
+    ? entry.image
+    : `${siteUrl}${entry.image || '/local-images/home-flow/flow-reception.webp'}`;
 
   let next = html;
   next = replaceTag(next, /<title>[^<]*<\/title>/i, `<title>${escapeAttr(entry.title)}</title>`);
   next = upsertMeta(next, 'name', 'description', entry.description);
   next = upsertMeta(next, 'name', 'keywords', entry.keywords || '');
-  next = upsertMeta(next, 'name', 'robots', entry.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+  next = upsertMeta(
+    next,
+    'name',
+    'robots',
+    entry.noindex
+      ? 'noindex, nofollow'
+      : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  );
   next = upsertLink(next, 'canonical', canonical);
   next = upsertLink(next, 'alternate', canonical, 'hreflang="tr"');
+  next = upsertLink(next, 'alternate', canonical, 'hreflang="x-default"');
   next = upsertMeta(next, 'property', 'og:title', entry.title);
   next = upsertMeta(next, 'property', 'og:description', entry.description);
   next = upsertMeta(next, 'property', 'og:url', canonical);
@@ -94,3 +111,5 @@ export function resolveSeoEntry(manifest, pathname) {
   if (!manifest) return null;
   return manifest[pathname] || manifest[pathname.replace(/\/$/, '')] || null;
 }
+
+export { upsertLink, upsertMeta };

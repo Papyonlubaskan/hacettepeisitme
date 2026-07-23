@@ -37,11 +37,11 @@ function withImage(path: string, seo: Omit<RouteSeo, 'image'>): RouteSeo {
 
 export const ROUTE_SEO: Record<string, RouteSeo> = {
   '/': withImage('/', {
-    title: 'Samsun İşitme Cihazları | Samsun\'da İşitme Cihazı — Hacettepe',
+    title: 'Hacettepe İşitme Merkezi Samsun | Ücretsiz İşitme Testi',
     description:
-      "Samsun işitme cihazları satışı ve Samsun'da ücretsiz işitme testi. İlkadım Tepecik merkez — Vista, A&M, Nitro, SGK desteği, 30 gün deneme. Aynı gün randevu: +90 533 474 58 06.",
+      "Samsun İlkadım Tepecik'te ücretsiz işitme testi, Vista, A&M ve Nitro danışmanlığı, SGK desteği ve 30 gün deneme. Hacettepe İşitme Merkezi — aynı gün randevu: +90 533 474 58 06.",
     keywords:
-      'Samsun işitme cihazları, samsun işitme cihazları, işitme cihazı Samsun, Samsun\'da işitme cihazı, samsunda işitme cihazı, hacettepe işitme cihazları, Samsun işitme merkezi, ücretsiz işitme testi Samsun, Vista işitme cihazı Samsun, İlkadım işitme merkezi',
+      'Hacettepe İşitme Merkezi, Hacettepe İşitme Samsun, ücretsiz işitme testi Samsun, işitme testi Samsun, İlkadım işitme merkezi, Vista işitme cihazı Samsun, SGK işitme cihazı Samsun',
   }),
   '/hakkimizda': withImage('/hakkimizda', {
     title: 'Hakkımızda | Hacettepe İşitme Cihazları Samsun',
@@ -111,7 +111,7 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
     description:
       "Samsun işitme cihazları satışı ve Samsun'da ücretsiz işitme testi. İlkadım Tepecik — Vista, A&M, Nitro, Pediatrik Grup, SGK danışmanlığı, 30 gün deneme. Randevu: +90 533 474 58 06.",
     keywords:
-      'Samsun işitme cihazları, samsun işitme cihazları, samsunda işitme cihazı, işitme cihazı Samsun, Samsun\'da işitme cihazı, işitme merkezi Samsun, Vista Samsun, hacettepe işitme cihazları',
+      'Samsun işitme cihazları, işitme cihazı Samsun, Samsun\'da işitme cihazı, işitme merkezi Samsun, Vista Samsun, hacettepe işitme cihazları',
   }),
   '/samsun-isitme-testi': withImage('/samsun-isitme-testi', {
     title: 'Samsun İşitme Testi | Ücretsiz Odyometri — Hacettepe İşitme',

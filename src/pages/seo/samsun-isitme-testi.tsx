@@ -2,39 +2,11 @@ import { Link } from 'react-router-dom';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import { PAGE_IMAGES } from '@/lib/pageImages';
-import { faqPageJsonLd, serviceJsonLd } from '@/lib/schema';
-
-const PAGE_FAQ = [
-  {
-    question: 'Samsun’da işitme testi ücretsiz mi?',
-    answer: 'Evet, Hacettepe İşitme Merkezi’nde ilk işitme testi ve danışmanlık ücretsizdir.',
-  },
-  {
-    question: 'İşitme testi ne kadar sürer?',
-    answer: 'Odyometri testi ortalama 20-45 dakika sürer; sonuçlar aynı gün değerlendirilir.',
-  },
-  {
-    question: 'Samsun’da işitme testi için randevu gerekli mi?',
-    answer: 'Randevu ile beklemeden hizmet alabilirsiniz; müsaitlik durumunda randevusuz da kabul edilir.',
-  },
-];
+import { SAMSUN_TESTI_FAQ } from '@/lib/schema';
 
 export default function SamsunIsitmeTestiPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      serviceJsonLd(
-        'Samsun İşitme Testi',
-        'Samsun İlkadım merkezimizde ücretsiz odyometri ve işitme testi hizmeti.',
-        '/samsun-isitme-testi',
-      ),
-      faqPageJsonLd(PAGE_FAQ),
-    ],
-  };
-
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHeroBanner
         title="Samsun İşitme Testi"
         subtitle="Uzman odyometristler tarafından uygulanan kapsamlı işitme testi ile işitme profiliniz detaylı şekilde analiz edilir. İlkadım Tepecik merkez — ücretsiz test."
@@ -53,7 +25,7 @@ export default function SamsunIsitmeTestiPage() {
 
           <h2 className="font-serif text-2xl font-bold text-brand-dark pt-2">Sıkça Sorulan Sorular</h2>
           <div className="space-y-4">
-            {PAGE_FAQ.map((item) => (
+            {SAMSUN_TESTI_FAQ.map((item) => (
               <div key={item.question} className="bg-brand-cream rounded-2xl p-5">
                 <h3 className="font-bold text-brand-dark mb-2">{item.question}</h3>
                 <p className="text-sm">{item.answer}</p>
@@ -70,8 +42,8 @@ export default function SamsunIsitmeTestiPage() {
               trackingLabel="samsun_isitme_testi_call"
               className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent px-6 py-3 rounded-full font-semibold"
             />
-            <Link to="/samsun-isitme-cihazi" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
-              İşitme Cihazları →
+            <Link to="/samsun-isitme-cihazlari" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
+              Samsun İşitme Cihazları →
             </Link>
           </div>
         </div>

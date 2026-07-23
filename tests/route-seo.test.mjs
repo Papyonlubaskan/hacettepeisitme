@@ -18,7 +18,7 @@ test('routeSeo blog listesi meta tanımı içerir', () => {
 test('routeSeo yerel anahtar kelime landing sayfaları içerir', () => {
   assert.match(routeSeo, /\/samsun-isitme-cihazlari/);
   assert.match(routeSeo, /Samsun işitme cihazları/i);
-  assert.match(routeSeo, /samsunda işitme cihazı/i);
+  assert.match(routeSeo, /Hacettepe İşitme Merkezi Samsun/);
 });
 
 test('routeSeo pro-hero-main referansı içermez', () => {

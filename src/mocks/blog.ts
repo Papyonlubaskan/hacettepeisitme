@@ -9,7 +9,7 @@ import {
 export const blogPosts = [
   {
     id: 1,
-    slug: 'isitme-kaybının-erken-belirtileri',
+    slug: 'isitme-kaybinin-erken-belirtileri',
     title: 'İşitme Kaybının Erken Belirtileri Nelerdir?',
     excerpt:
       'Televizyon sesini sürekli yükseltmek, kalabalık ortamlarda konuşmaları anlamakta zorlanmak, telefonda rahat iletişim kuramamak... İşitme kaybının erken belirtilerini fark ettiğinizde uzman desteği almanız önemlidir. Erken teşhis, tedavi sürecini olumlu yönde etkiler.',

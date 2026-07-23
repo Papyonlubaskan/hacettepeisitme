@@ -8,6 +8,7 @@ const ROUTE_LABELS: Record<string, string> = {
   '/isitme-cihazi-fiyatlari': 'İşitme Cihazı Fiyatları',
   '/samsun-isitme-testi': 'Samsun İşitme Testi',
   '/samsun-isitme-cihazi': 'Samsun İşitme Cihazı',
+  '/samsun-isitme-cihazlari': 'Samsun İşitme Cihazları',
   '/sgk-odeme-tutarlari': 'SGK Ödeme Tutarları',
   '/isitme-cihazlari': 'İşitme Cihazları',
   '/katalog': 'Katalog',

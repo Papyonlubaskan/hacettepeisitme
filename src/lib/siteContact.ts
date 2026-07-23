@@ -28,7 +28,7 @@ export const SITE_MAP_LNG = 36.2974595;
 
 /** Google Maps landmark etiketi (yol tarifi ekranında görünür) */
 export const SITE_MAP_PLACE_LABEL =
-  'Şok Market, Tepecik Mahallesi 1537 Sokak No 3, İlkadım/Samsun';
+  'Hacettepe İşitme Cihazları, Tepecik Mah. 1537. Sokak 1B/b, İlkadım/Samsun';
 
 /** Google Maps place CID — Şok Market Tepecik */
 export const SITE_GOOGLE_CID = '3773788576008759636';

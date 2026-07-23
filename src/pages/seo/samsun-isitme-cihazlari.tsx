@@ -3,57 +3,12 @@ import AddressLink from '@/components/feature/AddressLink';
 import PhoneCallButton from '@/components/feature/PhoneCallButton';
 import PageHeroBanner from '@/components/feature/PageHeroBanner';
 import { PAGE_IMAGES } from '@/lib/pageImages';
-import { breadcrumbJsonLd, faqPageJsonLd, serviceJsonLd, webPageJsonLd } from '@/lib/schema';
+import { SAMSUN_CIHAZLARI_FAQ } from '@/lib/schema';
 import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
-const PAGE_FAQ = [
-  {
-    question: 'Samsun işitme cihazları nereden alınır?',
-    answer:
-      'Hacettepe İşitme Cihazları İlkadım Tepecik merkezinde Vista, A&M, Nitro ve Pediatrik Grup işitme cihazları satışı, ücretsiz test ve SGK danışmanlığı sunmaktadır. Eğitim Araştırma karşısı Şok Market üstü konumumuzdadır.',
-  },
-  {
-    question: "Samsun'da işitme cihazı fiyatları ne kadar?",
-    answer:
-      'Fiyatlar modele ve teknolojiye göre değişir. Merkezimizde ücretsiz test sonrası bütçenize uygun Samsun işitme cihazları seçenekleri ve SGK ödeme bilgisi verilir.',
-  },
-  {
-    question: 'Samsun işitme cihazları için SGK desteği var mı?',
-    answer:
-      'Evet. SGK raporu ve gerekli belgelerle başvuruda SGK ödeme tutarları uygulanır. Merkezimizde süreç danışmanlığı ücretsizdir.',
-  },
-  {
-    question: "Samsun'da ücretsiz işitme testi yapılıyor mu?",
-    answer:
-      'Evet. İlk işitme testi ve danışmanlık ücretsizdir. Randevu için web sitemizden form bırakabilir veya +90 533 474 58 06 numaralı telefonu arayabilirsiniz.',
-  },
-];
-
 export default function SamsunIsitmeCihazlariPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      webPageJsonLd(
-        'Samsun İşitme Cihazları',
-        "Samsun'da işitme cihazı satışı, ücretsiz test, Vista A&M Nitro serileri ve SGK danışmanlığı.",
-        '/samsun-isitme-cihazlari',
-      ),
-      serviceJsonLd(
-        'Samsun İşitme Cihazları Satışı',
-        "Samsun İlkadım Tepecik'te işitme cihazları satışı, ücretsiz odyometri, cihaz uyarlama ve SGK danışmanlığı.",
-        '/samsun-isitme-cihazlari',
-      ),
-      breadcrumbJsonLd([
-        { name: 'Ana Sayfa', path: '/' },
-        { name: 'Samsun İşitme Cihazları', path: '/samsun-isitme-cihazlari' },
-      ]),
-      faqPageJsonLd(PAGE_FAQ),
-    ],
-  };
-
   return (
     <div className="pt-[72px] animate-fadeInUp bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHeroBanner
         title="Samsun İşitme Cihazları"
         subtitle="Samsun'da işitme cihazı arayanlar için İlkadım Tepecik merkezimizde ücretsiz test, Vista, A&M ve Nitro serileri, 30 gün deneme ve SGK danışmanlığı."
@@ -83,25 +38,25 @@ export default function SamsunIsitmeCihazlariPage() {
           </h2>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              <Link to="/isitme-cihazlari/vista" className="text-brand-accent hover:underline">
+              <Link to="/katalog/vista" className="text-brand-accent hover:underline">
                 Vista işitme cihazları
               </Link>{' '}
               — şarjlı ve Bluetooth destekli modeller
             </li>
             <li>
-              <Link to="/isitme-cihazlari/a-m" className="text-brand-accent hover:underline">
+              <Link to="/katalog/a-m" className="text-brand-accent hover:underline">
                 A&amp;M işitme cihazları
               </Link>{' '}
               — ekonomik ve güvenilir seriler
             </li>
             <li>
-              <Link to="/isitme-cihazlari/nitro" className="text-brand-accent hover:underline">
+              <Link to="/katalog/nitro" className="text-brand-accent hover:underline">
                 Nitro işitme cihazları
               </Link>{' '}
               — yüksek performanslı çözümler
             </li>
             <li>
-              <Link to="/isitme-cihazlari/pediatrik" className="text-brand-accent hover:underline">
+              <Link to="/katalog/pediatrik" className="text-brand-accent hover:underline">
                 Pediatrik Grup
               </Link>{' '}
               — çocuklara özel işitme cihazları
@@ -120,7 +75,7 @@ export default function SamsunIsitmeCihazlariPage() {
             Sıkça Sorulan Sorular
           </h2>
           <div className="space-y-4">
-            {PAGE_FAQ.map((item) => (
+            {SAMSUN_CIHAZLARI_FAQ.map((item) => (
               <div key={item.question} className="bg-brand-cream rounded-2xl p-5">
                 <h3 className="font-bold text-brand-dark mb-2">{item.question}</h3>
                 <p className="text-sm">{item.answer}</p>
