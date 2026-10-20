@@ -412,6 +412,8 @@ for (const [path, entry] of Object.entries(manifest)) {
   if (html) {
     entry.ssrHtml = html;
     delete entry.bodyHtml;
+    // SSG HTML'i LCP'yi JS'siz karşılıyor; route chunk preload'ları yalnızca LCP görseliyle bant genişliği yarıştırır
+    delete entry.modulepreload;
     ssrCount++;
   }
 }
