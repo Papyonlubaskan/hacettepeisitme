@@ -19,13 +19,12 @@
     animation: fadeInUp 0.6s ease-out forwards;
   }
 
+  /* Opaklık animasyonu yok: içerik ilk karede görünür olmalı (aksi halde FCP/LCP animasyonu bekler) */
   @keyframes fadeInUp {
     from {
-      opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(12px);
     }
     to {
-      opacity: 1;
       transform: translateY(0);
     }
   }
@@ -40,6 +39,13 @@
     }
     to {
       transform: scale(1.06);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fadeInUp,
+    .ken-burns-active {
+      animation: none;
     }
   }
 
