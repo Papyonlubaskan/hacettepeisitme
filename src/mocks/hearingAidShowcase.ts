@@ -61,14 +61,14 @@ const SHOWCASE_VIDEO = {
 } as const;
 
 const SHOWCASE_POSTER = {
-  vista: '/local-images/showcase/videos/vista-poster.jpg',
-  am: '/local-images/showcase/videos/am-poster.jpg',
-  nitro: '/local-images/showcase/videos/nitro-poster.jpg',
-  pediatrik: '/local-images/showcase/videos/pediatrik-poster.jpg',
-  fitRic: '/local-images/showcase/videos/fit-ric-poster.jpg',
-  fitBte: '/local-images/showcase/videos/fit-bte-poster.jpg',
-  fitIte: '/local-images/showcase/videos/fit-ite-poster.jpg',
-  fitCharge: '/local-images/showcase/videos/fit-charge-poster.jpg',
+  vista: '/local-images/showcase/videos/vista-poster.webp',
+  am: '/local-images/showcase/videos/am-poster.webp',
+  nitro: '/local-images/showcase/videos/nitro-poster.webp',
+  pediatrik: '/local-images/showcase/videos/pediatrik-poster.webp',
+  fitRic: '/local-images/showcase/videos/fit-ric-poster.webp',
+  fitBte: '/local-images/showcase/videos/fit-bte-poster.webp',
+  fitIte: '/local-images/showcase/videos/fit-ite-poster.webp',
+  fitCharge: '/local-images/showcase/videos/fit-charge-poster.webp',
 } as const;
 
 export const SHOWCASE_SERIES: ShowcaseSeries[] = [

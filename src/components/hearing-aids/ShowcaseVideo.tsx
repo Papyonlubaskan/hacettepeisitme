@@ -21,17 +21,6 @@ export default function ShowcaseVideo({
   const [ratio, setRatio] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!poster) return;
-    const img = new Image();
-    img.onload = () => {
-      if (img.naturalWidth && img.naturalHeight) {
-        setRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
-      }
-    };
-    img.src = poster;
-  }, [poster]);
-
-  useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
@@ -90,7 +79,19 @@ export default function ShowcaseVideo({
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100" aria-hidden>
             {poster ? (
-              <img src={poster} alt="" className="absolute inset-0 h-full w-full object-contain" loading="lazy" />
+              <img
+                src={poster}
+                alt=""
+                className="absolute inset-0 h-full w-full object-contain"
+                loading="lazy"
+                decoding="async"
+                onLoad={(e) => {
+                  const img = e.currentTarget;
+                  if (img.naturalWidth && img.naturalHeight) {
+                    setRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
+                  }
+                }}
+              />
             ) : null}
             <span className="relative h-9 w-9 animate-spin rounded-full border-2 border-gray-200 border-t-brand-accent" />
           </div>
