@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:api": "node --watch server/index.js",
     "dev:full": "concurrently \"npm:dev\" \"npm:dev:api\"",
-    "build": "vite build && node scripts/generate-seo-assets.mjs",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir out-ssr && node scripts/generate-seo-assets.mjs",
     "seo:generate": "node scripts/generate-seo-assets.mjs",
     "start": "node server/index.js",
     "preview": "vite preview",
@@ -20,6 +20,7 @@
     "showcase:webp": "node scripts/convert-showcase-webp.mjs",
     "google-reviews:refresh": "node scripts/build-google-reviews-bundled.mjs && node scripts/sync-google-reviews-seo.mjs",
     "seo:ping": "node scripts/ping-search-engines.mjs",
+    "check:hydration": "node scripts/check-hydration.mjs",
     "pages:webp": "node scripts/convert-page-images-webp.mjs",
     "blog:images": "node scripts/build-blog-images.mjs",
     "home-flow:build": "node scripts/fetch-google-place-photos-from-links.mjs",
@@ -27,6 +28,7 @@
     "deploy:push": "git push papyon main"
   },
   "dependencies": {
+    "compression": "^1.8.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

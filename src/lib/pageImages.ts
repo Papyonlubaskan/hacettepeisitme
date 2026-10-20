@@ -17,3 +17,17 @@ export const PAGE_IMAGES = {
   samsunDevice: '/local-images/pages/hero-samsun-device.webp',
   samsunTest: '/local-images/pages/hero-samsun-test.webp',
 } as const;
+
+const HERO_ORIGINAL_WIDTH = 1536;
+const HAS_MOBILE_VARIANT = /\/(pages\/hero-[\w-]+|showcase\/hearing-aids-hero)\.webp$/;
+
+/** PAGE_IMAGES hero'ları için 828w mobil varyant + orijinal (scripts ile üretilen *-828.webp) */
+export function pageHeroSrcSet(src: string): string | undefined {
+  if (!HAS_MOBILE_VARIANT.test(src)) return undefined;
+  return `${src.replace(/\.webp$/, '-828.webp')} 828w, ${src} ${HERO_ORIGINAL_WIDTH}w`;
+}
+
+/** img src'si: React src'yi srcset'ten önce yazdığından mobil varyant verilir */
+export function pageHeroSrc(src: string): string {
+  return HAS_MOBILE_VARIANT.test(src) ? src.replace(/\.webp$/, '-828.webp') : src;
+}

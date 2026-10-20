@@ -36,10 +36,11 @@ function ReviewSkeleton() {
 
 function StarRow({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5 mb-3" aria-label={`${rating} yıldız`}>
+    <div className="flex gap-0.5 mb-3" role="img" aria-label={`5 üzerinden ${rating} yıldız`}>
       {Array.from({ length: 5 }, (_, i) => (
         <i
           key={i}
+          aria-hidden
           className={`ri-star-fill text-xs ${i < rating ? 'text-yellow-400' : 'text-gray-200'}`}
         />
       ))}
@@ -64,12 +65,12 @@ function ReviewCard({ review }: { review: GoogleReview }) {
           />
         ) : (
           <div className="w-10 h-10 rounded-full bg-brand-accent/10 flex items-center justify-center">
-            <span className="text-sm font-bold text-brand-accent">{initial}</span>
+            <span className="text-sm font-bold text-brand-accent-strong">{initial}</span>
           </div>
         )}
         <div className="min-w-0">
           <p className="text-sm font-bold text-brand-dark truncate">{review.authorName}</p>
-          <p className="text-xs text-gray-400">{review.relativeTime}</p>
+          <p className="text-xs text-gray-500">{review.relativeTime}</p>
         </div>
       </div>
       <StarRow rating={review.rating} />
@@ -184,7 +185,7 @@ export default function GoogleReviewsSection({
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-3">
             Müşterilerimiz Ne Diyor?
           </h2>
-          <p className="text-gray-500">{subtitle}</p>
+          <p className="text-gray-600">{subtitle}</p>
           {!loading && payload?.source === 'google' && rating != null && (
             <p className="mt-3 text-sm text-brand-dark">
               <span className="inline-flex items-center gap-1 font-semibold">
@@ -193,9 +194,9 @@ export default function GoogleReviewsSection({
               </span>
               <span className="mx-2 text-gray-300">·</span>
               <span className="font-semibold">{rating.toFixed(1)}</span>
-              <span className="text-gray-400"> / 5</span>
+              <span className="text-gray-600"> / 5</span>
               {reviewCount != null && (
-                <span className="text-gray-500"> ({reviewCount} değerlendirme)</span>
+                <span className="text-gray-600"> ({reviewCount} değerlendirme)</span>
               )}
             </p>
           )}
@@ -221,6 +222,7 @@ export default function GoogleReviewsSection({
           <div
             ref={trackRef}
             className="flex w-full min-w-0 gap-4 overflow-x-auto overscroll-x-contain px-6 lg:px-12 pb-2 scroll-smooth snap-x snap-mandatory touch-pan-x"
+            role="region"
             aria-label="Google yorum akışı"
             onScroll={pauseAutoScroll}
             onPointerDown={pauseAutoScroll}
@@ -251,7 +253,7 @@ export default function GoogleReviewsSection({
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-accent transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-brand-accent transition-colors"
             >
               <i className="ri-google-fill" />
               <span>Google&apos;daki tüm yorumları görüntüle</span>

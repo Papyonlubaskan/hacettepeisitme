@@ -169,7 +169,7 @@ function BlogDetail() {
                 </a>
               </div>
 
-              <div className="flex items-center gap-2 text-xs text-gray-400">
+              <div className="flex items-center gap-2 text-xs text-gray-500">
                 <i className="ri-eye-line" />
                 <span>{post.readTime} okuma süresi</span>
               </div>
@@ -182,14 +182,14 @@ function BlogDetail() {
                   <h3 className="font-serif text-xl font-bold text-brand-dark mb-2">
                     Ücretsiz İşitme Testi Randevusu Alın
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-600">
                     Uzmanlarımızdan randevu alarak işitme sağlığınızı kontrol ettirin.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     to="/randevu"
-                    className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
+                    className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-3 rounded-full hover:bg-[#006b61] transition-all whitespace-nowrap"
                     onClick={() => trackCTAClick('Blog Detaydan Randevu', 'blog_detail_cta', '/randevu')}
                   >
                     <span>Randevu Oluştur</span>
@@ -235,13 +235,13 @@ function BlogDetail() {
                     />
                   </div>
                   <div className="p-5">
-                    <span className="inline-block bg-brand-accent/10 text-brand-accent text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                    <span className="inline-block bg-brand-accent/10 text-brand-accent-strong text-xs font-semibold px-3 py-1 rounded-full mb-3">
                       {related.category}
                     </span>
                     <h3 className="text-base font-bold text-brand-dark mb-2 line-clamp-2 group-hover:text-brand-accent transition-colors">
                       {related.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="flex items-center gap-2 text-xs text-gray-600">
                       <i className="ri-time-line" />
                       <span>{related.readTime} okuma</span>
                     </div>

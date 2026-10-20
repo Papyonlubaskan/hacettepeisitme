@@ -132,7 +132,7 @@ export default function HearingTest({ onComplete, ear }: Props) {
       {/* Tone Card */}
       <div className="bg-white rounded-2xl p-8 md:p-10 text-center mb-8">
         <div className="mb-6">
-          <span className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 text-sm font-semibold text-brand-accent">
+          <span className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 text-sm font-semibold text-brand-accent-strong">
             <i className="ri-volume-up-line" />
             {freqLabels[current.freq]}
           </span>
@@ -152,7 +152,7 @@ export default function HearingTest({ onComplete, ear }: Props) {
                 />
               ))}
             </div>
-            <p className="text-sm text-gray-400">Ses oynatılıyor...</p>
+            <p className="text-sm text-gray-500">Ses oynatılıyor...</p>
           </div>
         )}
 
@@ -162,7 +162,7 @@ export default function HearingTest({ onComplete, ear }: Props) {
           className={`inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-semibold text-base transition-all ${
             isPlaying
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-brand-accent text-white hover:bg-[#008f7f] hover:scale-105'
+              : 'bg-brand-accent-strong text-white hover:bg-[#006b61] hover:scale-105'
           }`}
         >
           {isPlaying ? (
@@ -178,7 +178,7 @@ export default function HearingTest({ onComplete, ear }: Props) {
           )}
         </button>
 
-        <p className="text-sm text-gray-400 mt-4">
+        <p className="text-sm text-gray-500 mt-4">
           Ses bittikten sonra duyup duymadığınızı belirtin.
         </p>
       </div>
@@ -212,7 +212,7 @@ export default function HearingTest({ onComplete, ear }: Props) {
         </button>
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-4">
+      <p className="text-center text-xs text-gray-500 mt-4">
         Not: Testi sessiz bir ortamda, kulaklık ile yapmanız önerilir.
       </p>
     </div>

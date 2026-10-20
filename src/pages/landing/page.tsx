@@ -62,7 +62,7 @@ export default function LandingPage() {
               { step: '04', title: 'Uyarlama & Teslim', desc: 'Cihazınız kişiselleştirilir ve aynı gün teslim edilir.' },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-brand-accent text-white font-bold text-lg mx-auto mb-4">
+                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-brand-accent-strong text-white font-bold text-lg mx-auto mb-4">
                   {s.step}
                 </div>
                 <h3 className="text-base font-bold text-brand-dark mb-2">{s.title}</h3>
@@ -112,7 +112,7 @@ export default function LandingPage() {
           </p>
           <a
             href="#form"
-            className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap"
             onClick={() => trackCTAClick('Yukarı Dön Form', 'landing_final_cta', '#form')}
           >
             <span>Randevu Formuna Dön</span>

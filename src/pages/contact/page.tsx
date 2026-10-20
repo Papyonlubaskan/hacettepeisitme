@@ -104,7 +104,7 @@ export default function Contact() {
                 href={SITE_MAP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+                className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-accent-strong hover:text-[#008f7f] transition-colors"
                 onClick={() => trackCTAClick('Konum / Harita', 'contact_map_cta', SITE_MAP_URL)}
               >
                 <i className="ri-navigation-line" aria-hidden />
@@ -125,12 +125,12 @@ export default function Contact() {
 
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-brand-cream rounded-xl p-4">
-                  <p className="text-xs text-gray-400 mb-1">Çalışma Saatleri</p>
+                  <p className="text-xs text-gray-500 mb-1">Çalışma Saatleri</p>
                   <p className="text-sm font-semibold text-brand-dark">Pzt-Cmt: 09:00 - 18:00</p>
                   <p className="text-sm text-gray-500">Pazar: Kapalı</p>
                 </div>
                 <div className="bg-brand-cream rounded-xl p-4">
-                  <p className="text-xs text-gray-400 mb-1">WhatsApp Destek</p>
+                  <p className="text-xs text-gray-500 mb-1">WhatsApp Destek</p>
                   <p className="text-sm font-semibold text-brand-dark">{SITE_PHONE_DISPLAY}</p>
                   <p className="text-sm text-gray-500">7/24 Mesaj</p>
                 </div>
@@ -252,7 +252,7 @@ export default function Contact() {
                       className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent resize-none"
                       placeholder="Mesajınızı buraya yazın..."
                     />
-                    <p className="text-xs text-gray-400 mt-1 text-right">
+                    <p className="text-xs text-gray-500 mt-1 text-right">
                       {formData.message.length}/500
                     </p>
                   </div>
@@ -266,7 +266,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={loading || !consent}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
                   >
                     {loading ? (
                       <>

@@ -20,13 +20,13 @@ export default function CatalogIndexPage() {
               to={`/katalog/${cat.slug}`}
               className="group border border-gray-100 rounded-2xl p-8 hover:border-brand-accent/50 hover:shadow-lg transition-all"
             >
-              <p className="text-sm font-semibold text-brand-accent uppercase tracking-wide mb-2">{cat.lineName}</p>
+              <p className="text-sm font-semibold text-brand-accent-strong uppercase tracking-wide mb-2">{cat.lineName}</p>
               <h2 className="font-serif text-xl font-bold text-brand-dark mb-2 group-hover:text-brand-accent transition-colors">
                 {cat.title}
               </h2>
               <p className="text-sm text-gray-500 mb-4">{cat.subtitle}</p>
               <p className="text-sm text-gray-600 line-clamp-3">{cat.summary}</p>
-              <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-brand-accent">
+              <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-brand-accent-strong">
                 Kataloğu İncele
                 <i className="ri-arrow-right-line" />
               </span>
@@ -34,7 +34,7 @@ export default function CatalogIndexPage() {
           ))}
         </div>
         <div className="text-center pt-4">
-          <Link to="/isitme-cihazlari" className="text-sm font-semibold text-brand-accent">
+          <Link to="/isitme-cihazlari" className="text-sm font-semibold text-brand-accent-strong">
             ← Cihaz tiplerine göre incele
           </Link>
         </div>

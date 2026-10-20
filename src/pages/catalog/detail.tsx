@@ -27,7 +27,7 @@ export default function CatalogDetailPage() {
       <SeoBreadcrumbJsonLd items={getBreadcrumbs(path, catalog.lineName)} />
       <HearingAidShell title={catalog.title} subtitle={catalog.subtitle}>
         <div className="space-y-8 text-gray-600 leading-relaxed">
-          <Link to="/katalog" className="inline-flex items-center gap-1 text-sm text-brand-accent font-medium">
+          <Link to="/katalog" className="inline-flex items-center gap-1 text-sm text-brand-accent-strong font-medium">
             <i className="ri-arrow-left-line" />
             Tüm Kataloglar
           </Link>
@@ -55,10 +55,10 @@ export default function CatalogDetailPage() {
               {catalog.lineName} modellerini merkezimizde denemek ve güncel fiyat bilgisi almak için randevu oluşturun.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/randevu" className="inline-flex justify-center bg-brand-accent text-white px-6 py-3 rounded-full font-semibold text-sm">
+              <Link to="/randevu" className="inline-flex justify-center bg-brand-accent-strong text-white px-6 py-3 rounded-full font-semibold text-sm">
                 Deneme Randevusu
               </Link>
-              <Link to="/isitme-cihazlari" className="inline-flex justify-center border border-brand-accent text-brand-accent px-6 py-3 rounded-full font-semibold text-sm">
+              <Link to="/isitme-cihazlari" className="inline-flex justify-center border border-brand-accent text-brand-accent-strong px-6 py-3 rounded-full font-semibold text-sm">
                 Diğer Seriler
               </Link>
             </div>

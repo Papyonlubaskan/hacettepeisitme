@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { InstagramFeedPost, InstagramFeedResponse } from '@/types/instagramFeed';
 import { trackCTAClick } from '@/lib/tracking';
 
@@ -11,6 +11,50 @@ function formatPostDate(timestamp?: string | null) {
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) return null;
   return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+/** Video yalnızca görünür alana girince indirilir ve oynatılır (ilk yükte MB'larca indirmeyi önler) */
+function InViewVideo({ src, poster }: { src: string; poster?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [activated, setActivated] = useState(false);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setActivated(true);
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { rootMargin: '200px 0px', threshold: 0.25 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={activated ? src : undefined}
+      poster={poster}
+      className="absolute left-1/2 top-1/2 min-h-[112%] min-w-[112%] -translate-x-1/2 -translate-y-[46%] object-cover"
+      muted
+      loop
+      playsInline
+      preload="none"
+      onLoadedMetadata={(e) => {
+        const v = e.currentTarget;
+        if (v.videoWidth && v.videoHeight) {
+          v.parentElement?.style.setProperty('aspect-ratio', `${v.videoWidth} / ${v.videoHeight}`);
+        }
+        v.play().catch(() => {});
+      }}
+    />
+  );
 }
 
 function PostSkeleton() {
@@ -91,7 +135,7 @@ export default function InstagramFeedSection() {
               href={INSTAGRAM_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-3 rounded-full hover:bg-[#006b61] transition-all whitespace-nowrap"
               onClick={() => trackCTAClick('Instagram Profili', 'home_instagram', INSTAGRAM_PROFILE_URL)}
             >
               <i className="ri-instagram-line text-lg" />
@@ -127,25 +171,7 @@ export default function InstagramFeedSection() {
                           style={{ aspectRatio: post.mediaType === 'VIDEO' ? '9 / 16' : '4 / 5' }}
                         >
                           {post.mediaType === 'VIDEO' && post.videoUrl ? (
-                            <video
-                              src={post.videoUrl}
-                              poster={post.imageUrl}
-                              className="absolute left-1/2 top-1/2 min-h-[112%] min-w-[112%] -translate-x-1/2 -translate-y-[46%] object-cover"
-                              muted
-                              loop
-                              playsInline
-                              autoPlay
-                              preload="metadata"
-                              onLoadedMetadata={(e) => {
-                                const v = e.currentTarget;
-                                if (v.videoWidth && v.videoHeight) {
-                                  v.parentElement?.style.setProperty(
-                                    'aspect-ratio',
-                                    `${v.videoWidth} / ${v.videoHeight}`
-                                  );
-                                }
-                              }}
-                            />
+                            <InViewVideo src={post.videoUrl} poster={post.imageUrl} />
                           ) : (
                             <img
                               src={post.imageUrl}
@@ -166,7 +192,7 @@ export default function InstagramFeedSection() {
                                 const img = e.currentTarget;
                                 if (img.dataset.fallback === '1') return;
                                 img.dataset.fallback = '1';
-                                img.src = '/local-images/home-flow/flow-reception.webp';
+                                img.src = '/local-images/home-flow/flow-reception-480.webp';
                               }}
                             />
                           )}
@@ -178,7 +204,7 @@ export default function InstagramFeedSection() {
                           )}
                         </div>
                         <div className="p-4">
-                          <div className="flex items-center justify-between gap-2 text-xs text-gray-400 mb-2">
+                          <div className="flex items-center justify-between gap-2 text-xs text-gray-500 mb-2">
                             <span className="inline-flex items-center gap-2">
                               <i className="ri-instagram-line" />
                               @{INSTAGRAM_HANDLE}

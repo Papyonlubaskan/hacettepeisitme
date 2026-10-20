@@ -16,6 +16,7 @@ export default {
             primary: '#1e3a5f',
             secondary: '#2d5a7b',
             accent: '#00a896',
+            'accent-strong': '#00766b',
             light: '#e8f4f0',
             cream: '#f7f5f0',
             warm: '#c9a96e',

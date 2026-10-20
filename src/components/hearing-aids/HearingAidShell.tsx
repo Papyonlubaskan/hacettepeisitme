@@ -27,18 +27,18 @@ export default function HearingAidShell({
         <div className="w-full px-6 lg:px-12 max-w-5xl mx-auto flex flex-col sm:flex-row gap-4">
           <Link
             to="/randevu"
-            className="inline-flex justify-center bg-brand-accent text-white px-6 py-3 rounded-full font-semibold"
+            className="inline-flex justify-center bg-brand-accent-strong text-white px-6 py-3 rounded-full font-semibold"
           >
             Ücretsiz Test Randevusu
           </Link>
           <PhoneCallButton
             label="Bizi Ara"
             trackingLabel="hearing_aids_cta_call"
-            className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent px-6 py-3 rounded-full font-semibold hover:bg-white"
+            className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent-strong px-6 py-3 rounded-full font-semibold hover:bg-white"
           />
           <Link
             to="/isitme-cihazi-fiyatlari"
-            className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3"
+            className="inline-flex justify-center text-brand-accent-strong font-semibold px-6 py-3"
           >
             Fiyat Bilgisi →
           </Link>

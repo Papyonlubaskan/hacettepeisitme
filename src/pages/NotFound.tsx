@@ -24,7 +24,7 @@ export default function NotFound() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all"
+            className="inline-flex items-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-3 rounded-full hover:bg-[#006b61] transition-all"
           >
             <i className="ri-home-line" />
             Ana Sayfa

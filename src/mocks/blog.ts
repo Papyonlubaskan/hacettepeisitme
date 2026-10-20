@@ -15,7 +15,7 @@ export const blogPosts = [
       'Televizyon sesini sürekli yükseltmek, kalabalık ortamlarda konuşmaları anlamakta zorlanmak, telefonda rahat iletişim kuramamak... İşitme kaybının erken belirtilerini fark ettiğinizde uzman desteği almanız önemlidir. Erken teşhis, tedavi sürecini olumlu yönde etkiler.',
     content: `<p>İşitme kaybı çoğu zaman yavaş ilerleyen ve fark edilmesi zor bir süreçtir. Birçok kişi, duyma yeteneğindeki bu değişiklikleri yaşlanmanın doğal bir parçası olarak görerek uzun süre uzman yardımı almaktan kaçınır. Oysa erken tanı ve doğru müdahale, işitme kaybının ilerlemesini yavaşlatmada ve yaşam kalitesini koruyabilmekte kritik öneme sahiptir.</p>
 
-<h3>İşitme Kaybının En Yaygın 7 Belirtisi</h3>
+<h2>İşitme Kaybının En Yaygın 7 Belirtisi</h2>
 
 <p><strong>1. Televizyon ve Radyo Sesini Sürekli Yükseltmek</strong><br/>Aileniz veya komşularınız televizyon sesinin çok yüksek olduğundan şikayet ediyorsa, bu işitme duyarlılığınızın azaldığının bir işareti olabilir. Özellikle yüksek frekans sesleri (kadın ve çocuk sesleri gibi) duymakta zorlanmak, erken evre işitme kaybının tipik bir belirtisidir.</p>
 
@@ -31,7 +31,7 @@ export const blogPosts = [
 
 <p><strong>7. Sesleri Farklı Algılama</strong><br/>Bazı seslerin çok yüksek veya çok boğuk geldiğini hissetmek, ses tonu algılamasında yaşanan değişikliklerin bir göstergesidir. İşitme cihazları bu tür ton dengesizliklerini düzelterek doğal bir duyma deneyimi sunabilir.</p>
 
-<h3>Ne Zaman Uzman Desteği Almalısınız?</h3>
+<h2>Ne Zaman Uzman Desteği Almalısınız?</h2>
 
 <p>Yukarıdaki belirtilerden herhangi birini veya birkaçını düzenli olarak yaşıyorsanız, <strong>en kısa sürede bir odyoloji merkezinde ücretsiz işitme testi</strong> yaptırmanızı öneririz. Hacettepe İşitme Cihazları olarak Samsun İlkadım'daki merkezimizde randevusuz da gelebileceğiniz ücretsiz işitme testi hizmetimiz bulunmaktadır.</p>
 
@@ -49,12 +49,12 @@ export const blogPosts = [
   {
     id: 2,
     slug: '2024-isitme-cihazi-teknolojisi-rehberi',
-    title: '2025 İşitme Cihazı Teknolojisi Rehberi',
+    title: '2026 İşitme Cihazı Teknolojisi Rehberi',
     excerpt:
       'Günümüz işitme cihazları artık sadece ses yükseltmiyor. Bluetooth bağlantısı ile telefon görüşmeleri yapabilir, yapay zeka destekli gürültü filtreleme ile restoranda bile net duyabilirsiniz. Şarj edilebilir bataryalar ise pila değiştirme derdini ortadan kaldırıyor.',
-    content: `<p>2024 yılı işitme cihazı teknolojisinde devrim niteliğinde yeniliklerin yılı oldu. Artık işitme cihazları sadece sesi yükselten basit elektronik cihazlar değil; akıllı telefonlarla entegre çalışan, yapay zeka destekli, kişiselleştirilebilen mini bilgisayarlara dönüştü. Bu rehberde, 2024'ün en önemli işitme cihazı teknolojilerini ve bunların günlük yaşamınıza nasıl katkı sağladığını detaylıca ele alacağız.</p>
+    content: `<p>Son yıllar işitme cihazı teknolojisinde devrim niteliğinde yeniliklerle geçti. Artık işitme cihazları sadece sesi yükselten basit elektronik cihazlar değil; akıllı telefonlarla entegre çalışan, yapay zeka destekli, kişiselleştirilebilen mini bilgisayarlara dönüştü. Bu rehberde, 2026 itibarıyla en önemli işitme cihazı teknolojilerini ve bunların günlük yaşamınıza nasıl katkı sağladığını detaylıca ele alacağız.</p>
 
-<h3>1. Bluetooth ve Akıllı Telefon Entegrasyonu</h3>
+<h2>1. Bluetooth ve Akıllı Telefon Entegrasyonu</h2>
 
 <p>Günümüzün premium işitme cihazları, Bluetooth Low Energy (BLE) teknolojisi sayesinde akıllı telefonlarınızla doğrudan kablosuz bağlantı kurabiliyor. Bu özellik sayesinde:</p>
 <ul>
@@ -66,27 +66,27 @@ export const blogPosts = [
 
 <p>Özellikle işitme kaybı olan kişiler için telefon görüşmeleri büyük bir zorluk teşkil eder. Bluetooth entegre işitme cihazları, bu sorunu tamamen ortadan kaldırarak telefon konuşmalarını telefonun hoparlöründen çok daha net ve anlaşılır hale getirir.</p>
 
-<h3>2. Yapay Zeka Destekli Gürültü Filtreleme</h3>
+<h2>2. Yapay Zeka Destekli Gürültü Filtreleme</h2>
 
-<p>2024'ün en dikkat çeken teknolojilerinden biri, cihaz içi makine öğrenimi algoritmalarıdır. Bu algoritmalar, kullanıcının bulunduğu ortamı sürekli analiz ederek en uygun ses ayarını otomatik olarak yapar.</p>
+<p>Günümüzün en dikkat çeken teknolojilerinden biri, cihaz içi makine öğrenimi algoritmalarıdır. Bu algoritmalar, kullanıcının bulunduğu ortamı sürekli analiz ederek en uygun ses ayarını otomatik olarak yapar.</p>
 
 <p>Örneğin, restoranda yemek yerken arka plan gürültüsünü bastırırken konuşma seslerini öne çıkarır; yürüyüş yaparken rüzgar sesini filtreler; evde televizyon izlerken odadaki diğer sesleri dengeleyerek en net duyma deneyimini sunar. Tüm bu ayarlar kullanıcının müdahalesi olmadan, yapay zeka tarafından saniyenin binde birinde yapılır.</p>
 
-<h3>3. Şarj Edilebilir Batarya Teknolojisi</h3>
+<h2>3. Şarj Edilebilir Batarya Teknolojisi</h2>
 
-<p>Pil değiştirme zorluğu, özellikler yaşlı kullanıcılar için işitme cihazı kullanımında en büyük engellerden biriydi. 2024 teknolojisi ile şarj edilebilir lityum-iyon bataryalar standart hale geldi. Tek bir şarj ile 24-30 saat kullanım süresi sunan cihazlar, gece yatarken şarj istasyonuna konularak birkaç saatte tam şarj olur.</p>
+<p>Pil değiştirme zorluğu, özellikler yaşlı kullanıcılar için işitme cihazı kullanımında en büyük engellerden biriydi. Yeni nesil teknolojiyle şarj edilebilir lityum-iyon bataryalar standart hale geldi. Tek bir şarj ile 24-30 saat kullanım süresi sunan cihazlar, gece yatarken şarj istasyonuna konularak birkaç saatte tam şarj olur.</p>
 
 <p>Bu teknoloji hem kullanım kolaylığı sağlar hem de pila atıklarının çevreye verdiği zararı azaltır. Ayrıca batarya kapaklarının açılması, pillerin doğru takılması gibi küçük ve hassas işlemlerle uğraşma derdi tamamen ortadan kalkar.</p>
 
-<h3>4. Telehealth ve Uzaktan Ayarlama</h3>
+<h2>4. Telehealth ve Uzaktan Ayarlama</h2>
 
 <p>Pandemi sonrası hızla yaygınlaşan telehealth hizmetleri, işitme cihazı sektöründe de devrim yaratmış durumda. Artık cihazınızın ayarlarını değiştirmek veya küçük teknik sorunları çözmek için merkeze gitmenize gerek kalmıyor. Uzman odyologunuz, cihazınıza uzaktan erişerek ayarlarını gerçek zamanlı olarak güncelleyebilir.</p>
 
-<h3>5. Su ve Toz Direnci</h3>
+<h2>5. Su ve Toz Direnci</h2>
 
 <p>IP68 sertifikasına sahip işitme cihazları, toza ve suya karşı tam koruma sunar. Bu, cihazınızı yağmurda, terlerken spor yaparken veya hafifçe ıslanabileceğiniz durumlarda güvenle kullanabileceğiniz anlamına gelir. Nano-kaplama teknolojileri sayesinde nem ve kirletici maddelere karşı dayanıklılık önemli ölçüde artmıştır.</p>
 
-<h3>Hacettepe İşitme Cihazları'nda Son Teknoloji</h3>
+<h2>Hacettepe İşitme Cihazları'nda Son Teknoloji</h2>
 
 <p>Merkezimizde Vista, A&M, Nitro ve Pediatrik Grup serilerinin en güncel modelleri mevcuttur. Size en uygun cihazı seçmek ve tüm teknolojik özellikleri en verimli şekilde kullanabilmeniz için ücretsiz danışmanlık hizmetimizden yararlanabilirsiniz.</p>`,
     category: 'Teknoloji',
@@ -96,8 +96,8 @@ export const blogPosts = [
     authorTitle: BLOG_AUTHOR_TITLE_TECH,
     image: '/local-images/blog/blog-2-card.webp',
     ogImage: '/local-images/blog/blog-2-og.webp',
-    metaDescription: '2025 işitme cihazı teknolojisi rehberi. Bluetooth, yapay zeka gürültü filtreleme, şarj edilebilir batarya ve telehealth özellikleri. Hacettepe İşitme Cihazları Samsun.',
-    keywords: '2025 işitme cihazı teknolojisi, bluetooth işitme cihazı, şarj edilebilir işitme cihazı, yapay zeka işitme',
+    metaDescription: '2026 işitme cihazı teknolojisi rehberi. Bluetooth, yapay zeka gürültü filtreleme, şarj edilebilir batarya ve telehealth özellikleri. Hacettepe İşitme Cihazları Samsun.',
+    keywords: '2026 işitme cihazı teknolojisi, bluetooth işitme cihazı, şarj edilebilir işitme cihazı, yapay zeka işitme',
   },
   {
     id: 3,
@@ -107,7 +107,7 @@ export const blogPosts = [
       'Günlük temizlik rutininiz cihazınızın ömrünü uzatır ve performansını korur. Nem önleyici kutularda saklamak, yumuşak fırça ile filtre temizliği yapmak, batarya bölmesini kontrol etmek en temel adımlardır. Düzenli uzman bakımı ise yılda en az iki kez önerilir.',
     content: `<p>İşitme cihazınız, hayatınızdaki en değerli elektronik cihazlardan biri olabilir. Düzenli bakım ve temizlik, cihazınızın ömrünü uzatır, ses kalitesini korur ve pahalı tamirat maliyetlerini önler. Bu kapsamlı rehberde, evde yapabileceğiniz günlük bakım rutinlerinden profesyonel servis bakımına kadar tüm adımları öğreneceksiniz.</p>
 
-<h3>Günlük Temizlik Rutini (Her Akşam)</h3>
+<h2>Günlük Temizlik Rutini (Her Akşam)</h2>
 
 <p><strong>Adım 1: Fiziksel Görünüm Kontrolü</strong><br/>Cihazınızı çıkardıktan sonra aydınlık bir ortamda tutun ve dış yüzeyini inceleyin. Kulak kanalındaki doğal yağlar ve cilt hücreleri zamanla cihazın hoparlör açıklığını tıkayabilir. Bu birikim, ses kalitesinin bozulmasına ve cihazın çalışmamasına neden olabilir.</p>
 
@@ -117,7 +117,7 @@ export const blogPosts = [
 
 <p><strong>Adım 4: Nem Önleyici Kutuda Saklama</strong><br/>Geceleri cihazınızı nem önleyici kap veya elektronik kurutma kutusuna koyun. Bu kutular, biriken nemin buharlaşmasını sağlayarak iç elektronik devrelerin korozyona uğramasını önler. Özellikle yaz aylarında ve nemli iklimlerde bu uygulama çok önemlidir.</p>
 
-<h3>Haftalık Bakım Kontrol Listesi</h3>
+<h2>Haftalık Bakım Kontrol Listesi</h2>
 
 <ul>
 <li><strong>Batarya bölmesini kontrol edin:</strong> Pil yatağında oksitlenme veya paslanma belirtisi varsa, pamuklu çubuk ile nazikçe temizleyin.</li>
@@ -126,7 +126,7 @@ export const blogPosts = [
 <li><strong>Kulak kalıbını temizleyin:</strong> Özel yapım kulak kalıpları yıkanabilir. Ilık sabunlu su ile temizleyip tamamen kurutmadan tekrar kullanmayın.</li>
 </ul>
 
-<h3>Yılda İki Kez Profesyonel Bakım</h3>
+<h2>Yılda İki Kez Profesyonel Bakım</h2>
 
 <p>Ev bakımı ne kadar düzenli olursa olsun, yılda en az iki kez yetkili servise profesyonel bakım yaptırmanız şiddetle tavsiye edilir. Profesyonel bakım sırasında:</p>
 <ul>
@@ -136,7 +136,7 @@ export const blogPosts = [
 <li>Ses performansı test edilir ve ayarlar gerekirse güncellenir</li>
 </ul>
 
-<h3>Bakımı Yapılmayan Cihazların Riskleri</h3>
+<h2>Bakımı Yapılmayan Cihazların Riskleri</h2>
 
 <p>Bakımsız bir işitme cihazı ses kalitesini kaybeder, sürekli arızalanır ve erken ömrünü tamamlar. Ayrıca, tıkanmış filtreler ve mikrofonlar, cihazın ses seviyesini artırmak zorunda kalmasına neden olur; bu da geri besleme (ıslık sesi) sorunlarına yol açar.</p>
 
@@ -159,7 +159,7 @@ export const blogPosts = [
       'İşitme kaybı derecesi, yaşam tarzınız ve estetik beklentileriniz hangi cihaz tipi için uygun olduğunuzu belirler. Kulak içi modeller gizli ve hafiftir, kulak arkası modeller ise daha güçlü işlemci ve daha uzun batarya ömrü sunar.',
     content: `<p>İşitme cihazı almaya karar verdiğinizde karşınıza çıkan ilk sorulardan biri "Hangi tip cihaz bana uygun?" olur. Kulak içi (ITE), kulak kanalı içi (CIC), kulak arkası (BTE), alıcı kanalda (RIC) gibi birçok farklı model mevcuttur. Her birinin kendi avantajları ve sınırlamaları vardır. Doğru cihazı seçmek için işitme kaybınızın derecesi, yaşam tarzınız ve kişisel beklentileriniz göz önünde bulundurulmalıdır.</p>
 
-<h3>Kulak Arkası (BTE) İşitme Cihazları</h3>
+<h2>Kulak Arkası (BTE) İşitme Cihazları</h2>
 
 <p><strong>Özellikler:</strong> Cihazın ana gövdesi kulak arkasına yerleştirilir ve ince bir tüple kulak kalıbına bağlanır. Tüm işitme kaybı tipleri için uygundur, hafiften derine kadar.</p>
 
@@ -173,7 +173,7 @@ export const blogPosts = [
 
 <p><strong>Dezavantajları:</strong> Kulak arkasında görünür olabilir; bazı kullanıcılar için estetik kaygı yaratabilir.</p>
 
-<h3>Alıcı Kanalda (RIC / RITE) Cihazlar</h3>
+<h2>Alıcı Kanalda (RIC / RITE) Cihazlar</h2>
 
 <p>RIC, "Receiver In Canal" anlamına gelir ve aslında BTE cihazların daha küçük, daha gizli versiyonudur. Hoparlör doğrudan kulak kanalının içine yerleştirilir, bu da ses kalitesini artırır.</p>
 
@@ -184,7 +184,7 @@ export const blogPosts = [
 <li>Çeşitli renk seçenekleri ile saç rengine uyum sağlayabilir</li>
 </ul>
 
-<h3>Kulak İçi (ITE) Cihazlar</h3>
+<h2>Kulak İçi (ITE) Cihazlar</h2>
 
 <p>ITE cihazlar, kulak kepçesinin dış kısmına oturacak şekilde özel olarak üretilir. Gövde içinde batarya, mikrofon ve işlemci bulunur.</p>
 
@@ -197,7 +197,7 @@ export const blogPosts = [
 
 <p><strong>Dezavantajları:</strong> Kulak kanalındaki yağ ve nem nedeniyle daha sık bakım gerektirir; batarya ömrü daha kısadır; ileri derece işitme kaybı için yeterli güç sunmayabilir.</p>
 
-<h3>Tamamen Kanal İçi (CIC ve IIC) Cihazlar</h3>
+<h2>Tamamen Kanal İçi (CIC ve IIC) Cihazlar</h2>
 
 <p>Bu modeller, kulak kanalının en derinine yerleştirilir ve dışarıdan tamamen görünmezler. "Invisible In Canal" (IIC) modeller en gizli seçenektir.</p>
 
@@ -209,7 +209,7 @@ export const blogPosts = [
 
 <p><strong>Dezavantajları:</strong> Çok küçük olmaları nedeniyle Bluetooth ve pil değiştirme özellikleri olmayabilir; bakımı ve ayarlanması zordur; derin işitme kaybı için uygun olmayabilir.</p>
 
-<h3>Hangi Cihazı Seçmelisiniz?</h3>
+<h2>Hangi Cihazı Seçmelisiniz?</h2>
 
 <table style="width:100%;border-collapse:collapse;margin:16px 0;">
 <tr style="background:#f5f5f0;"><th style="padding:8px;border:1px solid #ddd;text-align:left;">Kriter</th><th style="padding:8px;border:1px solid #ddd;text-align:left;">Önerilen Tip</th></tr>
@@ -239,13 +239,13 @@ export const blogPosts = [
       'Presbiakuzi yaşlılıkla birlikte görülen doğal bir durumdur ama işitme kaybı sadece yaşlıları etkilemez. Gürültülü iş ortamları, genetik faktörler, kulak enfeksiyonları ve bazı ilaçlar her yaşta işitme kaybına yol açabilir. Düzenli test yaptırmak her yaşta önemlidir.',
     content: `<p>"İşitme kaybı sadece yaşlıların sorunudur" düşüncesi, işitme sağlığı alanındaki en yaygın yanılgılardan biridir. Gerçek şu ki, işitme kaybı her yaşta ortaya çıkabilir — bebeklerden genç yetişkinlere, orta yaştaki profesyonellerden ileri yaştaki bireylere kadar. Bu yazıda, işitme kaybının farklı yaş gruplarında nasıl ortaya çıktığını ve alınabilecek önlemleri ele alacağız.</p>
 
-<h3>Yaşlılıkla İlişkili İşitme Kaybı: Presbiakuzi</h3>
+<h2>Yaşlılıkla İlişkili İşitme Kaybı: Presbiakuzi</h2>
 
 <p>Presbiakuzi, 60 yaş üzeri bireylerde en sık görülen işitme kaybı türüdür. İç kulaktaki tüy hücrelerinin (saç hücreleri) yaşla birlikte doğal olarak aşınması sonucu ortaya çıkar. Genellikle her iki kulakta simetrik olarak başlar ve yüksek frekans sesleri duymada zorlanma ile kendini gösterir.</p>
 
 <p>Presbiakuzi, Türkiye'de 65 yaş üzeri her 3 kişiden 1'ini etkilemektedir. Ancak bu durumun "kaçınılmaz" olduğu düşüncesi yanlıştır. Erken tanı ve doğru işitme cihazı kullanımı, yaşlılıkla ilişkili işitme kaybının yaşam kalitesi üzerindeki olumsuz etkilerini büyük ölçüde azaltabilir.</p>
 
-<h3>Gençlerde ve Yetişkinlerde İşitme Kaybı</h3>
+<h2>Gençlerde ve Yetişkinlerde İşitme Kaybı</h2>
 
 <p><strong>Gürültü Maruziyeti:</strong> Modern yaşamın en büyük tehditlerinden biri, aşırı gürültüye maruz kalmadır. Konserlerde yüksek sesle müzik dinlemek, kulaklıkla yüksek volümde uzun süre müzik dinlemek, fabrika ve inşaat gibi gürültülü iş ortamlarında çalışmak, işitme kaybına yol açan başlıca faktörlerdir. Dünya Sağlık Örgütü, 12-35 yaş arası 1 milyar kişinin işitme kaybı riski altında olduğunu tahmin etmektedir.</p>
 
@@ -253,13 +253,13 @@ export const blogPosts = [
 
 <p><strong>Kulak Enfeksiyonları:</strong> Orta kulak iltihabı (otitis media), özellikle çocuklarda yaygın olmakla birlikte yetişkinlerde de görülebilir. Tedavi edilmeyen veya tekrarlayan enfeksiyonlar kalıcı işitme kaybına neden olabilir.</p>
 
-<h3>Çocukluk ve Bebeklik Dönemi</h3>
+<h2>Çocukluk ve Bebeklik Dönemi</h2>
 
 <p>Doğuştan işitme kaybı, her 1000 canlı doğumdan yaklaşık 1-3'ünde görülür. Genetik faktörler, anne karnındaki enfeksiyonlar (özellikle rubella, sitomegalovirüs), prematüre doğum ve sarılık gibi nedenler doğuştan işitme kaybına yol açabilir.</p>
 
 <p>Türkiye'de tüm hastanelerde yeni doğan işitme tarama testi (otoakustik emisyon) zorunlu hale getirilmiştir. Bu test, bebeklerin işitme durumunu doğumdan kısa süre sonra tespit etmeyi amaçlar. Erken tanı ve erken müdahale, çocuğun dil ve konuşma gelişiminin normal seyretmesini destekler.</p>
 
-<h3>Her Yaşta Alınabilecek Önlemler</h3>
+<h2>Her Yaşta Alınabilecek Önlemler</h2>
 
 <ul>
 <li><strong>Kulaklık kullanımında 60/60 kuralı:</strong> Ses seviyesini %60'ın altında tutun ve 60 dakikadan uzun süre aralıksız dinlemeyin</li>
@@ -268,7 +268,7 @@ export const blogPosts = [
 <li><strong>Kulak temizliğine dikkat edin:</strong> Kulak çubuğu (pamuklu çubuk) kulak zarına zarar verebilir ve serumenu içeri itebilir. Profesyonel temizlik yaptırın</li>
 </ul>
 
-<h3>Hacettepe İşitme Merkezi'nde Her Yaş Grubuna Özel Çözümler</h3>
+<h2>Hacettepe İşitme Merkezi'nde Her Yaş Grubuna Özel Çözümler</h2>
 
 <p>Merkezimizde bebeklerden yaşlılara kadar her yaş grubuna uygun işitme testi, işitme cihazı danışmanlığı ve takip hizmeti sunmaktayız. Çocuklar için oyun temelli işitme testleri, yetişkinler için kapsamlı odyolojik değerlendirmeler ve yaşlılar için ev ziyaretleri ile kapsamlı bir hizmet yelpazemiz bulunmaktadır.</p>`,
     category: 'İşitme Sağlığı',
@@ -289,11 +289,11 @@ export const blogPosts = [
       'Hacettepe İşitme Cihazları İlkadım Tepecik merkezimizde (Eğitim Araştırma karşısı) randevusuz da gelebileceğiniz ücretsiz işitme testi hizmetimiz bulunmaktadır. Test yaklaşık 20 dakika sürmekte ve sonuçlar anında değerlendirilmektedir. Size özel çözüm önerileri için uzmanlarımızla görüşebilirsiniz.',
     content: `<p>İşitme sağlığınız hakkında merak ettiğiniz sorulara yanıt bulmak ve işitme yeteneğinizi objektif olarak ölçmek hiç bu kadar kolay olmamıştı. Hacettepe İşitme Cihazları İlkadım Tepecik merkezimizde, Samsun'un her yerinden gelen ziyaretçilerimize ücretsiz ve kapsamlı işitme testi hizmeti sunuyoruz. Bu yazıda, ücretsiz işitme testi sürecimizi adım adım anlatacağız.</p>
 
-<h3>1. Randevu Alma veya Randevusuz Ziyaret</h3>
+<h2>1. Randevu Alma veya Randevusuz Ziyaret</h2>
 
 <p>Merkezimize gelmeden önce telefonla randevu alabilirsiniz (+90 533 474 58 06), ancak randevusuz olarak da doğrudan ziyaret edebilirsiniz. Merkezimiz hafta içi ve cumartesi 09:00-18:00 saatleri arasında hizmet vermektedir.</p>
 
-<h3>2. Karşılama ve Ön Görüşme</h3>
+<h2>2. Karşılama ve Ön Görüşme</h2>
 
 <p>Merkezimize geldiğinizde, uzman personelimiz sizi karşılar ve kısa bir ön görüşme yapar. Bu görüşmede:</p>
 <ul>
@@ -304,11 +304,11 @@ export const blogPosts = [
 </ul>
 <p>soruları sorularak bir öykü alınır. Bu bilgiler, test sonuçlarını daha doğru yorumlamamıza yardımcı olur.</p>
 
-<h3>3. Otoskopik Muayene</h3>
+<h2>3. Otoskopik Muayene</h2>
 
 <p>Teste geçmeden önce, odyologumuz otoskop adı verilen bir aletle kulak kanalınızı ve kulak zarınızı muayene eder. Bu muayene, kulak kanalında tıkanıklık (serumen/kulak kiri), enfeksiyon veya kulak zarında bir sorun olup olmadığını tespit etmek için yapılır. Eğer kulak kanalı tıkalıysa, temizlik işlemi önerilebilir; bu durumda test bir sonraki ziyarete ertelenebilir.</p>
 
-<h3>4. Odyometri Testi (Saf Ton İşitme Testi)</h3>
+<h2>4. Odyometri Testi (Saf Ton İşitme Testi)</h2>
 
 <p>Bu, en temel ve klasik işitme testidir. Sessiz bir odada, profesyonel odyometre cihazı ve özel kulaklıklar kullanılarak yapılır. Test sırasında:</p>
 <ul>
@@ -319,11 +319,11 @@ export const blogPosts = [
 </ul>
 <p>Test yaklaşık 10-15 dakika sürer ve ağrısız, non-invaziv bir işlemdir.</p>
 
-<h3>5. Konuşma Odyometrisi (İsteğe Bağlı)</h3>
+<h2>5. Konuşma Odyometrisi (İsteğe Bağlı)</h2>
 
 <p>Eğer işitme kaybı tespit edilirse, konuşma anlama yeteneğinizi ölçen ek bir test yapılabilir. Bu testte, farklı ses seviyelerinde tekrar etmeniz istenen kelime listeleri duyarsınız. Sonuçlar, işitme cihazı kullanımından ne kadar fayda görebileceğinizi belirlemek için kullanılır.</p>
 
-<h3>6. Test Sonuçlarının Değerlendirilmesi</h3>
+<h2>6. Test Sonuçlarının Değerlendirilmesi</h2>
 
 <p>Test tamamlandıktan sonra, odyologumuz sonuçları size grafik üzerinde açıklar. Audiogram olarak adlandırılan bu grafik:</p>
 <ul>
@@ -332,7 +332,7 @@ export const blogPosts = [
 <li>İşitme kaybının tipini (iletim tipi, sensörinöral, mikst) tanımlar</li>
 </ul>
 
-<h3>7. Size Özel Çözüm Önerileri</h3>
+<h2>7. Size Özel Çözüm Önerileri</h2>
 
 <p>Eğer işitme kaybı tespit edilirse, odyologumuz size en uygun işitme cihazı modellerini ve tedavi seçeneklerini sunar. Bu aşamada:</p>
 <ul>
@@ -343,11 +343,11 @@ export const blogPosts = [
 </ul>
 <p>hakkında detaylı bilgi alabilirsiniz. Dilerseniz, önerilen cihazları merkezimizde ücretsiz deneyebilirsiniz.</p>
 
-<h3>8. Ücretsiz 30 Günlük Deneme Fırsatı</h3>
+<h2>8. Ücretsiz 30 Günlük Deneme Fırsatı</h2>
 
 <p>Hacettepe İşitme Cihazları olarak seçtiğiniz cihazı evinize götürüp günlük yaşamınızda denemeniz için 30 günlük ücretsiz deneme fırsatı sunuyoruz. Bu süre boyunca uzmanlarımızdan telefon veya WhatsApp üzerinden destek alabilir, gerektiğinde ayarlarda değişiklik talep edebilirsiniz.</p>
 
-<h3>Samsun'da İşitme Testi Yaptırmak İçin Bizi Arayın</h3>
+<h2>Samsun'da İşitme Testi Yaptırmak İçin Bizi Arayın</h2>
 
 <p>İlkadım, Atakum, Canik ve Samsun'un tüm ilçelerinden merkezimize kolayca ulaşabilirsiniz. Ücretsiz işitme testi ve danışmanlık için <strong>+90 533 474 58 06</strong> numarasından bize ulaşabilirsiniz.</p>`,
     category: 'Hizmetler',

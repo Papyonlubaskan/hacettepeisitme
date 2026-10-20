@@ -125,7 +125,7 @@ export default function SgkOdemeTutarlariPage() {
                   {sgkRows.map((row) => (
                     <tr key={row.segment} className="border-t border-gray-100">
                       <td className="p-4 text-gray-700 font-medium">{row.segment}</td>
-                      <td className="p-4 text-brand-accent font-semibold">{row.sgkDestegi}</td>
+                      <td className="p-4 text-brand-accent-strong font-semibold">{row.sgkDestegi}</td>
                       <td className="p-4 text-gray-700">{row.hastaKatki}</td>
                       <td className="p-4 text-gray-500">{row.uygunluk}</td>
                     </tr>
@@ -158,7 +158,7 @@ export default function SgkOdemeTutarlariPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     to="/randevu"
-                    className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-5 py-3 rounded-full"
+                    className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-5 py-3 rounded-full"
                     onClick={() => trackCTAClick('SGK Hesaplama Randevu', 'sgk_page', '/randevu')}
                   >
                     <span>Randevu Al</span>

@@ -33,15 +33,15 @@ export default function BlogListPage() {
                   />
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
-                    <span className="text-brand-accent font-semibold">{post.category}</span>
+                  <div className="flex items-center gap-3 text-xs text-gray-600 mb-3">
+                    <span className="text-brand-accent-strong font-semibold">{post.category}</span>
                     <span>•</span>
                     <span>{post.readTime}</span>
                   </div>
                   <h2 className="font-serif text-lg font-bold text-brand-dark mb-2 line-clamp-2 group-hover:text-brand-accent transition-colors">
                     {post.title}
                   </h2>
-                  <p className="text-sm text-gray-500 line-clamp-3">{post.excerpt}</p>
+                  <p className="text-sm text-gray-600 line-clamp-3">{post.excerpt}</p>
                 </div>
               </Link>
             ))}

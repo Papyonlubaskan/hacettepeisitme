@@ -30,7 +30,7 @@ export default function HearingAidCategoryPage() {
       <SeoBreadcrumbJsonLd items={getBreadcrumbs(path, category.title)} />
       <HearingAidShell title={category.title} subtitle={category.summary} heroImage={PAGE_IMAGES.hearingAids}>
         <div className="space-y-8 text-gray-600 leading-relaxed">
-          <Link to="/isitme-cihazlari" className="inline-flex items-center gap-1 text-sm text-brand-accent font-medium">
+          <Link to="/isitme-cihazlari" className="inline-flex items-center gap-1 text-sm text-brand-accent-strong font-medium">
             <i className="ri-arrow-left-line" />
             Tüm İşitme Cihazları
           </Link>
@@ -67,7 +67,7 @@ export default function HearingAidCategoryPage() {
             <p className="text-white/80 text-sm mb-4">
               {category.title} hakkında detaylı bilgi, ücretsiz işitme testi ve cihaz denemesi için randevu alın.
             </p>
-            <Link to="/randevu" className="inline-flex bg-brand-accent text-white px-5 py-2.5 rounded-full text-sm font-semibold">
+            <Link to="/randevu" className="inline-flex bg-brand-accent-strong text-white px-5 py-2.5 rounded-full text-sm font-semibold">
               Randevu Oluştur
             </Link>
           </div>

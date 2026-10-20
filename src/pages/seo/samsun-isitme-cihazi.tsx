@@ -56,19 +56,19 @@ export default function SamsunIsitmeCihaziPage() {
           </div>
 
           <p>
-            Adres: <AddressLink className="text-brand-accent hover:underline" /> — Telefon: {SITE_PHONE_DISPLAY}
+            Adres: <AddressLink className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent" /> — Telefon: {SITE_PHONE_DISPLAY}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Link to="/randevu" className="inline-flex justify-center bg-brand-accent text-white px-6 py-3 rounded-full font-semibold">
+            <Link to="/randevu" className="inline-flex justify-center bg-brand-accent-strong text-white px-6 py-3 rounded-full font-semibold">
               Ücretsiz Test Randevusu
             </Link>
             <PhoneCallButton
               label="Bizi Ara"
               trackingLabel="samsun_isitme_cihazi_call"
-              className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent px-6 py-3 rounded-full font-semibold hover:bg-brand-light"
+              className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent-strong px-6 py-3 rounded-full font-semibold hover:bg-brand-light"
             />
-            <Link to="/isitme-cihazi-fiyatlari" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
+            <Link to="/isitme-cihazi-fiyatlari" className="inline-flex justify-center text-brand-accent-strong font-semibold px-6 py-3">
               Fiyat Bilgisi →
             </Link>
             <Link to="/samsun-isitme-cihazlari" className="inline-flex justify-center text-gray-500 text-sm px-6 py-3">

@@ -1,6 +1,6 @@
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import jiti from 'jiti';
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,7 +18,32 @@ const { DEVICE_CATEGORIES, CATALOGS } = importSource('../src/mocks/hearingAids.t
 const { breadcrumbJsonLd, localBusinessJsonLd, faqPageJsonLd, SITE_FAQ, SAMSUN_CIHAZLARI_FAQ, SAMSUN_CIHAZI_FAQ, SAMSUN_TESTI_FAQ, serviceJsonLd, webPageJsonLd } =
   importSource('../src/lib/schema.ts');
 const { organizationJsonLd, websiteJsonLd, SITE_DEFAULT_OG_IMAGE } = importSource('../src/lib/siteSeo.ts');
-const { PAGE_IMAGES } = importSource('../src/lib/pageImages.ts');
+const { PAGE_IMAGES, pageHeroSrcSet } = importSource('../src/lib/pageImages.ts');
+const { HOME_FLOW_SLIDES, HERO_LCP_SRCSET } = importSource('../src/lib/homeFlowImages.ts');
+const { services } = importSource('../src/mocks/services.ts');
+const { SITE_ADDRESS_SINGLE, SITE_PHONE_E164, SITE_PHONE_DISPLAY, SITE_MAP_URL } =
+  importSource('../src/lib/siteContact.ts');
+const { createSeoBodyBuilder } = await import('./seo-body.mjs');
+
+const buildBodyHtml = createSeoBodyBuilder({
+  ROUTE_SEO,
+  blogPosts,
+  DEVICE_CATEGORIES,
+  CATALOGS,
+  SITE_FAQ,
+  PAGE_FAQS: {
+    '/samsun-isitme-cihazlari': SAMSUN_CIHAZLARI_FAQ,
+    '/samsun-isitme-cihazi': SAMSUN_CIHAZI_FAQ,
+    '/samsun-isitme-testi': SAMSUN_TESTI_FAQ,
+  },
+  services,
+  contact: {
+    address: SITE_ADDRESS_SINGLE,
+    phoneE164: SITE_PHONE_E164,
+    phoneDisplay: SITE_PHONE_DISPLAY,
+    mapUrl: SITE_MAP_URL,
+  },
+});
 
 const DEFAULT_OG = SITE_DEFAULT_OG_IMAGE;
 const CATALOG_SEO_IMAGES = {
@@ -30,6 +55,79 @@ const CATALOG_SEO_IMAGES = {
 
 function absoluteUrl(path) {
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+/**
+ * Rota → lazy sayfa chunk'ları (Vite manifest). HTML'e modulepreload eklenir;
+ * aksi halde tarayıcı ana JS'i bitirmeden sayfa chunk'ını istemez (LCP'yi geciktiren ek tur).
+ */
+function buildRouteChunks() {
+  const manifestPath = join(rootDir, 'out', '.vite', 'manifest.json');
+  if (!existsSync(manifestPath)) return () => [];
+  const vite = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const config = readFileSync(join(rootDir, 'src', 'router', 'config.tsx'), 'utf8');
+
+  const importByName = {};
+  for (const [, name, rel] of config.matchAll(/const (\w+) = lazy\(\(\) => import\("\.\.\/([^"]+)"\)\)/g)) {
+    importByName[name] = rel;
+  }
+  const routes = [];
+  for (const [, routePath, name] of config.matchAll(/path: "([^"]+)",\s*element: \(\s*<Suspense[^\n]*>\s*<(\w+)/g)) {
+    const rel = importByName[name];
+    if (!rel) continue;
+    const key = Object.keys(vite).find((k) => k.replace(/\.tsx?$/, '') === `src/${rel}`);
+    if (key) routes.push({ routePath, key });
+  }
+
+  function collect(key, out) {
+    const chunk = vite[key];
+    if (!chunk || chunk.isEntry) return;
+    const file = `/${chunk.file}`;
+    if (out.includes(file)) return;
+    out.push(file);
+    for (const imp of chunk.imports ?? []) collect(imp, out);
+  }
+
+  return (path) => {
+    const exact = routes.find((r) => r.routePath === path);
+    const dynamic = routes.find(
+      (r) => r.routePath.includes('/:') && path.startsWith(r.routePath.split('/:')[0] + '/'),
+    );
+    const match = exact ?? dynamic;
+    if (!match) return [];
+    const files = [];
+    collect(match.key, files);
+    return files;
+  };
+}
+
+const routeChunks = buildRouteChunks();
+
+/** Build-time SSG (out-ssr/entry-server.js). Yoksa özet HTML (bodyHtml) kullanılır. */
+const ssrEntry = join(rootDir, 'out-ssr', 'entry-server.js');
+const ssrRender = existsSync(ssrEntry) ? (await import(pathToFileURL(ssrEntry).href)).render : null;
+
+// React head'e taşınacak etiketleri (title/meta/link) gövdenin başına yazar; sunucu head'i zaten dolduruyor
+function stripLeadingHoistables(html) {
+  const bodyStart = html.search(/<(?!link\b|meta\b|title\b|\/title\b)[a-z]/i);
+  return bodyStart > 0 ? html.slice(bodyStart) : html;
+}
+
+async function renderSsr(path) {
+  if (!ssrRender) return null;
+  try {
+    // İlk render lazy route modüllerini yükletir; ikincisi içeriği askıya almadan satır içi üretir
+    await ssrRender(path);
+    const html = await ssrRender(path);
+    if (html.includes('<!--$?-->')) {
+      console.warn(`[ssr] ${path}: askıda Suspense kaldı, özet HTML kullanılacak`);
+      return null;
+    }
+    return stripLeadingHoistables(html);
+  } catch (error) {
+    console.warn(`[ssr] ${path}: ${error.message}`);
+    return null;
+  }
 }
 
 function buildManifest() {
@@ -234,6 +332,18 @@ function buildManifest() {
     };
   }
 
+  manifest['/'].preloadImage = { href: HOME_FLOW_SLIDES[0].src, srcset: HERO_LCP_SRCSET, sizes: '100vw' };
+  for (const [path, seo] of Object.entries(ROUTE_SEO)) {
+    const srcset = path !== '/' && seo.image ? pageHeroSrcSet(seo.image) : undefined;
+    if (srcset) manifest[path].preloadImage = { href: seo.image, srcset, sizes: '100vw' };
+  }
+
+  for (const [path, entry] of Object.entries(manifest)) {
+    entry.bodyHtml = buildBodyHtml(path, entry);
+    const chunks = routeChunks(path);
+    if (chunks.length) entry.modulepreload = chunks;
+  }
+
   for (const [path, entry] of Object.entries(manifest)) {
     if (path === '/' || path.startsWith('/blog/')) continue;
     const crumbs = [{ name: 'Ana Sayfa', path: '/' }];
@@ -295,6 +405,17 @@ ${items}
 }
 
 const manifest = buildManifest();
+
+let ssrCount = 0;
+for (const [path, entry] of Object.entries(manifest)) {
+  const html = await renderSsr(path);
+  if (html) {
+    entry.ssrHtml = html;
+    delete entry.bodyHtml;
+    ssrCount++;
+  }
+}
+
 const outDir = 'out';
 const publicDir = 'public';
 
@@ -310,4 +431,6 @@ writeFileSync(`${outDir}/feed.xml`, feedXml);
 writeFileSync(`${publicDir}/sitemap.xml`, sitemapXml);
 writeFileSync(`${publicDir}/feed.xml`, feedXml);
 
-console.log(`SEO assets: ${Object.keys(manifest).length} routes, sitemap + feed + manifest written.`);
+console.log(
+  `SEO assets: ${Object.keys(manifest).length} routes (${ssrCount} SSG), sitemap + feed + manifest written.`,
+);

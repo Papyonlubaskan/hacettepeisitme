@@ -8,3 +8,4 @@ server/data/instagram-feed-cache.json
 server/data/*.log
 server/data/*.jsonl
 server/data/newsletter-subscribers.json
+out-ssr

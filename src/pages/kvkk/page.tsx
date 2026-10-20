@@ -150,7 +150,7 @@ export default function KvkkNotice() {
               <h2 className="font-serif text-2xl font-bold text-brand-dark mb-4">Veri Silme Talebi</h2>
               <p className="text-gray-500 leading-relaxed">
                 KVKK&apos;nın 11. maddesi kapsamında silme talebinizi{' '}
-                <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent hover:underline">
+                <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
                   hacettepeisitme55@gmail.com
                 </a>{' '}
                 adresine veya merkezimize yazılı başvuru ile iletebilirsiniz. Talebiniz en geç{' '}
@@ -176,7 +176,7 @@ export default function KvkkNotice() {
                   'İtiraz etme ve zarara uğramanız halinde tazminat talep etme',
                 ].map((right, i) => (
                   <div key={i} className="flex items-start gap-3 bg-brand-cream rounded-xl p-4">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold shrink-0 mt-0.5">
+                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-brand-accent-strong text-white text-xs font-bold shrink-0 mt-0.5">
                       {i + 1}
                     </span>
                     <span className="text-sm text-gray-500">{right}</span>
@@ -202,7 +202,7 @@ export default function KvkkNotice() {
                   <div>
                     <h3 className="text-sm font-bold text-brand-dark mb-1">E-posta</h3>
                     <p className="text-sm text-gray-500">
-                      <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent hover:underline">
+                      <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
                         hacettepeisitme55@gmail.com
                       </a>
                     </p>
@@ -224,7 +224,7 @@ export default function KvkkNotice() {
                   <div>
                     <h3 className="text-sm font-bold text-brand-dark mb-1">Telefon</h3>
                     <p className="text-sm text-gray-500">
-                      <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">
+                      <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
                         {SITE_PHONE_DISPLAY}
                       </a>
                     </p>

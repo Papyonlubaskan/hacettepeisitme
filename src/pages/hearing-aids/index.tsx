@@ -62,7 +62,7 @@ export default function HearingAidsIndexPage() {
             onClick={() => scrollToSeries(series.id)}
             className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
               activeNav === series.id
-                ? 'bg-white text-brand-accent shadow-lg scale-105'
+                ? 'bg-white text-brand-accent-strong shadow-lg scale-105'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
             }`}
           >
@@ -85,7 +85,7 @@ export default function HearingAidsIndexPage() {
             <div className="w-full px-6 lg:px-12 max-w-6xl mx-auto">
               <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center ${index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
                 <div>
-                  <p className="text-brand-accent text-xs font-bold uppercase tracking-wider mb-2">{series.seriesName}</p>
+                  <p className="text-brand-accent-strong text-xs font-bold uppercase tracking-wider mb-2">{series.seriesName}</p>
                   <h2 className="font-serif text-2xl md:text-4xl font-bold text-brand-dark mb-3 leading-snug">
                     {series.headline}
                   </h2>
@@ -110,7 +110,7 @@ export default function HearingAidsIndexPage() {
                     ))}
                   </ul>
 
-                  <p className="text-xs text-gray-400 mb-6">{series.origin}</p>
+                  <p className="text-xs text-gray-500 mb-6">{series.origin}</p>
 
                   {series.warranty ? (
                     <p className="inline-flex items-center gap-2 bg-brand-dark text-white text-sm font-bold px-4 py-2 rounded-lg mb-6">
@@ -141,7 +141,7 @@ export default function HearingAidsIndexPage() {
                       <AdaptiveImage src={mt.image} alt={mt.label} maxWidthClass="max-w-20" className="rounded-lg" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-brand-accent uppercase tracking-wide">{mt.label}</p>
+                      <p className="text-xs font-bold text-brand-accent-strong uppercase tracking-wide">{mt.label}</p>
                       <p className="text-sm font-semibold text-brand-dark">{mt.sublabel}</p>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ export default function HearingAidsIndexPage() {
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/randevu"
-                  className="inline-flex justify-center items-center gap-2 bg-brand-accent text-white font-bold px-8 py-3.5 rounded-full hover:bg-[#008f7f] transition-all"
+                  className="inline-flex justify-center items-center gap-2 bg-brand-accent-strong text-white font-bold px-8 py-3.5 rounded-full hover:bg-[#006b61] transition-all"
                   onClick={() => trackCTAClick(`${series.seriesName} Deneme`, 'showcase_series', '/randevu')}
                 >
                   Deneme Randevusu Al
@@ -174,7 +174,7 @@ export default function HearingAidsIndexPage() {
                 </Link>
                 <Link
                   to="/iletisim"
-                  className="inline-flex justify-center items-center gap-2 border-2 border-brand-accent text-brand-accent font-semibold px-8 py-3.5 rounded-full hover:bg-brand-light transition-all"
+                  className="inline-flex justify-center items-center gap-2 border-2 border-brand-accent text-brand-accent-strong font-semibold px-8 py-3.5 rounded-full hover:bg-brand-light transition-all"
                 >
                   Bilgi Al
                 </Link>
@@ -222,17 +222,17 @@ export default function HearingAidsIndexPage() {
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
             <h3 className="font-bold text-brand-dark text-lg mb-4">Hacettepe İşitme Merkezi</h3>
             <p className="text-sm text-gray-600 mb-2">
-              <AddressLink className="text-brand-accent hover:underline" />
+              <AddressLink className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent" />
             </p>
             <p className="text-sm text-gray-600 mb-4">Telefon: {SITE_PHONE_DISPLAY}</p>
-            <p className="text-xs text-gray-400 mb-6">Pzt–Cmt 09:00–18:00 · Pazar kapalı</p>
+            <p className="text-xs text-gray-500 mb-6">Pzt–Cmt 09:00–18:00 · Pazar kapalı</p>
             <div className="flex flex-col sm:flex-row gap-3">
               <PhoneCallButton
                 label="Bizi Ara"
                 trackingLabel="showcase_contact_call"
-                className="inline-flex justify-center items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full"
+                className="inline-flex justify-center items-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-3 rounded-full"
               />
-              <Link to="/iletisim" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
+              <Link to="/iletisim" className="inline-flex justify-center text-brand-accent-strong font-semibold px-6 py-3">
                 İletişim →
               </Link>
             </div>
@@ -240,7 +240,7 @@ export default function HearingAidsIndexPage() {
         </div>
       </section>
 
-      <p className="text-center text-xs text-gray-400 px-6 py-8 max-w-3xl mx-auto">
+      <p className="text-center text-xs text-gray-500 px-6 py-8 max-w-3xl mx-auto">
         * Özellikler modele göre değişebilir. Kesin bilgi ve fiyat için merkezimizde ücretsiz işitme testi sonrası
         uzman danışmanlığı alınız.
       </p>

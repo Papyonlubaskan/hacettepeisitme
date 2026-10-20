@@ -19,23 +19,23 @@ export default function LocalSeoSection() {
         <p className="mb-6">
           Samsun ve çevre ilçelerden gelen danışanlarımız için aynı gün randevu, 30 gün deneme garantisi ve ömür boyu
           teknik destek sağlıyoruz. Resmi web sitemiz:{' '}
-          <a href={`https://${SITE_CANONICAL_HOST}/`} className="text-brand-accent hover:underline">
+          <a href={`https://${SITE_CANONICAL_HOST}/`} className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
             {SITE_CANONICAL_HOST}
           </a>
-          . Merkez adresimiz: <AddressLink className="text-brand-accent hover:underline" />.
-          Telefon: <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">{SITE_PHONE_DISPLAY}</a>.
+          . Merkez adresimiz: <AddressLink className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent" />.
+          Telefon: <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">{SITE_PHONE_DISPLAY}</a>.
           {' '}Google İşletme profilimiz:{' '}
-          <a href={SITE_GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent hover:underline">
+          <a href={SITE_GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
             {SITE_NAME} Haritalar
           </a>
           {' '}·{' '}
-          <a href={SITE_MAP_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent hover:underline">
+          <a href={SITE_MAP_URL} target="_blank" rel="noopener noreferrer" className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
             Konum
           </a>
           .
         </p>
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/samsun-isitme-cihazlari" className="px-4 py-2 rounded-full bg-brand-accent text-white font-medium hover:bg-[#008f7f]">
+          <Link to="/samsun-isitme-cihazlari" className="px-4 py-2 rounded-full bg-brand-accent-strong text-white font-medium hover:bg-[#006b61]">
             Samsun İşitme Cihazları
           </Link>
           <Link to="/samsun-isitme-cihazi" className="px-4 py-2 rounded-full bg-brand-cream text-brand-dark font-medium hover:bg-brand-light">

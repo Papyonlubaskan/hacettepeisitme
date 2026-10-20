@@ -1,12 +1,13 @@
 const DEFAULT_SITE_URL = 'https://hacettepeisitme.com.tr';
 
+/**
+ * Kanonik site kökü. window.location kullanılmaz: canonical/schema URL'leri her ortamda ana alan adı olmalı
+ * ve build-time SSR çıktısı ile istemci hydration'ı aynı metni üretmeli.
+ */
 export function getSiteUrl(): string {
   const fromEnv = import.meta.env.VITE_SITE_URL;
   if (typeof fromEnv === 'string' && fromEnv.trim()) {
     return fromEnv.trim().replace(/\/$/, '');
-  }
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    return window.location.origin;
   }
   return DEFAULT_SITE_URL;
 }

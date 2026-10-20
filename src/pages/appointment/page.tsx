@@ -131,7 +131,7 @@ export default function Appointment() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link
                     to="/"
-                    className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-6 py-3 rounded-full hover:bg-[#008f7f] transition-all whitespace-nowrap"
+                    className="inline-flex items-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-3 rounded-full hover:bg-[#006b61] transition-all whitespace-nowrap"
                   >
                     <i className="ri-home-line" />
                     <span>Ana Sayfaya Dön</span>
@@ -272,7 +272,7 @@ export default function Appointment() {
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent resize-none"
                     placeholder="Varsa eklemek istediğiniz notlar..."
                   />
-                  <p className="text-xs text-gray-400 mt-1 text-right">
+                  <p className="text-xs text-gray-500 mt-1 text-right">
                     {formData.message.length}/500
                   </p>
                 </div>
@@ -286,7 +286,7 @@ export default function Appointment() {
                 <button
                   type="submit"
                   disabled={loading || !consent}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
                 >
                   {loading ? (
                     <>
@@ -313,7 +313,7 @@ export default function Appointment() {
                   </span>
                 </label>
 
-                <p className="text-xs text-gray-400 text-center">
+                <p className="text-xs text-gray-500 text-center">
                   Randevu talebinizi göndererek iletişim bilgilerinizin kullanılmasını onaylamış olursunuz.
                 </p>
               </form>

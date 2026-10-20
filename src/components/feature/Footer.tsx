@@ -71,6 +71,9 @@ export default function Footer() {
                   <img
                     src="/local-images/brand-logo-footer.webp"
                     alt="Hacettepe İşitme"
+                    width={332}
+                    height={131}
+                    loading="lazy"
                     className="h-11 w-auto"
                   />
                   <div>
@@ -106,9 +109,9 @@ export default function Footer() {
               </div>
 
               <div className="lg:col-span-2">
-                <h4 className="font-serif text-base font-semibold mb-5 text-brand-warm">
+                <h2 className="font-serif text-base font-semibold mb-5 text-brand-warm">
                   Hizmetler
-                </h4>
+                </h2>
                 <ul className="space-y-3">
                   {serviceLinks.map((link) => (
                     <li key={link.label}>
@@ -126,9 +129,9 @@ export default function Footer() {
               </div>
 
               <div className="lg:col-span-2">
-                <h4 className="font-serif text-base font-semibold mb-5 text-brand-warm">
+                <h2 className="font-serif text-base font-semibold mb-5 text-brand-warm">
                   Hızlı Erişim
-                </h4>
+                </h2>
                 <ul className="space-y-3">
                   {quickLinks.map((link) => (
                     <li key={link.label}>
@@ -145,9 +148,9 @@ export default function Footer() {
               </div>
 
               <div className="lg:col-span-4">
-                <h4 className="font-serif text-base font-semibold mb-5 text-brand-warm">
+                <h2 className="font-serif text-base font-semibold mb-5 text-brand-warm">
                   İletişim
-                </h4>
+                </h2>
                 <div className="space-y-4">
                   <a
                     href={`tel:${SITE_PHONE_E164}`}
@@ -179,7 +182,7 @@ export default function Footer() {
                       <span className="block text-xs text-gray-400 mb-0.5">Çalışma Saatleri</span>
                       Pzt-Cmt 09:00 - 18:00
                       <br />
-                      <span className="text-gray-500">Pazar: Kapalı</span>
+                      <span className="text-gray-400">Pazar: Kapalı</span>
                     </span>
                   </div>
                 </div>
@@ -188,9 +191,9 @@ export default function Footer() {
 
             <div className="mt-14 p-8 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
               <div className="max-w-2xl mx-auto text-center">
-                <h4 className="font-serif text-lg font-semibold mb-2 text-brand-warm">
+                <h2 className="font-serif text-lg font-semibold mb-2 text-brand-warm">
                   Kampanyalardan Haberdar Olun
-                </h4>
+                </h2>
                 <p className="text-sm text-gray-300 mb-5">
                   İndirim, kampanyalar ve işitme sağlığı ipuçları için e-bültenimize abone olun.
                 </p>
@@ -218,7 +221,7 @@ export default function Footer() {
                     <button
                       type="submit"
                       disabled={!newsletterConsent}
-                      className="inline-flex items-center justify-center gap-2 bg-brand-accent hover:bg-[#008f7f] text-white text-sm font-semibold px-6 py-3 rounded-full transition-all hover:scale-105 whitespace-nowrap"
+                      className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong hover:bg-[#006b61] text-white text-sm font-semibold px-6 py-3 rounded-full transition-all hover:scale-105 whitespace-nowrap"
                     >
                       <span>Abone Ol</span>
                       <i className="ri-arrow-right-line" />
@@ -257,7 +260,7 @@ export default function Footer() {
               </div>
               <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p className="text-xs text-gray-400">
-                  © Hacettepe İşitme Cihazları {new Date().getFullYear()}. Tüm hakları saklıdır.
+                  © Hacettepe İşitme Cihazları <span suppressHydrationWarning>{new Date().getFullYear()}</span>. Tüm hakları saklıdır.
                 </p>
                 <a
                   href="https://okandemir.org/"

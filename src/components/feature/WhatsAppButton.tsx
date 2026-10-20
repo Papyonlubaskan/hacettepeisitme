@@ -6,7 +6,7 @@ export default function WhatsAppButton() {
     <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-3">
       <a
         href={`tel:${SITE_PHONE_E164}`}
-        className="inline-flex h-11 items-center gap-2 rounded-full bg-brand-accent px-4 text-sm font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-105"
+        className="inline-flex h-11 items-center gap-2 rounded-full bg-brand-accent-strong px-4 text-sm font-semibold text-white shadow-lg transition-transform duration-300 hover:scale-105"
         aria-label="Bizi Ara"
         onClick={() => trackPhoneClick(SITE_PHONE_E164)}
       >

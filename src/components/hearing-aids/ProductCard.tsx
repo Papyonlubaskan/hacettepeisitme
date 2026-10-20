@@ -16,9 +16,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         maxWidthClass="max-w-full"
       />
       <div className="p-6">
-        <p className="text-xs font-semibold text-brand-accent uppercase tracking-wide mb-1">{product.lineName}</p>
+        <p className="text-xs font-semibold text-brand-accent-strong uppercase tracking-wide mb-1">{product.lineName}</p>
         <h3 className="text-lg font-bold text-brand-dark mb-1">{product.name}</h3>
-        <p className="text-xs text-gray-400 mb-3">{product.type}</p>
+        <p className="text-xs text-gray-500 mb-3">{product.type}</p>
         <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">{product.description}</p>
         <ul className="space-y-1 mb-5">
           {product.features.slice(0, 3).map((f) => (
@@ -30,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </ul>
         <Link
           to="/randevu"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-brand-accent hover:text-[#008f7f]"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-brand-accent-strong hover:text-[#008f7f]"
         >
           Denemek İçin Randevu Al
           <i className="ri-arrow-right-line" />

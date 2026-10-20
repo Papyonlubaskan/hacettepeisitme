@@ -3,6 +3,7 @@ import express from 'express';
 import { ensureGa4Script, injectSeoIntoHtml, resolveSeoEntry } from './seo-inject.js';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
+import compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import fs from 'node:fs/promises';
@@ -110,6 +111,7 @@ const ipAlertCooldownMap = new Map();
 const allowedOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean);
 
 app.set('trust proxy', 1);
+app.use(compression());
 app.get(`/${GOOGLE_SITE_VERIFICATION_FILE}`, (_req, res) => {
   res.type('text/html').set('Cache-Control', 'no-store').send(GOOGLE_SITE_VERIFICATION_BODY);
 });
@@ -1774,7 +1776,22 @@ if (fsSync.existsSync(FRONTEND_DIST_DIR)) {
   }
 
   // index:false — aksi halde GET / statik index.html döner, SEO inject atlanır (LocalBusiness/FAQ kaybolur)
-  app.use(express.static(FRONTEND_DIST_DIR, { index: false, fallthrough: true }));
+  app.use(
+    express.static(FRONTEND_DIST_DIR, {
+      index: false,
+      fallthrough: true,
+      setHeaders(res, filePath) {
+        const rel = filePath.slice(FRONTEND_DIST_DIR.length).replace(/\\/g, '/');
+        if (rel.startsWith('/assets/')) {
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        } else if (/\.(webp|avif|png|jpe?g|svg|ico|mp4|webm|woff2?)$/i.test(rel)) {
+          res.setHeader('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=604800');
+        } else {
+          res.setHeader('Cache-Control', 'public, max-age=3600');
+        }
+      },
+    }),
+  );
 
   // Eski Unicode blog slug → ASCII (indeks/crawl güvenliği)
   app.get(

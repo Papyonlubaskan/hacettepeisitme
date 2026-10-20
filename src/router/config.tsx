@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import type { RouteObject } from "react-router-dom";
+import PageFallback from "../components/PageFallback";
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("../pages/home/page"));
@@ -27,7 +28,7 @@ const routes: RouteObject[] = [
   {
     path: "/",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <Home />
       </Suspense>
     ),
@@ -35,7 +36,7 @@ const routes: RouteObject[] = [
   {
     path: "/hakkimizda",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <About />
       </Suspense>
     ),
@@ -43,7 +44,7 @@ const routes: RouteObject[] = [
   {
     path: "/randevu",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <Appointment />
       </Suspense>
     ),
@@ -51,7 +52,7 @@ const routes: RouteObject[] = [
   {
     path: "/iletisim",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <Contact />
       </Suspense>
     ),
@@ -59,7 +60,7 @@ const routes: RouteObject[] = [
   {
     path: "/ucretsiz-isitme-testi",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <LandingPage />
       </Suspense>
     ),
@@ -67,7 +68,7 @@ const routes: RouteObject[] = [
   {
     path: "/online-isitme-testi",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <OnlineHearingTest />
       </Suspense>
     ),
@@ -75,7 +76,7 @@ const routes: RouteObject[] = [
   {
     path: "/isitme-cihazlari",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <HearingAidsIndex />
       </Suspense>
     ),
@@ -83,7 +84,7 @@ const routes: RouteObject[] = [
   {
     path: "/isitme-cihazlari/:slug",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <HearingAidCategory />
       </Suspense>
     ),
@@ -91,7 +92,7 @@ const routes: RouteObject[] = [
   {
     path: "/katalog",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <CatalogIndex />
       </Suspense>
     ),
@@ -99,7 +100,7 @@ const routes: RouteObject[] = [
   {
     path: "/katalog/:slug",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <CatalogDetail />
       </Suspense>
     ),
@@ -107,7 +108,7 @@ const routes: RouteObject[] = [
   {
     path: "/isitme-cihazi-fiyatlari",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <IsitmeCihaziFiyatlariPage />
       </Suspense>
     ),
@@ -115,7 +116,7 @@ const routes: RouteObject[] = [
   {
     path: "/samsun-isitme-testi",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <SamsunIsitmeTestiPage />
       </Suspense>
     ),
@@ -123,7 +124,7 @@ const routes: RouteObject[] = [
   {
     path: "/samsun-isitme-cihazi",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <SamsunIsitmeCihaziPage />
       </Suspense>
     ),
@@ -131,7 +132,7 @@ const routes: RouteObject[] = [
   {
     path: "/samsun-isitme-cihazlari",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <SamsunIsitmeCihazlariPage />
       </Suspense>
     ),
@@ -139,7 +140,7 @@ const routes: RouteObject[] = [
   {
     path: "/sgk-odeme-tutarlari",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <SgkOdemeTutarlariPage />
       </Suspense>
     ),
@@ -147,7 +148,7 @@ const routes: RouteObject[] = [
   {
     path: "/blog",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <BlogList />
       </Suspense>
     ),
@@ -155,7 +156,7 @@ const routes: RouteObject[] = [
   {
     path: "/blog/:slug",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <BlogDetail />
       </Suspense>
     ),
@@ -163,7 +164,7 @@ const routes: RouteObject[] = [
   {
     path: "/gizlilik-politikasi",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <PrivacyPolicy />
       </Suspense>
     ),
@@ -171,7 +172,7 @@ const routes: RouteObject[] = [
   {
     path: "/kullanim-kosullari",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <TermsOfService />
       </Suspense>
     ),
@@ -179,7 +180,7 @@ const routes: RouteObject[] = [
   {
     path: "/kvkk-aydinlatma-metni",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <KvkkNotice />
       </Suspense>
     ),
@@ -187,7 +188,7 @@ const routes: RouteObject[] = [
   {
     path: "*",
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageFallback />}>
         <NotFound />
       </Suspense>
     ),

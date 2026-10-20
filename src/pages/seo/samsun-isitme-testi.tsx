@@ -34,15 +34,15 @@ export default function SamsunIsitmeTestiPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Link to="/randevu" className="inline-flex justify-center bg-brand-accent text-white px-6 py-3 rounded-full font-semibold">
+            <Link to="/randevu" className="inline-flex justify-center bg-brand-accent-strong text-white px-6 py-3 rounded-full font-semibold">
               İşitme Testi Randevusu Al
             </Link>
             <PhoneCallButton
               label="Bizi Ara"
               trackingLabel="samsun_isitme_testi_call"
-              className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent px-6 py-3 rounded-full font-semibold"
+              className="inline-flex items-center justify-center gap-2 border-2 border-brand-accent text-brand-accent-strong px-6 py-3 rounded-full font-semibold"
             />
-            <Link to="/samsun-isitme-cihazlari" className="inline-flex justify-center text-brand-accent font-semibold px-6 py-3">
+            <Link to="/samsun-isitme-cihazlari" className="inline-flex justify-center text-brand-accent-strong font-semibold px-6 py-3">
               Samsun İşitme Cihazları →
             </Link>
           </div>

@@ -100,8 +100,35 @@ export function injectSeoIntoHtml(html, pathname, entry, siteUrl) {
   next = removeJsonLdBlocks(next);
 
   if (entry.jsonLd) {
-    const script = `<script type="application/ld+json" data-seo-inject="page">${JSON.stringify(entry.jsonLd)}</script>`;
+    const json = JSON.stringify(entry.jsonLd).replace(/</g, '\\u003c');
+    const script = `<script type="application/ld+json" data-seo-inject="page">${json}</script>`;
     next = next.replace('</head>', `  ${script}\n</head>`);
+  }
+
+  if (entry.preloadImage?.href) {
+    const { href, srcset, sizes } = entry.preloadImage;
+    // imagesrcset varken href verilirse Chrome'un ön tarayıcısı tam boy görseli de indiriyor
+    const tag = srcset
+      ? `<link rel="preload" as="image" fetchpriority="high" imagesrcset="${escapeAttr(srcset)}" imagesizes="${escapeAttr(sizes || '100vw')}" />`
+      : `<link rel="preload" as="image" fetchpriority="high" href="${escapeAttr(href)}" />`;
+    // viewport meta'dan sonra olmalı; önce gelirse ön tarayıcı 980px varsayıp büyük görseli de indirir
+    const viewportMeta = /<meta\s+name=["']viewport["'][^>]*>/i;
+    next = viewportMeta.test(next)
+      ? next.replace(viewportMeta, (m) => `${m}\n    ${tag}`)
+      : next.replace(/<head>/i, `<head>\n    ${tag}`);
+  }
+
+  if (entry.modulepreload?.length) {
+    const links = entry.modulepreload
+      .map((href) => `<link rel="modulepreload" crossorigin href="${escapeAttr(href)}" />`)
+      .join('\n    ');
+    next = next.replace('</head>', `  ${links}\n</head>`);
+  }
+
+  if (entry.ssrHtml) {
+    next = next.replace(/<div id="root"><\/div>/, `<div id="root" data-ssr="1">${entry.ssrHtml}</div>`);
+  } else if (entry.bodyHtml) {
+    next = next.replace(/<div id="root"><\/div>/, `<div id="root">${entry.bodyHtml}</div>`);
   }
 
   return ensureGa4Script(next);

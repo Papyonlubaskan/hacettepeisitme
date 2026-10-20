@@ -69,7 +69,7 @@ function EarResultCard({ title, results }: { title: string; results: TestResult[
                 {r.heard ? 'Duydum' : 'Duymadım'}
               </span>
             </div>
-            <span className="w-10 text-xs text-gray-400 shrink-0">{r.dbHL} dB</span>
+            <span className="w-10 text-xs text-gray-500 shrink-0">{r.dbHL} dB</span>
           </div>
         ))}
       </div>
@@ -147,7 +147,7 @@ export default function TestResults({ leftResults, rightResults, onReset }: Prop
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/randevu"
-            className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap"
             onClick={() => trackCTAClick('Randevu Oluştur - Test Sonrası', 'online_test_results', '/randevu')}
           >
             <i className="ri-calendar-check-line" />
@@ -169,7 +169,7 @@ export default function TestResults({ leftResults, rightResults, onReset }: Prop
       <div className="text-center">
         <button
           onClick={onReset}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent-strong hover:text-brand-accent transition-colors"
         >
           <i className="ri-restart-line" />
           <span>Testi Tekrar Yap</span>

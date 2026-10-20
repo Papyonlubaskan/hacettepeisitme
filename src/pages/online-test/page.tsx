@@ -72,7 +72,7 @@ export default function OnlineHearingTest() {
           {phase === 'intro' && (
             <button
               onClick={startTest}
-              className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap text-base"
+              className="inline-flex items-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap text-base"
             >
               <i className="ri-play-circle-line text-xl" />
               <span>Teste Başla</span>
@@ -156,12 +156,12 @@ export default function OnlineHearingTest() {
               <div className="text-center mt-10">
                 <button
                   onClick={startTest}
-                  className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap text-base"
+                  className="inline-flex items-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap text-base"
                 >
                   <i className="ri-play-circle-line text-xl" />
                   <span>Teste Şimdi Başla</span>
                 </button>
-                <p className="text-xs text-gray-400 mt-4">Tahmini süre: 3 dakika</p>
+                <p className="text-xs text-gray-500 mt-4">Tahmini süre: 3 dakika</p>
               </div>
             </div>
           )}
@@ -188,13 +188,13 @@ export default function OnlineHearingTest() {
       {phase === 'results' && (
         <section className="py-10 bg-white border-t border-gray-100">
           <div className="w-full px-6 lg:px-12 max-w-3xl mx-auto text-center">
-            <p className="text-sm text-gray-400 mb-6">
+            <p className="text-sm text-gray-500 mb-6">
               Bu online test, tarayıcı üzerinden yapılan basit bir frekans değerlendirmesidir.
               Kesin teşhis ve odyogram için profesyonel odyometri testi gerekir.
             </p>
             <Link
               to="/ucretsiz-isitme-testi"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent-strong hover:text-brand-accent transition-colors"
               onClick={() => trackCTAClick('Klinik Test Bilgisi', 'online_test_footer', '/ucretsiz-isitme-testi')}
             >
               <i className="ri-hospital-line" />

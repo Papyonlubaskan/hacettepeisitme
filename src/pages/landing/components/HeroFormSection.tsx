@@ -127,7 +127,7 @@ export default function HeroFormSection() {
                 <p className="text-sm text-gray-500 mb-1">
                   Talebiniz <strong>hacettepeisitme55@gmail.com</strong> adresine iletildi.
                 </p>
-                <p className="text-xs text-gray-400 mb-5">
+                <p className="text-xs text-gray-500 mb-5">
                   En kısa sürede {SITE_PHONE_DISPLAY} numaradan size dönüş yapacağız.
                 </p>
               </div>
@@ -217,7 +217,7 @@ export default function HeroFormSection() {
                 <button
                   type="submit"
                   disabled={loading || !consent}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-6 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-6 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-[1.02] disabled:opacity-60 whitespace-nowrap"
                 >
                   {loading ? (
                     <>
@@ -244,7 +244,7 @@ export default function HeroFormSection() {
                   </span>
                 </label>
 
-                <p className="text-xs text-gray-400 text-center flex items-start gap-1.5">
+                <p className="text-xs text-gray-500 text-center flex items-start gap-1.5">
                   <i className="ri-lock-line mt-0.5 shrink-0" />
                   Bilgileriniz güvende ve üçüncü taraflarla paylaşılmaz. Sadece randevu onayı için kullanılır.
                 </p>

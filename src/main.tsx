@@ -1,11 +1,18 @@
 import { StrictMode } from 'react'
-import './i18n'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Build-time SSG HTML'i varsa DOM'u yeniden çizmeden canlandır (LCP/CLS için kritik)
+if (container.dataset.ssr === '1') {
+  hydrateRoot(container, app)
+} else {
+  createRoot(container).render(app)
+}

@@ -17,7 +17,7 @@ export default function About() {
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 mb-4">
-                <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">Hikayemiz</span>
+                <span className="text-sm font-semibold text-brand-accent-strong uppercase tracking-wider">Hikayemiz</span>
               </div>
               <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-6">
                 15 Yıllık Deneyim ile Samsun&apos;da Hizmetinizdeyiz
@@ -42,16 +42,16 @@ export default function About() {
 
               <div className="grid grid-cols-3 gap-6 mt-10">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-brand-accent">15+</p>
-                  <p className="text-sm text-gray-400 mt-1">Yıl Deneyim</p>
+                  <p className="text-3xl font-bold text-brand-accent-strong">15+</p>
+                  <p className="text-sm text-gray-500 mt-1">Yıl Deneyim</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-brand-accent">5000+</p>
-                  <p className="text-sm text-gray-400 mt-1">Mutlu Müşteri</p>
+                  <p className="text-3xl font-bold text-brand-accent-strong">5000+</p>
+                  <p className="text-sm text-gray-500 mt-1">Mutlu Müşteri</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-brand-accent">3</p>
-                  <p className="text-sm text-gray-400 mt-1">Dünya Markası</p>
+                  <p className="text-3xl font-bold text-brand-accent-strong">3</p>
+                  <p className="text-sm text-gray-500 mt-1">Dünya Markası</p>
                 </div>
               </div>
             </div>

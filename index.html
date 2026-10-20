@@ -2,10 +2,10 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/local-images/brand-favicon.webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/webp" href="/local-images/brand-favicon.webp" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="Hacettepe İşitme Blog RSS" href="https://hacettepeisitme.com.tr/feed.xml" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="theme-color" content="#00a896" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -40,10 +40,14 @@
         window.gtag = function () { window.dataLayer.push(arguments); };
         window.gtag('js', new Date());
         window.gtag('config', id);
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
-        document.head.appendChild(s);
+        function load() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+          document.head.appendChild(s);
+        }
+        if (document.readyState === 'complete') load();
+        else window.addEventListener('load', function () { setTimeout(load, 1200); }, { once: true });
       })();
     </script>
     <!-- End Google Analytics -->
@@ -64,27 +68,63 @@
 
     <!-- Meta Pixel Code -->
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      const pixelId = '%VITE_META_PIXEL_ID%';
-      if (pixelId && pixelId.indexOf('%VITE_') !== 0) {
+      (function () {
+        var pixelId = '%VITE_META_PIXEL_ID%';
+        if (!pixelId || pixelId.indexOf('%VITE_') === 0) return;
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', pixelId);
         fbq('track', 'PageView');
-      }
+      })();
     </script>
     <!-- End Meta Pixel Code -->
 
     <title>Hacettepe İşitme Merkezi Samsun | Ücretsiz İşitme Testi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <!-- Font ve ikon CSS'i render'ı bloklamasın (CSP inline onload'a izin vermediği için script ile eklenir) -->
+    <script>
+      (function () {
+        var sheets = [
+          'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
+          'https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css'
+        ];
+        sheets.forEach(function (href) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = href;
+          l.media = 'print';
+          l.addEventListener('load', function () { l.media = 'all'; });
+          document.head.appendChild(l);
+        });
+      })();
+    </script>
+    <style>
+      .seo-shell{max-width:760px;min-height:100vh;margin:0 auto;padding:96px 20px 48px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#1a2e44;line-height:1.6}
+      .seo-shell nav ul{display:flex;flex-wrap:wrap;gap:6px 14px;list-style:none;padding:0;margin:0 0 24px;font-size:14px}
+      .seo-shell h1{font-size:28px;line-height:1.25;font-weight:700;margin:0 0 12px}
+      .seo-shell h2{font-size:21px;font-weight:700;margin:28px 0 8px}
+      .seo-shell h3{font-size:17px;font-weight:600;margin:18px 0 4px}
+      .seo-shell p,.seo-shell li{font-size:16px;margin:0 0 10px}
+      .seo-shell ul{padding-left:20px}
+      .seo-shell a{color:#007f73;text-decoration:underline}
+      .seo-shell footer{margin-top:32px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:14px}
+      .seo-hero{position:relative;width:100%;height:100vh;overflow:hidden;background:#1a2e44}
+      .seo-hero--page{height:360px}
+      .seo-hero img{display:block;width:100%;height:100%;object-fit:cover}
+      .seo-hero + .seo-shell{padding-top:24px}
+    </style>
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+    </noscript>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->

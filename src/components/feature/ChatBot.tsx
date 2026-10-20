@@ -188,7 +188,7 @@ export default function ChatBot() {
 
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 flex items-center justify-center rounded-full bg-brand-accent text-white shadow-lg hover:scale-110 transition-transform duration-300"
+        className="fixed bottom-6 right-6 z-40 w-14 h-14 flex items-center justify-center rounded-full bg-brand-accent-strong text-white shadow-lg hover:scale-110 transition-transform duration-300"
         aria-label="Destek Sohbeti"
       >
         <i className={`ri-${open ? 'close' : 'message-3'}-line text-2xl`} />
@@ -222,7 +222,7 @@ export default function ChatBot() {
                 <div
                   className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-brand-accent text-white rounded-br-sm'
+                      ? 'bg-brand-accent-strong text-white rounded-br-sm'
                       : 'bg-gray-100 text-gray-800 rounded-bl-sm'
                   }`}
                 >
@@ -266,7 +266,7 @@ export default function ChatBot() {
             <button
               type="button"
               onClick={() => handleSend('Randevu sayfasını aç')}
-              className="text-xs bg-brand-accent text-white rounded-full py-2 font-semibold hover:bg-[#008f7f] transition-colors"
+              className="text-xs bg-brand-accent-strong text-white rounded-full py-2 font-semibold hover:bg-[#006b61] transition-colors"
             >
               Randevu
             </button>
@@ -274,14 +274,14 @@ export default function ChatBot() {
               href={SITE_MAP_DIRECTIONS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs bg-white border border-brand-accent text-brand-accent rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
+              className="text-xs bg-white border border-brand-accent text-brand-accent-strong rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
             >
               <i className="ri-map-pin-2-line" />
               Konum
             </a>
             <a
               href={`tel:${SITE_PHONE_E164}`}
-              className="text-xs bg-white border border-brand-accent text-brand-accent rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
+              className="text-xs bg-white border border-brand-accent text-brand-accent-strong rounded-full py-2 font-semibold hover:bg-brand-light transition-colors text-center inline-flex items-center justify-center gap-1"
             >
               <i className="ri-phone-line" />
               Ara
@@ -305,7 +305,7 @@ export default function ChatBot() {
             />
             <button
               onClick={() => handleSend()}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-brand-accent text-white hover:bg-[#008f7f] transition-colors shrink-0"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-brand-accent-strong text-white hover:bg-[#006b61] transition-colors shrink-0"
               aria-label="Gönder"
             >
               <i className="ri-send-plane-fill" />

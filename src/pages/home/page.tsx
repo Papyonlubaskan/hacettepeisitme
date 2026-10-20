@@ -1,5 +1,5 @@
-﻿import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   SITE_ADDRESS_LINE1,
   SITE_ADDRESS_LINE3,
@@ -20,13 +20,17 @@ import { HOME_FLOW_SLIDES } from '@/lib/homeFlowImages';
 import { trackCTAClick, trackWhatsAppClick } from '@/lib/tracking';
 
 function HeroSection() {
-  const ctaVariant = useMemo<'A' | 'B'>(() => {
-    if (typeof window === 'undefined') return 'A';
+  // Sunucu HTML'i ile hydration eşleşsin diye varyant render'da değil effect'te seçilir
+  const [ctaVariant, setCtaVariant] = useState<'A' | 'B'>('A');
+  useEffect(() => {
     const existing = window.localStorage.getItem('hero_cta_variant');
-    if (existing === 'A' || existing === 'B') return existing;
+    if (existing === 'A' || existing === 'B') {
+      setCtaVariant(existing);
+      return;
+    }
     const next = Math.random() < 0.5 ? 'A' : 'B';
     window.localStorage.setItem('hero_cta_variant', next);
-    return next;
+    setCtaVariant(next);
   }, []);
 
   const heroCta =
@@ -71,7 +75,7 @@ function HeroSection() {
           <div className="flex flex-col sm:flex-row flex-wrap gap-4">
             <Link
               to="/randevu"
-              className="inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap"
               onClick={() =>
                 trackCTAClick(
                   `${heroCta.title} [${ctaVariant}]`,
@@ -167,7 +171,7 @@ function ServicesSection() {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 mb-4">
             <i className="ri-star-smile-line text-brand-accent" />
-            <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">Hizmetlerimiz</span>
+            <span className="text-sm font-semibold text-brand-accent-strong uppercase tracking-wider">Hizmetlerimiz</span>
           </div>
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark">
             Kapsamlı İşitme Çözümleri
@@ -191,7 +195,7 @@ function ServicesSection() {
               </p>
               <Link
                 to={service.link}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent-strong hover:text-brand-accent transition-colors"
                 onClick={() => trackCTAClick(service.title, 'home_services', service.link)}
               >
                 <span>{service.cta}</span>
@@ -213,7 +217,7 @@ function BlogSection() {
           <div>
             <div className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 mb-4">
               <i className="ri-article-line text-brand-accent" />
-              <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">Blog</span>
+              <span className="text-sm font-semibold text-brand-accent-strong uppercase tracking-wider">Blog</span>
             </div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-2">
               İşitme Sağlığı Blog
@@ -222,7 +226,7 @@ function BlogSection() {
           </div>
           <Link
             to="/blog"
-            className="text-sm font-semibold text-brand-accent hover:text-[#008f7f] transition-colors shrink-0"
+            className="text-sm font-semibold text-brand-accent-strong hover:text-brand-accent transition-colors shrink-0"
             onClick={() => trackCTAClick('Tüm Blog Yazıları', 'home_blog_all', '/blog')}
           >
             Tüm Yazılar →
@@ -245,16 +249,16 @@ function BlogSection() {
                 />
               </div>
               <div className="p-6">
-                <span className="inline-block bg-brand-accent/10 text-brand-accent text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                <span className="inline-block bg-brand-accent/10 text-brand-accent-strong text-xs font-semibold px-3 py-1 rounded-full mb-3">
                   {post.category}
                 </span>
                 <h3 className="text-base font-bold text-brand-dark mb-2 line-clamp-2">
                   {post.title}
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">
+                <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">
                   {post.excerpt}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="flex items-center gap-2 text-xs text-gray-600">
                   <i className="ri-time-line" />
                   <span>{post.readTime} okuma</span>
                 </div>
@@ -273,7 +277,6 @@ function CTASection() {
       <ImageFlowBackground
         slides={HOME_FLOW_SLIDES}
         intervalMs={8000}
-        eagerLoad
         kenBurns
         overlayClassName="bg-brand-dark/55"
       />
@@ -297,7 +300,7 @@ function CTASection() {
           />
           <Link
             to="/randevu"
-            className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-[#008f7f] transition-all hover:scale-105 whitespace-nowrap"
+            className="inline-flex items-center gap-2 bg-brand-accent-strong text-white font-semibold px-8 py-4 rounded-full hover:bg-[#006b61] transition-all hover:scale-105 whitespace-nowrap"
             onClick={() => trackCTAClick('Randevu Oluştur', 'home_cta', '/randevu')}
           >
             <span>Randevu Oluştur</span>

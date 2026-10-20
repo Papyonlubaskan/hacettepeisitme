@@ -111,13 +111,13 @@ export default function TermsOfService() {
               <div className="mt-4 space-y-2 text-gray-500">
                 <p>
                   <strong className="text-brand-dark">E-posta:</strong>{' '}
-                  <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent hover:underline">
+                  <a href="mailto:hacettepeisitme55@gmail.com" className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
                     hacettepeisitme55@gmail.com
                   </a>
                 </p>
                 <p>
                   <strong className="text-brand-dark">Telefon:</strong>{' '}
-                  <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent hover:underline">
+                  <a href={`tel:${SITE_PHONE_E164}`} className="text-brand-accent-strong underline underline-offset-2 hover:text-brand-accent">
                     {SITE_PHONE_DISPLAY}
                   </a>
                 </p>

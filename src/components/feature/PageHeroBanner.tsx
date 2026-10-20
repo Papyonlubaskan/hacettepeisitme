@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { pageHeroSrc, pageHeroSrcSet } from '@/lib/pageImages';
 
 interface PageHeroBannerProps {
   title: string;
@@ -28,10 +29,13 @@ export default function PageHeroBanner({
     <section className={`relative overflow-hidden bg-brand-dark py-14 md:py-20 ${minHeight} flex items-center`}>
       <div className="absolute inset-0">
         <img
-          src={imageSrc}
+          srcSet={pageHeroSrcSet(imageSrc)}
+          sizes="100vw"
+          src={pageHeroSrc(imageSrc)}
           alt={imageAlt || title}
           className="h-full w-full object-cover object-center"
           loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/92 via-brand-dark/78 to-brand-dark/55" />

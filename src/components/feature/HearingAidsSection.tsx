@@ -11,7 +11,7 @@ export default function HearingAidsSection() {
           <div>
             <div className="inline-flex items-center gap-2 bg-brand-accent/10 rounded-full px-4 py-2 mb-4">
               <i className="ri-headphone-line text-brand-accent" />
-              <span className="text-sm font-semibold text-brand-accent uppercase tracking-wider">İşitme Cihazları</span>
+              <span className="text-sm font-semibold text-brand-accent-strong uppercase tracking-wider">İşitme Cihazları</span>
             </div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-dark mb-2">
               Satışını Yaptığımız Cihazlar
@@ -22,7 +22,7 @@ export default function HearingAidsSection() {
           </div>
           <Link
             to="/isitme-cihazlari"
-            className="text-sm font-semibold text-brand-accent hover:text-[#008f7f]"
+            className="text-sm font-semibold text-brand-accent-strong hover:text-[#008f7f]"
             onClick={() => trackCTAClick('Tüm Cihazlar', 'home_hearing_aids', '/isitme-cihazlari')}
           >
             Tümünü Gör →
@@ -43,7 +43,7 @@ export default function HearingAidsSection() {
           ))}
           <Link
             to="/katalog"
-            className="inline-flex items-center gap-2 border border-brand-accent/30 text-sm text-brand-accent px-4 py-2 rounded-full hover:bg-brand-light transition-colors"
+            className="inline-flex items-center gap-2 border border-brand-accent/30 text-sm text-brand-accent-strong px-4 py-2 rounded-full hover:bg-brand-light transition-colors"
           >
             <i className="ri-book-open-line" />
             Ürün Katalogları

@@ -50,7 +50,7 @@ export default function AddressLink({
       rel="noopener noreferrer"
       className={`group inline-block hover:text-brand-accent transition-colors ${className}`}
       onClick={handleClick}
-      aria-label={`Konum: ${SITE_ADDRESS_SINGLE}. Google Haritalar'da aç`}
+      title="Google Haritalar'da aç"
     >
       {showIcon ? (
         <span className="inline-flex items-start gap-2">
@@ -61,7 +61,7 @@ export default function AddressLink({
         content
       )}
       {showHint ? (
-        <span className="block text-xs text-brand-accent/80 group-hover:text-brand-accent mt-1 font-medium">
+        <span className="block text-xs mt-1 font-medium underline underline-offset-2">
           Haritada aç / yol tarifi
         </span>
       ) : null}

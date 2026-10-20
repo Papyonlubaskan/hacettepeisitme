@@ -57,7 +57,7 @@ export default function IsitmeCihaziFiyatlariPage() {
             SGK destekli cihazlarda ödeme tutarları yıllık güncellenir. Güncel bilgi için merkezimizi arayabilir veya
             randevu oluşturabilirsiniz.
           </p>
-          <Link to="/randevu" className="inline-flex mt-2 bg-brand-accent text-white px-6 py-3 rounded-full font-semibold">
+          <Link to="/randevu" className="inline-flex mt-2 bg-brand-accent-strong text-white px-6 py-3 rounded-full font-semibold">
             Ücretsiz Danışmanlık Al
           </Link>
         </div>
